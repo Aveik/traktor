@@ -2,8 +2,8 @@
 const http = require('http');
 const socketIo = require('socket.io');
 
-const onSocketConnect = require('../src/ws/onSocketConnect');
-const app = require('../app');
+const onSocketConnect = require('../src/server/ws/onSocketConnect');
+const app = require('../src/server/app');
 
 const port = process.env.PORT || 3000;
 const server = http.createServer(app);
