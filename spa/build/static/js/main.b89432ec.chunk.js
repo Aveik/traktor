@@ -1,0 +1,2 @@
+(this["webpackJsonpmovie-tinder-frontend"]=this["webpackJsonpmovie-tinder-frontend"]||[]).push([[0],{54:function(e,t,n){"use strict";n.r(t);var r=n(16),i=n(61),c=n(0),o=n(38),s=n.n(o),d=n(39);var h=function(){return Object(d.useSwipeable)({}),Object(r.jsx)("div",{style:{height:"100vh",width:"100%"},children:"Hello there fellow stranger. 60S."})};s.a.render(Object(r.jsx)(c.StrictMode,{children:Object(r.jsx)(i.a,{children:Object(r.jsx)(h,{})})}),document.getElementById("root"))}},[[54,1,2]]]);
+//# sourceMappingURL=main.b89432ec.chunk.js.map

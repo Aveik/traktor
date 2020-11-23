@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+const http = require('http');
+const socketIo = require('socket.io');
+
+const onSocketConnect = require('../src/ws/onSocketConnect');
+const app = require('../app');
+
+const port = process.env.PORT || 3000;
+const server = http.createServer(app);
+const io = socketIo(server, { cors: { origin: 'http://localhost:8080' } });
+
+app.set('port', port);
+
+io.on('connection', (socket) => onSocketConnect(socket, io));
+
+server.listen(port);
