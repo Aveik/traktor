@@ -1,5 +1,6 @@
 import { CssBaseline } from '@material-ui/core';
 import React from 'react';
+import { Provider as ReduxProvider } from 'react-redux';
 import {
   BrowserRouter as Router,
   Navigate,
@@ -23,6 +24,7 @@ import Watchlist from './modules/Profile/Watchlist/Watchlist.component';
 import Search from './modules/Search/Search.component';
 import Shows from './modules/Shows/Shows.component';
 import ShowDetail from './modules/Shows/Single/Single.component';
+import store from './redux/store';
 
 // In case of any routing change, make sure to reflect the exact change
 // in file ./src/components/Layouts/Layouts/Layouts.utils.js in variable NAV_PATHS
@@ -91,10 +93,12 @@ function App() {
 
 function Providers() {
   return (
-    <Router>
-      <CssBaseline />
-      <App />
-    </Router>
+    <ReduxProvider store={store}>
+      <Router>
+        <CssBaseline />
+        <App />
+      </Router>
+    </ReduxProvider>
   );
 }
 export default Providers;

@@ -2,12 +2,14 @@ import {
   Box as MuiBox,
   Divider as MuiDivider,
   Drawer as MuiDrawer,
+  Grid as MuiGrid,
   List as MuiList,
   Typography as MuiTypography,
 } from '@material-ui/core';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
+import Notifications from '../Notifications/Notifications.component';
 import useStyles from './Layout.styles';
 import { renderListItems } from './Layout.utils';
 
@@ -15,7 +17,7 @@ function Layout() {
   const classes = useStyles();
 
   return (
-    <div>
+    <MuiGrid>
       <MuiDrawer
         anchor='left'
         classes={{
@@ -31,9 +33,11 @@ function Layout() {
         <MuiDivider />
         <MuiList disablePadding>{renderListItems()}</MuiList>
       </MuiDrawer>
-      <h1>Layout</h1>
-      <Outlet />
-    </div>
+      <MuiBox ml={32}>
+        <Notifications />
+        <Outlet />
+      </MuiBox>
+    </MuiGrid>
   );
 }
 
