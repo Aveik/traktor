@@ -12,7 +12,6 @@ import Layout from './components/Layout/Layout.component';
 import NotFound from './components/NotFound/NotFound.component';
 import Movies from './modules/Movies/Movies.component';
 import MovieDetail from './modules/Movies/Single/Single.component';
-import People from './modules/People/People.component';
 import PeopleDetail from './modules/People/Single/Single.component';
 import Comments from './modules/Profile/Comments/Comments.component';
 import Lists from './modules/Profile/Lists/Lists.component';
@@ -65,11 +64,10 @@ function App() {
           <Route element={<ShowDetail />} path=':id' />
         </Route>
         <Route path='people'>
-          <Route element={<People />} path='/' />
           <Route element={<PeopleDetail />} path=':id' />
         </Route>
         <Route path='search'>
-          <Route element={<Search />} path='/' />
+          <Route element={<Search type='all' />} path='all' />
           <Route element={<Search type='movies' />} path='movies' />
           <Route element={<Search type='shows' />} path='shows' />
           <Route element={<Search type='people' />} path='people' />

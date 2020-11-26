@@ -69,10 +69,6 @@ const NAV_PATHS = [
     title: 'Shows',
   },
   {
-    path: 'people',
-    title: 'People',
-  },
-  {
     nested: [
       {
         path: 'profile/overview',
@@ -100,6 +96,27 @@ const NAV_PATHS = [
       },
     ],
     title: 'Profile',
+  },
+  {
+    nested: [
+      {
+        path: 'search/all',
+        title: 'All',
+      },
+      {
+        path: 'search/movies',
+        title: 'Movies',
+      },
+      {
+        path: 'search/shows',
+        title: 'Shows',
+      },
+      {
+        path: 'search/people',
+        title: 'People',
+      },
+    ],
+    title: 'Search',
   },
 ];
 
