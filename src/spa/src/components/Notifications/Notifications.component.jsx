@@ -6,7 +6,7 @@ import Single from './Single/Single.component';
 
 function Notifications() {
   const notifications = useSelector(selectNotifications);
-  return notifications.map(({ id, message }) => (
+  return Object.entries(notifications).map(([id, message]) => (
     <Single id={id} key={id} message={message} />
   ));
 }

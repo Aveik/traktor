@@ -1,3 +1,7 @@
+const DEFAULTS = {
+  PAGE_SIZE: 40,
+};
+
 function parseCookie() {
   return document.cookie.split('; ').reduce((acc, cookie) => {
     const [key, value] = cookie.split('=');
@@ -12,4 +16,4 @@ function getUserSlug() {
     : parseCookie().userSlug;
 }
 
-export { getUserSlug };
+export { DEFAULTS, getUserSlug };

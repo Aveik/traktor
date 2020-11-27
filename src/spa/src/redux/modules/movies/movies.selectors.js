@@ -9,4 +9,13 @@ const selectMovies = createSelector(
   },
 );
 
-export { selectMovies };
+const selectPagesTotal = createSelector(
+  function (state) {
+    return state.movies.pagination.total;
+  },
+  function (pagesTotal) {
+    return pagesTotal;
+  },
+);
+
+export { selectMovies, selectPagesTotal };

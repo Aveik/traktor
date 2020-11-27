@@ -2,10 +2,19 @@ import { createSelector } from '@reduxjs/toolkit';
 
 const selectComments = createSelector(
   function (state) {
-    return state.profile.comments;
+    return state.profile.comments.entities;
   },
   function (comments) {
     return comments;
+  },
+);
+
+const selectCommentsPagesTotal = createSelector(
+  function (state) {
+    return state.profile.comments.pagination.total;
+  },
+  function (pagesTotal) {
+    return pagesTotal;
   },
 );
 
@@ -47,6 +56,7 @@ const selectWatchlist = createSelector(
 
 export {
   selectComments,
+  selectCommentsPagesTotal,
   selectLists,
   selectRatings,
   selectRecommendations,

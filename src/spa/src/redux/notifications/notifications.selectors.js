@@ -5,10 +5,7 @@ const selectNotifications = createSelector(
     return state.notifications;
   },
   function (notifications) {
-    return Object.keys(notifications).map((id) => ({
-      id,
-      message: notifications[id],
-    }));
+    return notifications;
   },
 );
 

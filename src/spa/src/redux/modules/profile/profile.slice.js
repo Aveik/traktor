@@ -1,16 +1,21 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { getUserSlug } from '../../../utils';
+import { DEFAULTS, getUserSlug } from '../../../utils';
 
 const fetchComments = createAsyncThunk(
   'profile/comments/fetch',
-  async function (type, { rejectWithValue }) {
+  async function (page, { rejectWithValue }) {
     try {
       const response = await axios.get(
-        `/trakt/users/${getUserSlug()}/comments`,
+        `/trakt/users/${getUserSlug()}/comments?page=${page}&limit=${
+          DEFAULTS.PAGE_SIZE
+        }`,
       );
-      return response.data;
+      return {
+        entities: response.data,
+        total: parseInt(response.headers['x-pagination-page-count']),
+      };
     } catch (error) {
       return rejectWithValue(error.toString());
     }
@@ -68,7 +73,8 @@ const fetchWatchlist = createAsyncThunk(
 const { reducer } = createSlice({
   extraReducers: {
     [fetchComments.fulfilled](state, action) {
-      state.comments = action.payload;
+      state.comments.entities = action.payload.entities;
+      state.comments.pagination.total = action.payload.total;
     },
     [fetchLists.fulfilled](state, action) {
       state.lists = action.payload;
@@ -84,7 +90,12 @@ const { reducer } = createSlice({
     },
   },
   initialState: {
-    comments: [],
+    comments: {
+      entities: [],
+      pagination: {
+        total: 0,
+      },
+    },
     lists: [],
     ratings: [],
     recommendations: [],
