@@ -9,14 +9,12 @@ function selector(_, actionTypes) {
   return actionTypes;
 }
 
-function selectLoadingFlagFactory() {
-  return createSelector([stateSelector, selector], function (
-    state,
-    actionType,
-  ) {
-    return Boolean(state[actionType]);
-  });
-}
+const selectLoadingFlag = createSelector([stateSelector, selector], function (
+  loading,
+  actionType,
+) {
+  return Boolean(loading[actionType]);
+});
 
 function selectLoadingFlagsFactory() {
   return createSelector([stateSelector, selector], function (
@@ -41,7 +39,7 @@ function selectLoadingFlagsReducedFactory() {
 }
 
 export {
-  selectLoadingFlagFactory,
+  selectLoadingFlag,
   selectLoadingFlagsFactory,
   selectLoadingFlagsReducedFactory,
 };

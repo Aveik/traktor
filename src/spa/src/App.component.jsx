@@ -16,7 +16,6 @@ import PeopleDetail from './modules/People/Single/Single.component';
 import Comments from './modules/Profile/Comments/Comments.component';
 import Lists from './modules/Profile/Lists/Lists.component';
 import ListDetail from './modules/Profile/Lists/Single/Single.component';
-import Profile from './modules/Profile/Profile.component';
 import Ratings from './modules/Profile/Ratings/Ratings.component';
 import Recommendations from './modules/Profile/Recommendations/Recommendations.component';
 import Watchlist from './modules/Profile/Watchlist/Watchlist.component';
@@ -73,7 +72,6 @@ function App() {
           <Route element={<Search type='people' />} path='people' />
         </Route>
         <Route path='profile'>
-          <Route element={<Profile />} path='/overview' />
           <Route element={<Ratings />} path='ratings' />
           <Route element={<Recommendations />} path='recommendations' />
           <Route element={<Watchlist />} path='watchlist' />

@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectLoadingFlagFactory } from '../../redux/loading/loading.selectors';
+import { selectLoadingFlag } from '../../redux/loading/loading.selectors';
 import { selectShows } from '../../redux/modules/shows/shows.selectors';
 import { fetchShows } from '../../redux/modules/shows/shows.slice';
 
 function Shows({ category }) {
   const dispatch = useDispatch();
-  const selectLoadingFlag = useMemo(selectLoadingFlagFactory, []);
   const fetching = useSelector((state) =>
     selectLoadingFlag(state, 'shows/fetch'),
   );

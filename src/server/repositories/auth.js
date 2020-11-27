@@ -1,7 +1,11 @@
 const _ = require('connect-ensure-login');
 const OAuth2Strategy = require('passport-oauth2').Strategy;
 
-const { createOrUpdateUser, findUserByUuid, getUserUuid } = require('./users');
+const {
+  createOrUpdateUser,
+  findUserByUuid,
+  getUserDetails,
+} = require('./users');
 
 const Strategy = new OAuth2Strategy(
   {
@@ -12,10 +16,11 @@ const Strategy = new OAuth2Strategy(
     tokenURL: 'https://api.trakt.tv/oauth/token',
   },
   async function (accessToken, refreshToken, profile, done) {
-    const uuid = await getUserUuid({ accessToken });
-    await createOrUpdateUser({ refreshToken, uuid });
+    const { slug, uuid } = await getUserDetails({ accessToken });
+    await createOrUpdateUser({ refreshToken, slug, uuid });
     done(null, {
       accessToken,
+      slug,
       uuid,
     });
   },

@@ -71,10 +71,6 @@ const NAV_PATHS = [
   {
     nested: [
       {
-        path: 'profile/overview',
-        title: 'Overview',
-      },
-      {
         path: 'profile/ratings',
         title: 'Ratings',
       },

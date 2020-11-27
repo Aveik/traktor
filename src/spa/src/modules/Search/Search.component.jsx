@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
-import { selectLoadingFlagFactory } from '../../redux/loading/loading.selectors';
+import { selectLoadingFlag } from '../../redux/loading/loading.selectors';
 import { selectSearchResults } from '../../redux/modules/search/search.selectors';
 import { fetchSearchResults } from '../../redux/modules/search/search.slice';
 
@@ -13,7 +13,6 @@ function Search({ type }) {
   const { query = '' } = useMemo(() => Object.fromEntries(searchParams), [
     searchParams,
   ]);
-  const selectLoadingFlag = useMemo(selectLoadingFlagFactory, []);
   const fetching = useSelector((state) =>
     selectLoadingFlag(state, 'search/fetch'),
   );

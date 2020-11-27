@@ -8,8 +8,9 @@ function matches(action) {
 const { reducer } = createSlice({
   extraReducers: (builder) => {
     builder.addMatcher(matches, (state, action) => {
-      const [reducerName, actionName, asyncState] = action.type.split('/');
-      state[`${reducerName}/${actionName}`] = asyncState === 'pending';
+      const parts = action.type.split('/');
+      const asyncState = parts.pop();
+      state[`${parts.join('/')}`] = asyncState === 'pending';
     });
   },
   initialState: {},
