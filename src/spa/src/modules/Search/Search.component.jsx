@@ -7,8 +7,8 @@ import Pagination from '../../components/Pagination/Pagination.component';
 import usePagination from '../../hooks/usePagination';
 import { selectLoadingFlag } from '../../redux/loading/loading.selectors';
 import {
+  selectEntities,
   selectPagesTotal,
-  selectSearchResults,
 } from '../../redux/modules/search/search.selectors';
 import { fetchSearchResults } from '../../redux/modules/search/search.slice';
 
@@ -30,7 +30,7 @@ function Search({ type }) {
   const fetching = useSelector((state) =>
     selectLoadingFlag(state, 'search/fetch'),
   );
-  const searchResults = useSelector(selectSearchResults);
+  const searchResults = useSelector(selectEntities);
 
   useEffect(() => {
     dispatch(fetchSearchResults({ page, query, type }));
@@ -42,6 +42,7 @@ function Search({ type }) {
 
   return (
     <>
+      {fetching && <div>Loading...</div>}
       <Pagination
         disabled={fetching}
         hasNextPage={hasNextPage}
@@ -51,8 +52,15 @@ function Search({ type }) {
         onNextPage={toNextPage}
         onPreviousPage={toPreviousPage}
       />
-      {fetching && <div>Loading...</div>}
-      <input onChange={handleQueryChange} type='text' value={query} />
+      <div>
+        <label htmlFor='query'>Input your query:</label>
+        <input
+          id='query'
+          onChange={handleQueryChange}
+          type='text'
+          value={query}
+        />
+      </div>
       <pre>{JSON.stringify(searchResults, null, 2)}</pre>
     </>
   );

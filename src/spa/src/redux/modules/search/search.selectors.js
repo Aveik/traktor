@@ -1,11 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-const selectSearchResults = createSelector(
+const selectEntities = createSelector(
   function (state) {
     return state.search.entities;
   },
-  function (searchResults) {
-    return searchResults;
+  function (entities) {
+    return entities;
   },
 );
 
@@ -18,4 +18,4 @@ const selectPagesTotal = createSelector(
   },
 );
 
-export { selectPagesTotal, selectSearchResults };
+export { selectEntities, selectPagesTotal };

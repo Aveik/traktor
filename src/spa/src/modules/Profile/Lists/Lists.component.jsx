@@ -2,15 +2,15 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectLoadingFlag } from '../../../redux/loading/loading.selectors';
-import { selectLists } from '../../../redux/modules/profile/profile.selectors';
-import { fetchLists } from '../../../redux/modules/profile/profile.slice';
+import { selectEntities } from '../../../redux/modules/profile/lists/lists.selectors';
+import { fetchLists } from '../../../redux/modules/profile/lists/lists.slice';
 
 function Lists() {
   const dispatch = useDispatch();
   const fetching = useSelector((state) =>
     selectLoadingFlag(state, 'profile/lists/fetch'),
   );
-  const lists = useSelector(selectLists);
+  const lists = useSelector(selectEntities);
 
   useEffect(() => {
     dispatch(fetchLists());

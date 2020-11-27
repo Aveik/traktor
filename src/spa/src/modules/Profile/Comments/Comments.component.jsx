@@ -5,17 +5,13 @@ import Pagination from '../../../components/Pagination/Pagination.component';
 import usePagination from '../../../hooks/usePagination';
 import { selectLoadingFlag } from '../../../redux/loading/loading.selectors';
 import {
-  selectComments,
-  selectCommentsPagesTotal,
-} from '../../../redux/modules/profile/profile.selectors';
-import { fetchComments } from '../../../redux/modules/profile/profile.slice';
+  selectEntities,
+  selectPagesTotal,
+} from '../../../redux/modules/profile/comments/comments.selectors';
+import { fetchComments } from '../../../redux/modules/profile/comments/comments.slice';
 
 function Comments() {
   const dispatch = useDispatch();
-  const fetching = useSelector((state) =>
-    selectLoadingFlag(state, 'profile/comments/fetch'),
-  );
-  const comments = useSelector(selectComments);
   const {
     hasNextPage,
     hasPreviousPage,
@@ -24,7 +20,11 @@ function Comments() {
     toLastPage,
     toNextPage,
     toPreviousPage,
-  } = usePagination(selectCommentsPagesTotal);
+  } = usePagination(selectPagesTotal);
+  const fetching = useSelector((state) =>
+    selectLoadingFlag(state, 'profile/comments/fetch'),
+  );
+  const comments = useSelector(selectEntities);
 
   useEffect(() => {
     dispatch(fetchComments(page));
@@ -32,6 +32,7 @@ function Comments() {
 
   return (
     <>
+      {fetching && <div>Loading...</div>}
       <Pagination
         disabled={fetching}
         hasNextPage={hasNextPage}
@@ -41,7 +42,6 @@ function Comments() {
         onNextPage={toNextPage}
         onPreviousPage={toPreviousPage}
       />
-      {fetching && <div>Loading...</div>}
       <pre>{JSON.stringify(comments, null, 2)}</pre>
     </>
   );

@@ -11,7 +11,7 @@ function Pagination({
   onPreviousPage,
 }) {
   return (
-    <>
+    <div>
       <button disabled={disabled} onClick={onFirstPage} type='button'>
         First page
       </button>
@@ -32,7 +32,7 @@ function Pagination({
       <button disabled={disabled} onClick={onLastPage} type='button'>
         Last page
       </button>
-    </>
+    </div>
   );
 }
 

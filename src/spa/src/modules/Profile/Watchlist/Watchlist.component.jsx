@@ -2,15 +2,15 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectLoadingFlag } from '../../../redux/loading/loading.selectors';
-import { selectWatchlist } from '../../../redux/modules/profile/profile.selectors';
-import { fetchWatchlist } from '../../../redux/modules/profile/profile.slice';
+import { selectEntities } from '../../../redux/modules/profile/watchlist/watchlist.selectors';
+import { fetchWatchlist } from '../../../redux/modules/profile/watchlist/watchlist.slice';
 
 function Watchlist() {
   const dispatch = useDispatch();
   const fetching = useSelector((state) =>
     selectLoadingFlag(state, 'profile/watchlist/fetch'),
   );
-  const watchlist = useSelector(selectWatchlist);
+  const watchlist = useSelector(selectEntities);
 
   useEffect(() => {
     dispatch(fetchWatchlist());

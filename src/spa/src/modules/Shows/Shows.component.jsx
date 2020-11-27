@@ -6,8 +6,8 @@ import Pagination from '../../components/Pagination/Pagination.component';
 import usePagination from '../../hooks/usePagination';
 import { selectLoadingFlag } from '../../redux/loading/loading.selectors';
 import {
+  selectEntities,
   selectPagesTotal,
-  selectShows,
 } from '../../redux/modules/shows/shows.selectors';
 import { fetchShows } from '../../redux/modules/shows/shows.slice';
 
@@ -25,7 +25,7 @@ function Shows({ category }) {
   const fetching = useSelector((state) =>
     selectLoadingFlag(state, 'shows/fetch'),
   );
-  const shows = useSelector(selectShows);
+  const shows = useSelector(selectEntities);
 
   useEffect(() => {
     dispatch(fetchShows({ category, page }));

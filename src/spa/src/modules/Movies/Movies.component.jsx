@@ -6,7 +6,7 @@ import Pagination from '../../components/Pagination/Pagination.component';
 import usePagination from '../../hooks/usePagination';
 import { selectLoadingFlag } from '../../redux/loading/loading.selectors';
 import {
-  selectMovies,
+  selectEntities,
   selectPagesTotal,
 } from '../../redux/modules/movies/movies.selectors';
 import { fetchMovies } from '../../redux/modules/movies/movies.slice';
@@ -25,7 +25,7 @@ function Movies({ category }) {
   const fetching = useSelector((state) =>
     selectLoadingFlag(state, 'movies/fetch'),
   );
-  const movies = useSelector(selectMovies);
+  const movies = useSelector(selectEntities);
 
   useEffect(() => {
     dispatch(fetchMovies({ category, page }));
@@ -33,6 +33,7 @@ function Movies({ category }) {
 
   return (
     <>
+      {fetching && <div>Loading...</div>}
       <Pagination
         disabled={fetching}
         hasNextPage={hasNextPage}

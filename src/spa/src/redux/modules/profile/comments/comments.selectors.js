@@ -2,16 +2,16 @@ import { createSelector } from '@reduxjs/toolkit';
 
 const selectEntities = createSelector(
   function (state) {
-    return state.movies.entities;
+    return state.profile.comments.entities;
   },
-  function (entities) {
-    return entities;
+  function (comments) {
+    return comments;
   },
 );
 
 const selectPagesTotal = createSelector(
   function (state) {
-    return state.movies.pagination.total;
+    return state.profile.comments.pagination.total;
   },
   function (pagesTotal) {
     return pagesTotal;
