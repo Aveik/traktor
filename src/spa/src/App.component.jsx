@@ -10,9 +10,9 @@ import {
 
 import Layout from './components/Layout/Layout.component';
 import NotFound from './components/NotFound/NotFound.component';
+import Movie from './modules/Movie/Movie.component';
 import Movies from './modules/Movies/Movies.component';
-import MovieDetail from './modules/Movies/Single/Single.component';
-import PeopleDetail from './modules/People/Single/Single.component';
+import Person from './modules/Person/Person.component';
 import Comments from './modules/Profile/Comments/Comments.component';
 import Lists from './modules/Profile/Lists/Lists.component';
 import ListDetail from './modules/Profile/Lists/Single/Single.component';
@@ -20,8 +20,8 @@ import Ratings from './modules/Profile/Ratings/Ratings.component';
 import Recommendations from './modules/Profile/Recommendations/Recommendations.component';
 import Watchlist from './modules/Profile/Watchlist/Watchlist.component';
 import Search from './modules/Search/Search.component';
+import Show from './modules/Show/Show.component';
 import Shows from './modules/Shows/Shows.component';
-import ShowDetail from './modules/Shows/Single/Single.component';
 import store from './redux/store';
 
 // In case of any routing change, make sure to reflect the exact change
@@ -45,9 +45,10 @@ function App() {
             element={<Movies category='anticipated' />}
             path='anticipated'
           />
-          <Route element={<MovieDetail />} path=':id' />
+          <Route element={<Movie />} path=':slug' />
         </Route>
         <Route path='shows'>
+          <Route element={<Navigate replace to='trending' />} path='/' />
           <Route element={<Shows category='trending' />} path='trending' />
           <Route element={<Shows category='popular' />} path='popular' />
           <Route
@@ -60,18 +61,18 @@ function App() {
             element={<Shows category='anticipated' />}
             path='anticipated'
           />
-          <Route element={<ShowDetail />} path=':id' />
+          <Route element={<Show />} path=':slug' />
         </Route>
-        <Route path='people'>
-          <Route element={<PeopleDetail />} path=':id' />
-        </Route>
+        <Route element={<Person />} path='people/:slug' />
         <Route path='search'>
+          <Route element={<Navigate replace to='all' />} path='/' />
           <Route element={<Search type='all' />} path='all' />
           <Route element={<Search type='movies' />} path='movies' />
           <Route element={<Search type='shows' />} path='shows' />
           <Route element={<Search type='people' />} path='people' />
         </Route>
         <Route path='profile'>
+          <Route element={<Navigate replace to='ratings' />} path='/' />
           <Route element={<Ratings />} path='ratings' />
           <Route element={<Recommendations />} path='recommendations' />
           <Route element={<Watchlist />} path='watchlist' />
