@@ -14,8 +14,8 @@ import Movie from './modules/Movie/Movie.component';
 import Movies from './modules/Movies/Movies.component';
 import Person from './modules/Person/Person.component';
 import Comments from './modules/Profile/Comments/Comments.component';
+import List from './modules/Profile/List/List.component';
 import Lists from './modules/Profile/Lists/Lists.component';
-import ListDetail from './modules/Profile/Lists/Single/Single.component';
 import Ratings from './modules/Profile/Ratings/Ratings.component';
 import Recommendations from './modules/Profile/Recommendations/Recommendations.component';
 import Watchlist from './modules/Profile/Watchlist/Watchlist.component';
@@ -78,7 +78,7 @@ function App() {
           <Route element={<Watchlist />} path='watchlist' />
           <Route path='lists'>
             <Route element={<Lists />} path='/' />
-            <Route element={<ListDetail />} path=':id' />
+            <Route element={<List />} path=':id' />
           </Route>
           <Route element={<Comments />} path='comments' />
         </Route>
