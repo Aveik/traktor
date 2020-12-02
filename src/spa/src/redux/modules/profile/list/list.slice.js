@@ -6,7 +6,6 @@ const fetchList = createAsyncThunk('list/fetch', async function (
   { rejectWithValue },
 ) {
   try {
-    const response = await axios.get(`/trakt/lists/${id}`);
     const [listResponse, itemsResponse] = await Promise.all([
       axios.get(`/trakt/lists/${id}`),
       axios.get(`/trakt/lists/${id}/items`),
