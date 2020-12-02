@@ -22,7 +22,7 @@ const getCache = promisify(redisClient.get).bind(redisClient);
  * Poster: ['w92', 'w154', 'w185', 'w342', 'w500', 'w780', 'original']
  * Profile: ['w45', 'w185', 'w632', 'original']
  */
-router.use('/images/:id/:entity/:type', async function (req, res) {
+router.use('/images/:entity/:id/:type', async function (req, res) {
   try {
     const { entity, id, type } = req.params;
     const { season, size = 'original' } = req.query;
@@ -37,6 +37,7 @@ router.use('/images/:id/:entity/:type', async function (req, res) {
     if (
       (entity === 'person' && type !== 'profile') ||
       (entity === 'show' && type === 'profile') ||
+      (entity === 'show' && season && type !== 'poster') ||
       (entity === 'movie' && type === 'profile')
     ) {
       return res.redirect('https://via.placeholder.com/150');
