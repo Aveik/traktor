@@ -53,7 +53,7 @@ router.use('/images/:id/:entity/:type', async function (req, res) {
       }
     }
 
-    let requestURL;
+    let requestURL = `/${entity}/${id}`;
     let cacheKey = `${entity}_${id}`;
     if (entity === 'show') {
       requestURL = `/tv/${id}`;
