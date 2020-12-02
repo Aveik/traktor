@@ -4,10 +4,11 @@ const dotenv = require('dotenv');
 const express = require('express');
 const logger = require('morgan');
 const passport = require('passport');
-const redis = require('redis');
 const session = require('express-session');
 
 dotenv.config();
+
+const { redisClient } = require('./clients');
 
 const {
   Strategy,
@@ -19,7 +20,6 @@ passport.use('trakt', Strategy);
 passport.deserializeUser(deserializeUser);
 passport.serializeUser(serializeUser);
 
-const redisClient = redis.createClient();
 const RedisStore = require('connect-redis')(session);
 
 const app = express();

@@ -1,6 +1,6 @@
 module.exports = [
   require('./app'),
   require('./auth'),
+  require('./images'),
   require('./trakt'),
-  ...(process.env.NODE_ENV === 'development' ? [require('./debug')] : []),
 ];
