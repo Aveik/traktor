@@ -24,6 +24,7 @@
     "@types/http-proxy": "^1.17.4",
     "@types/morgan": "^1.9.2",
     "@types/passport": "^1.0.4",
+    "@types/redis": "^2.8.28",
     "@types/socket.io": "^2.1.11",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
