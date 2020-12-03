@@ -40,10 +40,12 @@ function Movie() {
       </button>
       <Poster
         entity='movie'
-        id={movie.summary?.ids.tmdb}
         size='w154'
+        tmdbId={movie.summary?.ids.tmdb}
         type='poster'
-      />
+      >
+        {(url) => <img alt='poster' src={url} />}
+      </Poster>
       <pre>{JSON.stringify(movie, null, 2)}</pre>
     </>
   );

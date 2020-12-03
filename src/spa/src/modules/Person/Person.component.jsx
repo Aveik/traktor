@@ -24,10 +24,12 @@ function Person() {
       {fetching && <div>Loading...</div>}
       <Poster
         entity='person'
-        id={person.summary?.ids.tmdb}
         size='w185'
+        tmdbId={person.summary?.ids.tmdb}
         type='profile'
-      />
+      >
+        {(url) => <img alt='poster' src={url} />}
+      </Poster>
       <pre>{JSON.stringify(person, null, 2)}</pre>
     </>
   );

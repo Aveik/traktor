@@ -1,4 +1,8 @@
-import { CssBaseline } from '@material-ui/core';
+import {
+  createMuiTheme,
+  CssBaseline as MuiCssBaseline,
+  ThemeProvider as MuiThemeProvider,
+} from '@material-ui/core';
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import {
@@ -87,14 +91,21 @@ function App() {
     </Routes>
   );
 }
+const darkTheme = createMuiTheme({
+  palette: {
+    type: 'dark',
+  },
+});
 
 function Providers() {
   return (
     <ReduxProvider store={store}>
-      <Router>
-        <CssBaseline />
-        <App />
-      </Router>
+      <MuiThemeProvider theme={darkTheme}>
+        <Router>
+          <MuiCssBaseline />
+          <App />
+        </Router>
+      </MuiThemeProvider>
     </ReduxProvider>
   );
 }

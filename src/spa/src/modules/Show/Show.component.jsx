@@ -37,10 +37,12 @@ function Show() {
       </button>
       <Poster
         entity='show'
-        id={show.summary?.ids.tmdb}
         size='w154'
+        tmdbId={show.summary?.ids.tmdb}
         type='poster'
-      />
+      >
+        {(url) => <img alt='poster' src={url} />}
+      </Poster>
       <pre>{JSON.stringify(show, null, 2)}</pre>
     </>
   );

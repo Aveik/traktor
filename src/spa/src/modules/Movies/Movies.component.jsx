@@ -1,3 +1,4 @@
+import { Grid as MuiGrid } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +11,7 @@ import {
   selectPagesTotal,
 } from '../../redux/modules/movies/movies.selectors';
 import { fetchMovies } from '../../redux/modules/movies/movies.slice';
+import { renderTiles } from '../Movie/Movie.utils';
 
 function Movies({ category }) {
   const dispatch = useDispatch();
@@ -43,7 +45,7 @@ function Movies({ category }) {
         onNextPage={toNextPage}
         onPreviousPage={toPreviousPage}
       />
-      <pre>{JSON.stringify(movies, null, 2)}</pre>
+      <MuiGrid container>{renderTiles({ category, movies })}</MuiGrid>
     </>
   );
 }

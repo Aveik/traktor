@@ -1,37 +1,26 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 
-function Poster({ entity, id, season, size, type }) {
-  if (!id) {
+function Poster({ children, entity, season, size, tmdbId, type }) {
+  if (!tmdbId) {
     return null;
   }
 
-  let url = `/images/${entity}/${id}/${type}?`;
+  let url = `/images/${entity}/${tmdbId}/${type}?`;
   if (season) {
     url += `season=${season}`;
   }
   if (size) {
     url += `size=${size}`;
   }
-  //@TODO: remove styling when implementing actual HOC
-  return (
-    <img
-      alt='poster'
-      src={url}
-      style={{
-        display: 'block',
-        margin: '12px 0',
-        maxWidth: '100%',
-      }}
-    />
-  );
+  return children(url);
 }
 
 Poster.propTypes = {
+  children: PropTypes.func.isRequired,
   entity: PropTypes.oneOf(['movie', 'person', 'show']).isRequired,
-  id: PropTypes.number,
   season: PropTypes.number,
   size: PropTypes.string,
+  tmdbId: PropTypes.number,
   type: PropTypes.oneOf(['backdrop', 'poster', 'profile']),
 };
 
