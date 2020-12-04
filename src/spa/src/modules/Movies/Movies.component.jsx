@@ -11,7 +11,7 @@ import {
   selectPagesTotal,
 } from '../../redux/modules/movies/movies.selectors';
 import { fetchMovies } from '../../redux/modules/movies/movies.slice';
-import { renderTiles } from '../Movie/Movie.utils';
+import { renderTiles } from './Movies.utils';
 
 function Movies({ category }) {
   const dispatch = useDispatch();

@@ -4,6 +4,16 @@ const router = require('express').Router();
 
 const proxy = httpProxy.createProxyServer();
 
+//@TODO: figure out why we need this to forward body of post, put, update http methods
+proxy.on('proxyReq', (proxyReq, req) => {
+  if (req.body) {
+    const bodyData = JSON.stringify(req.body);
+    proxyReq.setHeader('Content-Type', 'application/json');
+    proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
+    proxyReq.write(bodyData);
+  }
+});
+
 //@TODO: implement refresh action in case access token expired.
 //@TODO: implement custom json payload factory
 router.use('/trakt', function (req, res) {

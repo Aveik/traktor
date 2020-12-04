@@ -91,6 +91,7 @@ function App() {
     </Routes>
   );
 }
+
 const darkTheme = createMuiTheme({
   palette: {
     type: 'dark',
@@ -109,4 +110,5 @@ function Providers() {
     </ReduxProvider>
   );
 }
+
 export default Providers;

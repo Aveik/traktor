@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import Poster from '../../components/Poster/Poster.component';
+import Rating from '../../components/Rating/Rating.component';
 import { selectLoadingFlagsReducedFactory } from '../../redux/loading/loading.selectors';
+import { selectRating } from '../../redux/modules/profile/ratings/ratings.selectors';
+import { postShowRating } from '../../redux/modules/profile/ratings/ratings.slice';
 import { selectEntity } from '../../redux/modules/show/show.selectors';
 import { fetchComments, fetchShow } from '../../redux/modules/show/show.slice';
 
@@ -18,6 +21,7 @@ function Show() {
     selectLoadingFlagReduced(state, ['show/fetch', 'show/comments/fetch']),
   );
   const show = useSelector(selectEntity);
+  const rating = useSelector((state) => selectRating(state, 'show', slug));
 
   useEffect(() => {
     dispatch(fetchShow(slug));
@@ -29,12 +33,17 @@ function Show() {
     );
   }
 
+  function handleRating(value) {
+    dispatch(postShowRating({ rating: value, slug }));
+  }
+
   return (
     <>
       {fetching && <div>Loading...</div>}
       <button onClick={handleFetchAllComments} type='button'>
         Fetch all comments
       </button>
+      <Rating onChange={handleRating} value={rating} />
       <Poster
         entity='show'
         size='w154'

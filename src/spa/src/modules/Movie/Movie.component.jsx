@@ -3,12 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import Poster from '../../components/Poster/Poster.component';
+import Rating from '../../components/Rating/Rating.component';
 import { selectLoadingFlagsReducedFactory } from '../../redux/loading/loading.selectors';
 import { selectEntity } from '../../redux/modules/movie/movie.selectors';
 import {
   fetchComments,
   fetchMovie,
 } from '../../redux/modules/movie/movie.slice';
+import { selectRating } from '../../redux/modules/profile/ratings/ratings.selectors';
+import { postMovieRating } from '../../redux/modules/profile/ratings/ratings.slice';
 
 function Movie() {
   const selectLoadingFlagReduced = useMemo(
@@ -21,6 +24,7 @@ function Movie() {
     selectLoadingFlagReduced(state, ['movie/fetch', 'movie/comments/fetch']),
   );
   const movie = useSelector(selectEntity);
+  const rating = useSelector((state) => selectRating(state, 'movie', slug));
 
   useEffect(() => {
     dispatch(fetchMovie(slug));
@@ -32,12 +36,17 @@ function Movie() {
     );
   }
 
+  function handleRating(value) {
+    dispatch(postMovieRating({ rating: value, slug }));
+  }
+
   return (
     <>
       {fetching && <div>Loading...</div>}
       <button onClick={handleFetchAllComments} type='button'>
         Fetch all comments
       </button>
+      <Rating onChange={handleRating} value={rating} />
       <Poster
         entity='movie'
         size='w154'
