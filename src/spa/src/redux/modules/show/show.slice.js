@@ -7,7 +7,7 @@ const fetchComments = createAsyncThunk('show/comments/fetch', async function (
 ) {
   try {
     const response = await axios.get(
-      `/trakt/shows/${slug}/comments/${sort}?page=1&limit=${limit}`,
+      `/shows/${slug}/comments/${sort}?page=1&limit=${limit}`,
     );
     return response.data;
   } catch (error) {
@@ -29,13 +29,13 @@ const fetchShow = createAsyncThunk('show/fetch', async function (
       statsResponse,
       seasonsResponse,
     ] = await Promise.all([
-      axios.get(`/trakt/shows/${slug}`),
-      axios.get(`/trakt/shows/${slug}/comments/highest`),
-      axios.get(`/trakt/shows/${slug}/people`),
-      axios.get(`/trakt/shows/${slug}/ratings`),
-      axios.get(`/trakt/shows/${slug}/related`),
-      axios.get(`/trakt/shows/${slug}/stats`),
-      axios.get(`/trakt/shows/${slug}/seasons?extended=episodes`),
+      axios.get(`/shows/${slug}`),
+      axios.get(`/shows/${slug}/comments/highest`),
+      axios.get(`/shows/${slug}/people`),
+      axios.get(`/shows/${slug}/ratings`),
+      axios.get(`/shows/${slug}/related`),
+      axios.get(`/shows/${slug}/stats`),
+      axios.get(`/shows/${slug}/seasons?extended=episodes`),
     ]);
     return {
       comments: commentsResponse.data,

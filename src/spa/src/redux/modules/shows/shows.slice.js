@@ -9,7 +9,7 @@ const fetchShows = createAsyncThunk('shows/fetch', async function (
 ) {
   try {
     const response = await axios.get(
-      `/trakt/shows/${category}?page=${page}&limit=${DEFAULTS.PAGE_SIZE}`,
+      `/shows/${category}?page=${page}&limit=${DEFAULTS.PAGE_SIZE}`,
     );
     return {
       entities: response.data,

@@ -1,15 +1,42 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { getUserSlug } from '../../../../utils';
+import { selectUserSlug } from '../../../auth/auth.selectors';
 
 const fetchLists = createAsyncThunk('profile/lists/fetch', async function (
-  type,
-  { rejectWithValue },
+  _,
+  { getState, rejectWithValue },
 ) {
   try {
-    const response = await axios.get(`/trakt/users/${getUserSlug()}/lists`);
+    const userSlug = selectUserSlug(getState());
+    const response = await axios.get(`/users/${userSlug}/lists`);
     return response.data;
+  } catch (error) {
+    return rejectWithValue(error.toString());
+  }
+});
+
+const addList = createAsyncThunk('profile/lists/add', async function (
+  list,
+  { getState, rejectWithValue },
+) {
+  try {
+    const userSlug = selectUserSlug(getState());
+    const response = await axios.post(`/users/${userSlug}/lists`, list);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.toString());
+  }
+});
+
+const removeList = createAsyncThunk('profile/lists/remove', async function (
+  slug,
+  { getState, rejectWithValue },
+) {
+  try {
+    const userSlug = selectUserSlug(getState());
+    await axios.delete(`/users/${userSlug}/lists/${slug}`);
+    return slug;
   } catch (error) {
     return rejectWithValue(error.toString());
   }
@@ -17,8 +44,15 @@ const fetchLists = createAsyncThunk('profile/lists/fetch', async function (
 
 const { reducer } = createSlice({
   extraReducers: {
+    [addList.fulfilled](state, action) {
+      state.push(action.payload);
+    },
     [fetchLists.fulfilled](state, action) {
       return action.payload;
+    },
+    [removeList.fulfilled](state, action) {
+      const index = state.findIndex((list) => list.ids.slug === action.payload);
+      delete state[index];
     },
   },
   initialState: [],
@@ -26,5 +60,5 @@ const { reducer } = createSlice({
   reducers: {},
 });
 
-export { fetchLists };
+export { addList, fetchLists, removeList };
 export default reducer;

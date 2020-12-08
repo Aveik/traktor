@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import auth from './auth/auth.slice';
 import loading from './loading/loading.slice';
 import movie from './modules/movie/movie.slice';
 import movies from './modules/movies/movies.slice';
@@ -12,6 +13,7 @@ import notifications from './notifications/notifications.slice';
 
 const store = configureStore({
   reducer: {
+    auth,
     loading,
     movie,
     movies,

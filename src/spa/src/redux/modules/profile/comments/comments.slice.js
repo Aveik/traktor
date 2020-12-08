@@ -1,16 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { DEFAULTS, getUserSlug } from '../../../../utils';
+import { DEFAULTS } from '../../../../utils';
+import { selectUserSlug } from '../../../auth/auth.selectors';
 
 const fetchComments = createAsyncThunk(
   'profile/comments/fetch',
-  async function (page, { rejectWithValue }) {
+  async function (page, { getState, rejectWithValue }) {
     try {
+      const userSlug = selectUserSlug(getState());
       const response = await axios.get(
-        `/trakt/users/${getUserSlug()}/comments?page=${page}&limit=${
-          DEFAULTS.PAGE_SIZE
-        }`,
+        `/users/${userSlug}/comments?page=${page}&limit=${DEFAULTS.PAGE_SIZE}`,
       );
       return {
         entities: response.data,

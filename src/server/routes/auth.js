@@ -3,6 +3,10 @@ const router = require('express').Router();
 
 const { ensureLoggedIn } = require('../repositories/auth');
 
+router.get('/auth/me', ensureLoggedIn, function (req, res) {
+  return res.json(req.user);
+});
+
 router.get('/auth/logout', ensureLoggedIn, function (req, res) {
   req.logOut();
   res.redirect('/');

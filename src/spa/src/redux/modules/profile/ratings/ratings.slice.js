@@ -6,7 +6,7 @@ const fetchRatings = createAsyncThunk('profile/ratings/fetch', async function (
   { rejectWithValue },
 ) {
   try {
-    const response = await axios.get('/trakt/sync/ratings');
+    const response = await axios.get('/sync/ratings');
     return response.data;
   } catch (error) {
     return rejectWithValue(error.toString());
@@ -16,13 +16,25 @@ const fetchRatings = createAsyncThunk('profile/ratings/fetch', async function (
 function postRating(entity) {
   return async function ({ rating, slug }, { rejectWithValue }) {
     try {
-      await axios.post('/trakt/sync/ratings', {
+      await axios.post('/sync/ratings', {
         [entity]: [
           {
             ids: { slug },
             rating,
           },
         ],
+      });
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  };
+}
+
+function removeRating(entity) {
+  return async function (slug, { rejectWithValue }) {
+    try {
+      await axios.post('/sync/ratings/remove', {
+        [entity]: [{ ids: { slug } }],
       });
     } catch (error) {
       return rejectWithValue(error.toString());
@@ -39,18 +51,6 @@ const postShowRating = createAsyncThunk(
   'profile/ratings/rate',
   postRating('shows'),
 );
-
-function removeRating(entity) {
-  return async function (slug, { rejectWithValue }) {
-    try {
-      await axios.post('/trakt/sync/ratings/remove', {
-        [entity]: [{ ids: { slug } }],
-      });
-    } catch (error) {
-      return rejectWithValue(error.toString());
-    }
-  };
-}
 
 const removeMovieRating = createAsyncThunk(
   'profile/ratings/delete',

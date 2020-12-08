@@ -22,7 +22,7 @@ const fetchSearchResults = createAsyncThunk('search/fetch', async function (
 ) {
   try {
     const response = await axios.get(
-      `/trakt/search/${resolveType(type)}?query=${query}&page=${page}&limit=${
+      `/search/${resolveType(type)}?query=${query}&page=${page}&limit=${
         DEFAULTS.PAGE_SIZE
       }`,
     );

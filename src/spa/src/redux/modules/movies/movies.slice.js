@@ -9,7 +9,7 @@ const fetchMovies = createAsyncThunk('movies/fetch', async function (
 ) {
   try {
     const response = await axios.get(
-      `/trakt/movies/${category}?page=${page}&limit=${DEFAULTS.PAGE_SIZE}`,
+      `/movies/${category}?page=${page}&limit=${DEFAULTS.PAGE_SIZE}`,
     );
     return {
       entities: response.data,
