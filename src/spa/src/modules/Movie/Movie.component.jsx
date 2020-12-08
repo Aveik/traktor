@@ -12,16 +12,6 @@ import {
 } from '../../redux/modules/movie/movie.slice';
 import { selectRating } from '../../redux/modules/profile/ratings/ratings.selectors';
 import { postMovieRating } from '../../redux/modules/profile/ratings/ratings.slice';
-import { selectIsRecommended } from '../../redux/modules/profile/recommendations/recommendations.selectors';
-import {
-  postMovieRecommendation,
-  removeMovieRecommendation,
-} from '../../redux/modules/profile/recommendations/recommendations.slice';
-import { selectIsWatchlisted } from '../../redux/modules/profile/watchlist/watchlist.selectors';
-import {
-  addMovieToWatchlist,
-  removeMovieFromWatchlist,
-} from '../../redux/modules/profile/watchlist/watchlist.slice';
 
 function Movie() {
   const selectLoadingFlagReduced = useMemo(
@@ -35,12 +25,6 @@ function Movie() {
   );
   const movie = useSelector(selectEntity);
   const rating = useSelector((state) => selectRating(state, 'movie', slug));
-  const isRecommended = useSelector((state) =>
-    selectIsRecommended(state, 'movie', slug),
-  );
-  const isWatchlisted = useSelector((state) =>
-    selectIsWatchlisted(state, 'movie', slug),
-  );
 
   useEffect(() => {
     dispatch(fetchMovie(slug));
@@ -56,33 +40,11 @@ function Movie() {
     dispatch(postMovieRating({ rating: value, slug }));
   }
 
-  function handleRecommendation() {
-    if (isRecommended) {
-      dispatch(removeMovieRecommendation(slug));
-      return;
-    }
-    dispatch(postMovieRecommendation(slug));
-  }
-
-  function handleWatchlist() {
-    if (isWatchlisted) {
-      dispatch(removeMovieFromWatchlist(slug));
-      return;
-    }
-    dispatch(addMovieToWatchlist(slug));
-  }
-
   return (
     <>
       {fetching && <div>Loading...</div>}
       <button onClick={handleFetchAllComments} type='button'>
         Fetch all comments
-      </button>
-      <button onClick={handleRecommendation} type='button'>
-        {isRecommended ? 'Remove recommendation' : 'Recommend'}
-      </button>
-      <button onClick={handleWatchlist} type='button'>
-        {isWatchlisted ? 'Remove from watchlist' : 'Add to watchlist'}
       </button>
       <Rating onChange={handleRating} value={rating} />
       <Poster

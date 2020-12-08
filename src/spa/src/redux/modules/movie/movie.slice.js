@@ -7,7 +7,7 @@ const fetchComments = createAsyncThunk('movie/comments/fetch', async function (
 ) {
   try {
     const response = await axios.get(
-      `/movies/${slug}/comments/${sort}?page=1&limit=${limit}`,
+      `/trakt/movies/${slug}/comments/${sort}?page=1&limit=${limit}`,
     );
     return response.data;
   } catch (error) {
@@ -28,12 +28,12 @@ const fetchMovie = createAsyncThunk('movie/fetch', async function (
       relatedResponse,
       statsResponse,
     ] = await Promise.all([
-      axios.get(`/movies/${slug}`),
-      axios.get(`/movies/${slug}/comments/highest`),
-      axios.get(`/movies/${slug}/people`),
-      axios.get(`/movies/${slug}/ratings`),
-      axios.get(`/movies/${slug}/related`),
-      axios.get(`/movies/${slug}/stats`),
+      axios.get(`/trakt/movies/${slug}`),
+      axios.get(`/trakt/movies/${slug}/comments/highest`),
+      axios.get(`/trakt/movies/${slug}/people`),
+      axios.get(`/trakt/movies/${slug}/ratings`),
+      axios.get(`/trakt/movies/${slug}/related`),
+      axios.get(`/trakt/movies/${slug}/stats`),
     ]);
     return {
       comments: commentsResponse.data,

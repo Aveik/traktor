@@ -7,8 +7,8 @@ const fetchList = createAsyncThunk('list/fetch', async function (
 ) {
   try {
     const [listResponse, itemsResponse] = await Promise.all([
-      axios.get(`/lists/${id}`),
-      axios.get(`/lists/${id}/items`),
+      axios.get(`/trakt/lists/${id}`),
+      axios.get(`/trakt/lists/${id}/items`),
     ]);
     return {
       ...listResponse.data,
