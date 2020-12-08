@@ -16,19 +16,24 @@ proxy.on('proxyReq', (proxyReq, req) => {
 
 //@TODO: implement refresh action in case access token expired.
 //@TODO: implement custom json payload factory
-router.use('/trakt', function (req, res) {
+router.use('/trakt', function (req, res, next) {
   if (!req.isAuthenticated()) {
     return res.json(createError(401));
   }
-  proxy.web(req, res, {
-    changeOrigin: true,
-    headers: {
-      Authorization: `Bearer ${req.user.accessToken}`,
-      'trakt-api-key': process.env.TRAKT_TV_CLIENT_ID,
+  proxy.web(
+    req,
+    res,
+    {
+      changeOrigin: true,
+      headers: {
+        Authorization: `Bearer ${req.user.accessToken}`,
+        'trakt-api-key': process.env.TRAKT_TV_CLIENT_ID,
+      },
+      secure: false,
+      target: 'https://api.trakt.tv',
     },
-    secure: false,
-    target: 'https://api.trakt.tv',
-  });
+    next,
+  );
 });
 
 module.exports = router;
