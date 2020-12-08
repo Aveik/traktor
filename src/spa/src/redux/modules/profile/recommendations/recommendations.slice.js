@@ -13,6 +13,32 @@ const fetchRecommendations = createAsyncThunk(
   },
 );
 
+const postRecommendation = createAsyncThunk(
+  'profile/recommendation/recommend',
+  async function ({ entity, slug }, { rejectWithValue }) {
+    try {
+      await axios.post('/trakt/sync/recommendations', {
+        [entity]: [{ ids: { slug } }],
+      });
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  },
+);
+
+const removeRecommendation = createAsyncThunk(
+  'profile/recommendation/unrecommend',
+  async function ({ entity, slug }, { rejectWithValue }) {
+    try {
+      await axios.post('/trakt/sync/recommendations/remove', {
+        [entity]: [{ ids: { slug } }],
+      });
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  },
+);
+
 const { reducer } = createSlice({
   extraReducers: {
     [fetchRecommendations.fulfilled](state, action) {
@@ -24,5 +50,5 @@ const { reducer } = createSlice({
   reducers: {},
 });
 
-export { fetchRecommendations };
+export { fetchRecommendations, postRecommendation, removeRecommendation };
 export default reducer;

@@ -6,7 +6,7 @@ import Poster from '../../components/Poster/Poster.component';
 import Rating from '../../components/Rating/Rating.component';
 import { selectLoadingFlagsReducedFactory } from '../../redux/loading/loading.selectors';
 import { selectRating } from '../../redux/modules/profile/ratings/ratings.selectors';
-import { postShowRating } from '../../redux/modules/profile/ratings/ratings.slice';
+import { postRating } from '../../redux/modules/profile/ratings/ratings.slice';
 import { selectEntity } from '../../redux/modules/show/show.selectors';
 import { fetchComments, fetchShow } from '../../redux/modules/show/show.slice';
 
@@ -34,7 +34,7 @@ function Show() {
   }
 
   function handleRating(value) {
-    dispatch(postShowRating({ rating: value, slug }));
+    dispatch(postRating({ entity: 'shows', rating: value, slug }));
   }
 
   return (

@@ -11,7 +11,17 @@ import {
   fetchMovie,
 } from '../../redux/modules/movie/movie.slice';
 import { selectRating } from '../../redux/modules/profile/ratings/ratings.selectors';
-import { postMovieRating } from '../../redux/modules/profile/ratings/ratings.slice';
+import { postRating } from '../../redux/modules/profile/ratings/ratings.slice';
+import { selectIsRecommended } from '../../redux/modules/profile/recommendations/recommendations.selectors';
+import {
+  postRecommendation,
+  removeRecommendation,
+} from '../../redux/modules/profile/recommendations/recommendations.slice';
+import { selectIsWatchlisted } from '../../redux/modules/profile/watchlist/watchlist.selectors';
+import {
+  addToWatchlist,
+  removeFromWatchlist,
+} from '../../redux/modules/profile/watchlist/watchlist.slice';
 
 function Movie() {
   const selectLoadingFlagReduced = useMemo(
@@ -25,6 +35,12 @@ function Movie() {
   );
   const movie = useSelector(selectEntity);
   const rating = useSelector((state) => selectRating(state, 'movie', slug));
+  const isRecommended = useSelector((state) =>
+    selectIsRecommended(state, 'movie', slug),
+  );
+  const isWatchlisted = useSelector((state) =>
+    selectIsWatchlisted(state, 'movie', slug),
+  );
 
   useEffect(() => {
     dispatch(fetchMovie(slug));
@@ -37,12 +53,34 @@ function Movie() {
   }
 
   function handleRating(value) {
-    dispatch(postMovieRating({ rating: value, slug }));
+    dispatch(postRating({ entity: 'movies', rating: value, slug }));
+  }
+
+  function handleRecommend() {
+    if (isRecommended) {
+      dispatch(removeRecommendation({ entity: 'movies', slug }));
+      return;
+    }
+    dispatch(postRecommendation({ entity: 'movies', slug }));
+  }
+
+  function handleWatchlist() {
+    if (isWatchlisted) {
+      dispatch(removeFromWatchlist({ entity: 'movies', slug }));
+      return;
+    }
+    dispatch(addToWatchlist({ entity: 'movies', slug }));
   }
 
   return (
     <>
       {fetching && <div>Loading...</div>}
+      <button onClick={handleWatchlist} type='button'>
+        {isWatchlisted ? 'Remove from watchlist' : 'Add to watchlit'}
+      </button>
+      <button onClick={handleRecommend} type='button'>
+        {isRecommended ? 'Remove recommendation' : 'Recommend'}
+      </button>
       <button onClick={handleFetchAllComments} type='button'>
         Fetch all comments
       </button>

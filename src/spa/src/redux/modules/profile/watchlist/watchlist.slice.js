@@ -13,6 +13,32 @@ const fetchWatchlist = createAsyncThunk(
   },
 );
 
+const addToWatchlist = createAsyncThunk(
+  'profile/watchlist/add',
+  async function ({ entity, slug }, { rejectWithValue }) {
+    try {
+      await axios.post('/trakt/sync/watchlist', {
+        [entity]: [{ ids: { slug } }],
+      });
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  },
+);
+
+const removeFromWatchlist = createAsyncThunk(
+  'profile/watchlist/remove',
+  async function ({ entity, slug }, { rejectWithValue }) {
+    try {
+      await axios.post('/trakt/sync/watchlist/remove', {
+        [entity]: [{ ids: { slug } }],
+      });
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  },
+);
+
 const { reducer } = createSlice({
   extraReducers: {
     [fetchWatchlist.fulfilled](state, action) {
@@ -24,5 +50,5 @@ const { reducer } = createSlice({
   reducers: {},
 });
 
-export { fetchWatchlist };
+export { addToWatchlist, fetchWatchlist, removeFromWatchlist };
 export default reducer;

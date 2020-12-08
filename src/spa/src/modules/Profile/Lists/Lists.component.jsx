@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { selectLoadingFlag } from '../../../redux/loading/loading.selectors';
 import { selectEntities } from '../../../redux/modules/profile/lists/lists.selectors';
-import { fetchLists } from '../../../redux/modules/profile/lists/lists.slice';
+import {
+  addList,
+  fetchLists,
+  removeList,
+} from '../../../redux/modules/profile/lists/lists.slice';
 
 function Lists() {
   const dispatch = useDispatch();
@@ -16,9 +20,29 @@ function Lists() {
     dispatch(fetchLists());
   }, [dispatch]);
 
+  function handleAdd() {
+    dispatch(
+      addList({
+        allowComments: false,
+        description: 'This is my list',
+        name: 'My list',
+      }),
+    );
+  }
+
+  function handleRemove() {
+    dispatch(removeList('my-list'));
+  }
+
   return (
     <>
       {fetching && <div>Loading...</div>}
+      <button onClick={handleAdd} type='button'>
+        Add list
+      </button>
+      <button onClick={handleRemove} type='button'>
+        Remove list
+      </button>
       <pre>{JSON.stringify(lists, null, 2)}</pre>
     </>
   );
