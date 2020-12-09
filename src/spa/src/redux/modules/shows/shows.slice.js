@@ -11,6 +11,9 @@ const fetchShows = createAsyncThunk('shows/fetch', async function (
     const response = await axios.get(
       `/trakt/shows/${category}?page=${page}&limit=${DEFAULTS.PAGE_SIZE}`,
     );
+    if (category === 'popular') {
+      response.data = response.data.map((item) => ({ movie: item }));
+    }
     return {
       entities: response.data,
       total: parseInt(response.headers['x-pagination-page-count']),

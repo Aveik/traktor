@@ -1,8 +1,4 @@
-import {
-  createMuiTheme,
-  CssBaseline as MuiCssBaseline,
-  ThemeProvider as MuiThemeProvider,
-} from '@material-ui/core';
+import { CssBaseline as MuiCssBaseline } from '@material-ui/core';
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import {
@@ -70,10 +66,10 @@ function App() {
         <Route element={<Person />} path='people/:slug' />
         <Route path='search'>
           <Route element={<Navigate replace to='all' />} path='/' />
-          <Route element={<Search type='all' />} path='all' />
-          <Route element={<Search type='movies' />} path='movies' />
-          <Route element={<Search type='shows' />} path='shows' />
-          <Route element={<Search type='people' />} path='people' />
+          <Route element={<Search entity='all' />} path='all' />
+          <Route element={<Search entity='movies' />} path='movies' />
+          <Route element={<Search entity='shows' />} path='shows' />
+          <Route element={<Search entity='people' />} path='people' />
         </Route>
         <Route path='profile'>
           <Route element={<Navigate replace to='ratings' />} path='/' />
@@ -92,21 +88,13 @@ function App() {
   );
 }
 
-const darkTheme = createMuiTheme({
-  palette: {
-    type: 'dark',
-  },
-});
-
 function Providers() {
   return (
     <ReduxProvider store={store}>
-      <MuiThemeProvider theme={darkTheme}>
-        <Router>
-          <MuiCssBaseline />
-          <App />
-        </Router>
-      </MuiThemeProvider>
+      <Router>
+        <MuiCssBaseline />
+        <App />
+      </Router>
     </ReduxProvider>
   );
 }

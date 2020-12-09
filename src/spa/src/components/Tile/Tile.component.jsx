@@ -12,7 +12,7 @@ function Tile({ releaseYear, title, tmdbId, watchers }) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Poster entity='movie' size='w500' tmdbId={tmdbId} type='poster'>
+      <Poster entity='movies' size='w500' tmdbId={tmdbId} type='poster'>
         {(url) => <img alt='poster' className={classes.image} src={url} />}
       </Poster>
       <div className={classes.footer}>

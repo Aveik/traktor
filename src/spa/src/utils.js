@@ -16,4 +16,18 @@ function getUserSlug() {
     : parseCookie().userSlug;
 }
 
-export { DEFAULTS, getUserSlug };
+function transformEntityToSingular(entity) {
+  switch (entity) {
+    case 'movies':
+      return 'movie';
+    case 'shows':
+      return 'show';
+    case 'people':
+      return 'person';
+    // in case of search
+    default:
+      return 'movie,show,person';
+  }
+}
+
+export { DEFAULTS, getUserSlug, transformEntityToSingular };

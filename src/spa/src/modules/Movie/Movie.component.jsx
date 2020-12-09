@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
+import ListItemManager from '../../components/ListItemManager/ListItemManager.component';
 import Poster from '../../components/Poster/Poster.component';
 import Rating from '../../components/Rating/Rating.component';
 import { selectLoadingFlagsReducedFactory } from '../../redux/loading/loading.selectors';
@@ -75,6 +76,15 @@ function Movie() {
   return (
     <>
       {fetching && <div>Loading...</div>}
+      <ListItemManager entity='movies' slug={slug}>
+        {(onClick, listedOnCount) => (
+          <button onClick={onClick} type='button'>
+            {listedOnCount
+              ? `Listed on ${listedOnCount} list(s)`
+              : 'Add to list'}
+          </button>
+        )}
+      </ListItemManager>
       <button onClick={handleWatchlist} type='button'>
         {isWatchlisted ? 'Remove from watchlist' : 'Add to watchlit'}
       </button>
@@ -86,7 +96,7 @@ function Movie() {
       </button>
       <Rating onChange={handleRating} value={rating} />
       <Poster
-        entity='movie'
+        entity='movies'
         size='w154'
         tmdbId={movie.summary?.ids.tmdb}
         type='poster'

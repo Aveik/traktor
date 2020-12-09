@@ -45,7 +45,7 @@ function Show() {
       </button>
       <Rating onChange={handleRating} value={rating} />
       <Poster
-        entity='show'
+        entity='shows'
         size='w154'
         tmdbId={show.summary?.ids.tmdb}
         type='poster'

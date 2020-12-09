@@ -23,7 +23,7 @@ function Person() {
     <>
       {fetching && <div>Loading...</div>}
       <Poster
-        entity='person'
+        entity='people'
         size='w185'
         tmdbId={person.summary?.ids.tmdb}
         type='profile'

@@ -12,7 +12,7 @@ import {
 } from '../../redux/modules/search/search.selectors';
 import { fetchSearchResults } from '../../redux/modules/search/search.slice';
 
-function Search({ type }) {
+function Search({ entity }) {
   const dispatch = useDispatch();
   const {
     hasNextPage,
@@ -33,8 +33,8 @@ function Search({ type }) {
   const searchResults = useSelector(selectEntities);
 
   useEffect(() => {
-    dispatch(fetchSearchResults({ page, query, type }));
-  }, [dispatch, page, query, type]);
+    dispatch(fetchSearchResults({ entity, page, query }));
+  }, [dispatch, entity, page, query]);
 
   function handleQueryChange({ target: { value } }) {
     setSearchParams({ query: value });
@@ -67,7 +67,7 @@ function Search({ type }) {
 }
 
 Search.propTypes = {
-  type: PropTypes.oneOf(['all', 'movies', 'shows', 'people']),
+  entity: PropTypes.oneOf(['all', 'movies', 'shows', 'people']),
 };
 
 export default Search;

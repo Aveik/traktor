@@ -1,30 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { DEFAULTS } from '../../../utils';
-
-function resolveType(type) {
-  switch (type) {
-    case 'movies':
-      return 'movie';
-    case 'shows':
-      return 'show';
-    case 'people':
-      return 'person';
-    default:
-      return 'movie,show,person';
-  }
-}
+import { DEFAULTS, transformEntityToSingular } from '../../../utils';
 
 const fetchSearchResults = createAsyncThunk('search/fetch', async function (
-  { page, query, type },
+  { entity, page, query },
   { rejectWithValue },
 ) {
   try {
+    entity = transformEntityToSingular(entity);
     const response = await axios.get(
-      `/trakt/search/${resolveType(type)}?query=${query}&page=${page}&limit=${
-        DEFAULTS.PAGE_SIZE
-      }`,
+      `/trakt/search/${entity}?query=${query}&page=${page}&limit=${DEFAULTS.PAGE_SIZE}`,
     );
     return {
       entities: response.data,

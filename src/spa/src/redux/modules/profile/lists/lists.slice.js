@@ -9,7 +9,15 @@ const fetchLists = createAsyncThunk('profile/lists/fetch', async function (
 ) {
   try {
     const response = await axios.get(`/trakt/users/${getUserSlug()}/lists`);
-    return response.data;
+    const listItems = await Promise.all(
+      response.data.map((list) =>
+        axios.get(`/trakt/users/${getUserSlug()}/lists/${list.ids.slug}/items`),
+      ),
+    );
+    return response.data.map((list, index) => ({
+      ...list,
+      items: listItems[index].data,
+    }));
   } catch (error) {
     return rejectWithValue(error.toString());
   }
@@ -52,7 +60,7 @@ const { reducer } = createSlice({
     [removeList.fulfilled](state, action) {
       const { arg: slug } = action.meta;
       const index = state.findIndex((list) => list.ids.slug === slug);
-      delete state[index];
+      state.splice(index, 1);
     },
   },
   initialState: [],
