@@ -1,16 +1,14 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
+import Comments from '../../components/Comments/Comments.component';
 import ListItemManager from '../../components/ListItemManager/ListItemManager.component';
 import Poster from '../../components/Poster/Poster.component';
 import Rating from '../../components/Rating/Rating.component';
-import { selectLoadingFlagsReducedFactory } from '../../redux/loading/loading.selectors';
+import { selectLoadingFlag } from '../../redux/loading/loading.selectors';
 import { selectEntity } from '../../redux/modules/movie/movie.selectors';
-import {
-  fetchComments,
-  fetchMovie,
-} from '../../redux/modules/movie/movie.slice';
+import { fetchMovie } from '../../redux/modules/movie/movie.slice';
 import { selectRating } from '../../redux/modules/profile/ratings/ratings.selectors';
 import { postRating } from '../../redux/modules/profile/ratings/ratings.slice';
 import { selectIsRecommended } from '../../redux/modules/profile/recommendations/recommendations.selectors';
@@ -25,14 +23,10 @@ import {
 } from '../../redux/modules/profile/watchlist/watchlist.slice';
 
 function Movie() {
-  const selectLoadingFlagReduced = useMemo(
-    selectLoadingFlagsReducedFactory,
-    [],
-  );
   const dispatch = useDispatch();
   const { slug } = useParams();
   const fetching = useSelector((state) =>
-    selectLoadingFlagReduced(state, ['movie/fetch', 'movie/comments/fetch']),
+    selectLoadingFlag(state, 'movie/fetch'),
   );
   const movie = useSelector(selectEntity);
   const rating = useSelector((state) => selectRating(state, 'movie', slug));
@@ -46,12 +40,6 @@ function Movie() {
   useEffect(() => {
     dispatch(fetchMovie(slug));
   }, [dispatch, slug]);
-
-  function handleFetchAllComments() {
-    dispatch(
-      fetchComments({ limit: movie.stats.comments, slug, sort: 'newest' }),
-    );
-  }
 
   function handleRating(value) {
     dispatch(postRating({ entity: 'movies', rating: value, slug }));
@@ -91,9 +79,6 @@ function Movie() {
       <button onClick={handleRecommend} type='button'>
         {isRecommended ? 'Remove recommendation' : 'Recommend'}
       </button>
-      <button onClick={handleFetchAllComments} type='button'>
-        Fetch all comments
-      </button>
       <Rating onChange={handleRating} value={rating} />
       <Poster
         entity='movies'
@@ -103,7 +88,12 @@ function Movie() {
       >
         {(url) => <img alt='poster' src={url} />}
       </Poster>
-      <pre>{JSON.stringify(movie, null, 2)}</pre>
+      <Comments
+        entity='movies'
+        items={movie.comments}
+        slug={slug}
+        totalCount={movie.stats?.comments || 0}
+      />
     </>
   );
 }

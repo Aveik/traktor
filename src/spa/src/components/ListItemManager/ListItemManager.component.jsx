@@ -58,7 +58,6 @@ function ListItemManager({ children, entity, slug }) {
     };
   }
 
-  //@TODO: implement proper loading component
   return (
     <>
       {children(handleOpen, listedOnCount)}

@@ -1,7 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { DEFAULTS, getUserSlug } from '../../../../utils';
+import {
+  DEFAULTS,
+  getUserSlug,
+  transformEntityToSingular,
+} from '../../../../utils';
 
 const fetchComments = createAsyncThunk(
   'profile/comments/fetch',
@@ -26,10 +30,11 @@ const postComment = createAsyncThunk('profile/comments/post', async function (
   { comment, entity, slug, spoiler = false },
   { rejectWithValue },
 ) {
+  entity = transformEntityToSingular(entity);
   try {
     const response = await axios.post('/trakt/comments', {
       comment,
-      [entity]: [{ ids: { slug } }],
+      [entity]: { ids: { slug } },
       spoiler,
     });
     return response.data;
@@ -69,14 +74,14 @@ const { reducer } = createSlice({
     [removeComment.fulfilled](state, action) {
       const { arg: id } = action.meta;
       const index = state.entities.findIndex((comment) => comment.id === id);
-      delete state.entities[index];
+      state.entities.splice(index, 1);
     },
     [fetchComments.fulfilled](state, action) {
       state.entities = action.payload.entities;
       state.pagination.total = action.payload.total;
     },
     [postComment.fulfilled](state, action) {
-      state.entities.push(action.payload);
+      state.entities.unshift(action.payload);
     },
     [updateComment.fulfilled](state, action) {
       const index = state.entities.findIndex(
