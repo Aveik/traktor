@@ -1,8 +1,12 @@
 import {
-  Card as MuiCard,
-  CardContent as MuiCardContent,
+  Checkbox as MuiCheckbox,
+  LinearProgress as MuiLinearProgress,
+  List as MuiList,
+  ListItem as MuiListItem,
+  ListItemIcon as MuiListItemAction,
+  ListItemText as MuiListItemText,
+  ListSubheader as MuiListSubheader,
   Popover as MuiPopover,
-  Typography as MuiTypography,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { useMemo, useState } from 'react';
@@ -14,21 +18,24 @@ import {
   removeFromListAndRefetch,
 } from '../../redux/modules/profile/list/list.slice';
 import { selectListsForManagerFactory } from '../../redux/modules/profile/lists/lists.selectors';
+import useStyles from './ListItemManager.styles';
 
 function ListItemManager({ children, entity, slug }) {
+  const classes = useStyles();
+  const dispatch = useDispatch();
   const listsSelector = useMemo(selectListsForManagerFactory, []);
   const loadingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
-  const dispatch = useDispatch();
-  const [anchorEl, setAnchorEl] = useState(null);
   const loading = useSelector((state) =>
     loadingSelector(state, ['profile/list/add', 'profile/list/remove']),
   );
   const lists = useSelector((state) => listsSelector(state, entity, slug));
+  const [anchorEl, setAnchorEl] = useState(null);
   const listedOnCount = useMemo(
     () => lists.filter(({ listed }) => listed).length,
     [lists],
   );
   const open = Boolean(anchorEl);
+  const [mirror, setMirror] = useState({});
 
   function handleOpen(e) {
     setAnchorEl(e.currentTarget);
@@ -41,15 +48,17 @@ function ListItemManager({ children, entity, slug }) {
   function handleClick(entity, listed, listSlug) {
     return function () {
       let fn = addToListAndRefetch;
+      let value = true;
       if (listed) {
         fn = removeFromListAndRefetch;
+        value = false;
       }
       dispatch(fn({ entity, listSlug, slug }));
+      setMirror({ ...mirror, [listSlug]: value });
     };
   }
 
   //@TODO: implement proper loading component
-  //@TODO: implement design
   return (
     <>
       {children(handleOpen, listedOnCount)}
@@ -66,17 +75,38 @@ function ListItemManager({ children, entity, slug }) {
           vertical: 'top',
         }}
       >
-        <MuiCard>
-          <MuiCardContent>
-            {loading
-              ? 'Loading...'
-              : lists.map(({ listed, name, slug }) => (
-                  <div key={slug} onClick={handleClick(entity, listed, slug)}>
-                    {name}
-                  </div>
-                ))}
-          </MuiCardContent>
-        </MuiCard>
+        {loading && <MuiLinearProgress />}
+        <MuiList
+          dense
+          subheader={
+            <MuiListSubheader>
+              Listed on {listedOnCount} of {lists.length} lists
+            </MuiListSubheader>
+          }
+        >
+          {lists.map(({ listed, name, slug }) => (
+            <MuiListItem
+              button
+              disabled={loading}
+              key={slug}
+              onClick={handleClick(entity, listed, slug)}
+            >
+              <MuiListItemAction
+                classes={{
+                  root: classes.listItemActionRoot,
+                }}
+              >
+                <MuiCheckbox
+                  checked={slug in mirror ? mirror[slug] : listed}
+                  disableRipple
+                  edge='start'
+                  size='small'
+                />
+              </MuiListItemAction>
+              <MuiListItemText>{name}</MuiListItemText>
+            </MuiListItem>
+          ))}
+        </MuiList>
       </MuiPopover>
     </>
   );
