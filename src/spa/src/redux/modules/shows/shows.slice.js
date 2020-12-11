@@ -12,7 +12,7 @@ const fetchShows = createAsyncThunk('shows/fetch', async function (
       `/trakt/shows/${category}?page=${page}&limit=${DEFAULTS.PAGE_SIZE}`,
     );
     if (category === 'popular') {
-      response.data = response.data.map((item) => ({ movie: item }));
+      response.data = response.data.map((item) => ({ show: item }));
     }
     return {
       entities: response.data,

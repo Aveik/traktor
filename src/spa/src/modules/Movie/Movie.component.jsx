@@ -13,13 +13,13 @@ import { selectRating } from '../../redux/modules/profile/ratings/ratings.select
 import { postRating } from '../../redux/modules/profile/ratings/ratings.slice';
 import { selectIsRecommended } from '../../redux/modules/profile/recommendations/recommendations.selectors';
 import {
-  postRecommendation,
-  removeRecommendation,
+  postRecommendationAndRefetch,
+  removeRecommendationAndRefetch,
 } from '../../redux/modules/profile/recommendations/recommendations.slice';
 import { selectIsWatchlisted } from '../../redux/modules/profile/watchlist/watchlist.selectors';
 import {
-  addToWatchlist,
-  removeFromWatchlist,
+  addToWatchlistAndRefetch,
+  removeFromWatchlistAndRefetch,
 } from '../../redux/modules/profile/watchlist/watchlist.slice';
 
 function Movie() {
@@ -47,18 +47,18 @@ function Movie() {
 
   function handleRecommend() {
     if (isRecommended) {
-      dispatch(removeRecommendation({ entity: 'movies', slug }));
+      dispatch(removeRecommendationAndRefetch({ entity: 'movies', slug }));
       return;
     }
-    dispatch(postRecommendation({ entity: 'movies', slug }));
+    dispatch(postRecommendationAndRefetch({ entity: 'movies', slug }));
   }
 
   function handleWatchlist() {
     if (isWatchlisted) {
-      dispatch(removeFromWatchlist({ entity: 'movies', slug }));
+      dispatch(removeFromWatchlistAndRefetch({ entity: 'movies', slug }));
       return;
     }
-    dispatch(addToWatchlist({ entity: 'movies', slug }));
+    dispatch(addToWatchlistAndRefetch({ entity: 'movies', slug }));
   }
 
   return (

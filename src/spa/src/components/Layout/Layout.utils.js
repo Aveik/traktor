@@ -29,10 +29,6 @@ const NAV_PATHS = [
         title: 'Watched',
       },
       {
-        path: 'movies/collected',
-        title: 'Collected',
-      },
-      {
         path: 'movies/anticipated',
         title: 'Anticipated',
       },
@@ -56,10 +52,6 @@ const NAV_PATHS = [
       {
         path: 'shows/watched',
         title: 'Watched',
-      },
-      {
-        path: 'shows/collected',
-        title: 'Collected',
       },
       {
         path: 'shows/anticipated',

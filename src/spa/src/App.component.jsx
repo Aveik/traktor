@@ -40,7 +40,6 @@ function App() {
             path='recommended'
           />
           <Route element={<Movies category='watched' />} path='watched' />
-          <Route element={<Movies category='collected' />} path='collected' />
           <Route
             element={<Movies category='anticipated' />}
             path='anticipated'
@@ -56,7 +55,6 @@ function App() {
             path='recommended'
           />
           <Route element={<Shows category='watched' />} path='watched' />
-          <Route element={<Shows category='collected' />} path='collected' />
           <Route
             element={<Shows category='anticipated' />}
             path='anticipated'

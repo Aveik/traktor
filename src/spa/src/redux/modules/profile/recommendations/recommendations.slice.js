@@ -39,6 +39,20 @@ const removeRecommendation = createAsyncThunk(
   },
 );
 
+function postRecommendationAndRefetch(args) {
+  return async function (dispatch) {
+    await dispatch(postRecommendation(args));
+    await dispatch(fetchRecommendations());
+  };
+}
+
+function removeRecommendationAndRefetch(args) {
+  return async function (dispatch) {
+    await dispatch(removeRecommendation(args));
+    await dispatch(fetchRecommendations());
+  };
+}
+
 const { reducer } = createSlice({
   extraReducers: {
     [fetchRecommendations.fulfilled](state, action) {
@@ -50,5 +64,9 @@ const { reducer } = createSlice({
   reducers: {},
 });
 
-export { fetchRecommendations, postRecommendation, removeRecommendation };
+export {
+  fetchRecommendations,
+  postRecommendationAndRefetch,
+  removeRecommendationAndRefetch,
+};
 export default reducer;

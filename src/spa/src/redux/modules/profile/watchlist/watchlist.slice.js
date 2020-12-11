@@ -39,6 +39,20 @@ const removeFromWatchlist = createAsyncThunk(
   },
 );
 
+function addToWatchlistAndRefetch(args) {
+  return async function (dispatch) {
+    await dispatch(addToWatchlist(args));
+    await dispatch(fetchWatchlist());
+  };
+}
+
+function removeFromWatchlistAndRefetch(args) {
+  return async function (dispatch) {
+    await dispatch(removeFromWatchlist(args));
+    await dispatch(fetchWatchlist());
+  };
+}
+
 const { reducer } = createSlice({
   extraReducers: {
     [fetchWatchlist.fulfilled](state, action) {
@@ -50,5 +64,9 @@ const { reducer } = createSlice({
   reducers: {},
 });
 
-export { addToWatchlist, fetchWatchlist, removeFromWatchlist };
+export {
+  addToWatchlistAndRefetch,
+  fetchWatchlist,
+  removeFromWatchlistAndRefetch,
+};
 export default reducer;
