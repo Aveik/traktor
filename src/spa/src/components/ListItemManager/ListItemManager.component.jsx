@@ -16,8 +16,8 @@ import { selectLoadingFlagsReducedFactory } from '../../redux/loading/loading.se
 import {
   addToListAndRefetch,
   removeFromListAndRefetch,
-} from '../../redux/modules/profile/list/list.slice';
-import { selectListsForManagerFactory } from '../../redux/modules/profile/lists/lists.selectors';
+} from '../../redux/modules/users/list/list.slice';
+import { selectListsForManagerFactory } from '../../redux/modules/users/lists/lists.selectors';
 import useStyles from './ListItemManager.styles';
 
 function ListItemManager({ children, entity, slug }) {
@@ -26,7 +26,7 @@ function ListItemManager({ children, entity, slug }) {
   const listsSelector = useMemo(selectListsForManagerFactory, []);
   const loadingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
   const loading = useSelector((state) =>
-    loadingSelector(state, ['profile/list/add', 'profile/list/remove']),
+    loadingSelector(state, ['users/list/add', 'users/list/remove']),
   );
   const lists = useSelector((state) => listsSelector(state, entity, slug));
   const [anchorEl, setAnchorEl] = useState(null);

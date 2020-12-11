@@ -2,25 +2,24 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import Comments from '../../components/Comments/Comments.component';
 import ListItemManager from '../../components/ListItemManager/ListItemManager.component';
 import Poster from '../../components/Poster/Poster.component';
 import Rating from '../../components/Rating/Rating.component';
 import { selectLoadingFlag } from '../../redux/loading/loading.selectors';
 import { selectEntity } from '../../redux/modules/movie/movie.selectors';
 import { fetchMovie } from '../../redux/modules/movie/movie.slice';
-import { selectRating } from '../../redux/modules/profile/ratings/ratings.selectors';
-import { postRating } from '../../redux/modules/profile/ratings/ratings.slice';
-import { selectIsRecommended } from '../../redux/modules/profile/recommendations/recommendations.selectors';
+import { selectRating } from '../../redux/modules/users/ratings/ratings.selectors';
+import { postRating } from '../../redux/modules/users/ratings/ratings.slice';
+import { selectIsRecommended } from '../../redux/modules/users/recommendations/recommendations.selectors';
 import {
   postRecommendationAndRefetch,
   removeRecommendationAndRefetch,
-} from '../../redux/modules/profile/recommendations/recommendations.slice';
-import { selectIsWatchlisted } from '../../redux/modules/profile/watchlist/watchlist.selectors';
+} from '../../redux/modules/users/recommendations/recommendations.slice';
+import { selectIsWatchlisted } from '../../redux/modules/users/watchlist/watchlist.selectors';
 import {
   addToWatchlistAndRefetch,
   removeFromWatchlistAndRefetch,
-} from '../../redux/modules/profile/watchlist/watchlist.slice';
+} from '../../redux/modules/users/watchlist/watchlist.slice';
 
 function Movie() {
   const dispatch = useDispatch();
@@ -88,12 +87,6 @@ function Movie() {
       >
         {(url) => <img alt='poster' src={url} />}
       </Poster>
-      <Comments
-        entity='movies'
-        items={movie.comments}
-        slug={slug}
-        totalCount={movie.stats?.comments || 0}
-      />
     </>
   );
 }

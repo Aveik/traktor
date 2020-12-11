@@ -5,10 +5,10 @@ import { useParams } from 'react-router-dom';
 import Poster from '../../components/Poster/Poster.component';
 import Rating from '../../components/Rating/Rating.component';
 import { selectLoadingFlagsReducedFactory } from '../../redux/loading/loading.selectors';
-import { selectRating } from '../../redux/modules/profile/ratings/ratings.selectors';
-import { postRating } from '../../redux/modules/profile/ratings/ratings.slice';
 import { selectEntity } from '../../redux/modules/show/show.selectors';
 import { fetchComments, fetchShow } from '../../redux/modules/show/show.slice';
+import { selectRating } from '../../redux/modules/users/ratings/ratings.selectors';
+import { postRating } from '../../redux/modules/users/ratings/ratings.slice';
 
 function Show() {
   const selectLoadingFlagReduced = useMemo(

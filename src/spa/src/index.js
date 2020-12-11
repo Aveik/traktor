@@ -4,10 +4,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './App.component';
-import { fetchLists } from './redux/modules/profile/lists/lists.slice';
-import { fetchRatings } from './redux/modules/profile/ratings/ratings.slice';
-import { fetchRecommendations } from './redux/modules/profile/recommendations/recommendations.slice';
-import { fetchWatchlist } from './redux/modules/profile/watchlist/watchlist.slice';
+import { fetchLists } from './redux/modules/users/lists/lists.slice';
+import { fetchRatings } from './redux/modules/users/ratings/ratings.slice';
+import { fetchRecommendations } from './redux/modules/users/recommendations/recommendations.slice';
+import { fetchWatchlist } from './redux/modules/users/watchlist/watchlist.slice';
 import store from './redux/store';
 
 const { dispatch } = store;

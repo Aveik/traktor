@@ -5,6 +5,7 @@ import {
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+import { getUserSlug } from '../../utils';
 import CollapsingListItem from './CollapsingListItem/CollapsingListItem.component';
 
 // In case of any routing change, make sure to reflect the exact change
@@ -63,23 +64,23 @@ const NAV_PATHS = [
   {
     nested: [
       {
-        path: 'profile/ratings',
+        path: `users/${getUserSlug()}/ratings`,
         title: 'Ratings',
       },
       {
-        path: 'profile/recommendations',
+        path: `users/${getUserSlug()}/recommendations`,
         title: 'Recommendations',
       },
       {
-        path: 'profile/watchlist',
+        path: `users/${getUserSlug()}/watchlist`,
         title: 'Watchlist',
       },
       {
-        path: 'profile/lists',
+        path: `users/${getUserSlug()}/lists`,
         title: 'Lists',
       },
       {
-        path: 'profile/comments',
+        path: `users/${getUserSlug()}/comments`,
         title: 'Comments',
       },
     ],

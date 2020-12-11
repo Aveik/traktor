@@ -13,15 +13,15 @@ import NotFound from './components/NotFound/NotFound.component';
 import Movie from './modules/Movie/Movie.component';
 import Movies from './modules/Movies/Movies.component';
 import Person from './modules/Person/Person.component';
-import Comments from './modules/Profile/Comments/Comments.component';
-import List from './modules/Profile/List/List.component';
-import Lists from './modules/Profile/Lists/Lists.component';
-import Ratings from './modules/Profile/Ratings/Ratings.component';
-import Recommendations from './modules/Profile/Recommendations/Recommendations.component';
-import Watchlist from './modules/Profile/Watchlist/Watchlist.component';
 import Search from './modules/Search/Search.component';
 import Show from './modules/Show/Show.component';
 import Shows from './modules/Shows/Shows.component';
+import Comments from './modules/Users/Comments/Comments.component';
+import List from './modules/Users/List/List.component';
+import Lists from './modules/Users/Lists/Lists.component';
+import Ratings from './modules/Users/Ratings/Ratings.component';
+import Recommendations from './modules/Users/Recommendations/Recommendations.component';
+import Watchlist from './modules/Users/Watchlist/Watchlist.component';
 import store from './redux/store';
 
 // In case of any routing change, make sure to reflect the exact change
@@ -69,7 +69,7 @@ function App() {
           <Route element={<Search entity='shows' />} path='shows' />
           <Route element={<Search entity='people' />} path='people' />
         </Route>
-        <Route path='profile'>
+        <Route path='users/:userSlug'>
           <Route element={<Navigate replace to='ratings' />} path='/' />
           <Route element={<Ratings />} path='ratings' />
           <Route element={<Recommendations />} path='recommendations' />
