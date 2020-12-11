@@ -1,20 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const fetchComments = createAsyncThunk('movie/comments/fetch', async function (
-  { limit, slug, sort },
-  { rejectWithValue },
-) {
-  try {
-    const response = await axios.get(
-      `/trakt/movies/${slug}/comments/${sort}?page=1&limit=${limit}`,
-    );
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.toString());
-  }
-});
-
 const fetchMovie = createAsyncThunk('movie/fetch', async function (
   slug,
   { rejectWithValue },
@@ -50,9 +36,6 @@ const fetchMovie = createAsyncThunk('movie/fetch', async function (
 
 const { reducer } = createSlice({
   extraReducers: {
-    [fetchComments.fulfilled](state, action) {
-      state.comments = action.payload;
-    },
     [fetchMovie.fulfilled](state, action) {
       return action.payload;
     },
@@ -69,5 +52,5 @@ const { reducer } = createSlice({
   reducers: {},
 });
 
-export { fetchComments, fetchMovie };
+export { fetchMovie };
 export default reducer;

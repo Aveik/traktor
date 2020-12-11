@@ -1,13 +1,19 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { useParams } from 'react-router';
 
-function Comments({ type }) {
+//@TODO: Add redux module for this component
+function Comments({ entity }) {
   const { slug } = useParams();
   return (
     <div>
-      Type: {type} - showing comments for {slug}
+      Entity: {entity} - showing comments for {slug}
     </div>
   );
 }
+
+Comments.propTypes = {
+  entity: PropTypes.oneOf(['movies', 'shows']),
+};
 
 export default Comments;

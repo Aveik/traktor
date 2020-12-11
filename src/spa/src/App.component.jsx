@@ -10,6 +10,10 @@ import {
 
 import Layout from './components/Layout/Layout.component';
 import NotFound from './components/NotFound/NotFound.component';
+import {
+  default as MovieComments,
+  default as ShowComments,
+} from './modules/Comments/Comments.component';
 import Movie from './modules/Movie/Movie.component';
 import Movies from './modules/Movies/Movies.component';
 import Person from './modules/Person/Person.component';
@@ -45,6 +49,10 @@ function App() {
             path='anticipated'
           />
           <Route element={<Movie />} path=':slug' />
+          <Route
+            element={<MovieComments entity='movies' />}
+            path=':slug/comments'
+          />
         </Route>
         <Route path='shows'>
           <Route element={<Navigate replace to='trending' />} path='/' />
@@ -60,6 +68,10 @@ function App() {
             path='anticipated'
           />
           <Route element={<Show />} path=':slug' />
+          <Route
+            element={<ShowComments entity='shows' />}
+            path=':slug/comments'
+          />
         </Route>
         <Route element={<Person />} path='people/:slug' />
         <Route path='search'>
