@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import ListItemManager from '../../components/ListItemManager/ListItemManager.component';
 import Poster from '../../components/Poster/Poster.component';
@@ -63,6 +63,7 @@ function Movie() {
   return (
     <>
       {fetching && <div>Loading...</div>}
+      <Link to='comments'>To comments</Link>
       <ListItemManager entity='movies' slug={slug}>
         {(onClick, listedOnCount) => (
           <button onClick={onClick} type='button'>

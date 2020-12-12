@@ -6,17 +6,17 @@ const fetchMovie = createAsyncThunk('movie/fetch', async function (
   { rejectWithValue },
 ) {
   try {
-    const statsResponse = await axios.get(`/trakt/movies/${slug}/stats`);
-    const { comments: limit } = statsResponse.data;
     const [
+      statsResponse,
       summaryResponse,
       commentsResponse,
       peopleResponse,
       ratingsResponse,
       relatedResponse,
     ] = await Promise.all([
+      axios.get(`/trakt/movies/${slug}/stats`),
       axios.get(`/trakt/movies/${slug}`),
-      axios.get(`/trakt/movies/${slug}/comments/highest?limit=${limit}`),
+      axios.get(`/trakt/movies/${slug}/comments/highest`),
       axios.get(`/trakt/movies/${slug}/people`),
       axios.get(`/trakt/movies/${slug}/ratings`),
       axios.get(`/trakt/movies/${slug}/related`),

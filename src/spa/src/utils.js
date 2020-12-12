@@ -1,4 +1,5 @@
 const DEFAULTS = {
+  COMMENT_PAGE_SIZE: 20,
   PAGE_SIZE: 40,
 };
 
