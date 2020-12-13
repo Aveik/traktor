@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 
+import { renderComment } from '../../components/Comments/Comments.utils';
 import ListItemManager from '../../components/ListItemManager/ListItemManager.component';
 import Poster from '../../components/Poster/Poster.component';
 import Rating from '../../components/Rating/Rating.component';
@@ -28,12 +29,12 @@ function Movie() {
     selectLoadingFlag(state, 'movie/fetch'),
   );
   const movie = useSelector(selectEntity);
-  const rating = useSelector((state) => selectRating(state, 'movie', slug));
+  const rating = useSelector((state) => selectRating(state, 'movies', slug));
   const isRecommended = useSelector((state) =>
-    selectIsRecommended(state, 'movie', slug),
+    selectIsRecommended(state, 'movies', slug),
   );
   const isWatchlisted = useSelector((state) =>
-    selectIsWatchlisted(state, 'movie', slug),
+    selectIsWatchlisted(state, 'movies', slug),
   );
 
   useEffect(() => {
@@ -63,7 +64,6 @@ function Movie() {
   return (
     <>
       {fetching && <div>Loading...</div>}
-      <Link to='comments'>To comments</Link>
       <ListItemManager entity='movies' slug={slug}>
         {(onClick, listedOnCount) => (
           <button onClick={onClick} type='button'>
@@ -88,6 +88,11 @@ function Movie() {
       >
         {(url) => <img alt='poster' src={url} />}
       </Poster>
+      <br />
+      <Link to='comments'>
+        Showing highest rated comments - Show more comments
+      </Link>
+      {movie.comments.map(renderComment)}
     </>
   );
 }

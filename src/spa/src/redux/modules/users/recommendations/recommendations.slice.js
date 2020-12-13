@@ -43,16 +43,16 @@ const removeRecommendation = createAsyncThunk(
   },
 );
 
-function postRecommendationAndRefetch(args) {
+function postRecommendationAndRefetch(params) {
   return async function (dispatch) {
-    await dispatch(postRecommendation(args));
+    await dispatch(postRecommendation(params));
     await dispatch(fetchRecommendations());
   };
 }
 
-function removeRecommendationAndRefetch(args) {
+function removeRecommendationAndRefetch(params) {
   return async function (dispatch) {
-    await dispatch(removeRecommendation(args));
+    await dispatch(removeRecommendation(params));
     await dispatch(fetchRecommendations());
   };
 }

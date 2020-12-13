@@ -41,16 +41,16 @@ const removeFromWatchlist = createAsyncThunk(
   },
 );
 
-function addToWatchlistAndRefetch(args) {
+function addToWatchlistAndRefetch(params) {
   return async function (dispatch) {
-    await dispatch(addToWatchlist(args));
+    await dispatch(addToWatchlist(params));
     await dispatch(fetchWatchlist());
   };
 }
 
-function removeFromWatchlistAndRefetch(args) {
+function removeFromWatchlistAndRefetch(params) {
   return async function (dispatch) {
-    await dispatch(removeFromWatchlist(args));
+    await dispatch(removeFromWatchlist(params));
     await dispatch(fetchWatchlist());
   };
 }

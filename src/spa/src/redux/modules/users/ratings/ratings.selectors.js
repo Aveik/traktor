@@ -1,5 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 
+import { transformEntityToSingular } from '../../../../utils';
+
 const selectEntities = createSelector(
   function (state) {
     return state.users.ratings;
@@ -14,16 +16,16 @@ const selectRating = createSelector(
     function (state) {
       return state.users.ratings;
     },
-    function (_, type) {
-      return type;
+    function (_, entity) {
+      return transformEntityToSingular(entity);
     },
     function (_, __, slug) {
       return slug;
     },
   ],
-  function (ratings, type, slug) {
+  function (ratings, entity, slug) {
     const result = ratings.find(
-      (rating) => rating.type === type && rating[type].ids.slug === slug,
+      (rating) => rating.type === entity && rating[entity].ids.slug === slug,
     );
     return result ? result.rating : 0;
   },

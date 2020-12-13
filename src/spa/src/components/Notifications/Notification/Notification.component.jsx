@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { removeNotification } from '../../../redux/notifications/notifications.slice';
 
-function Single({ id, message }) {
+function Notification({ id, message }) {
   const dispatch = useDispatch();
 
   function handleClick() {
@@ -13,4 +13,4 @@ function Single({ id, message }) {
   return <div onClick={handleClick}>{message}</div>;
 }
 
-export default Single;
+export default Notification;

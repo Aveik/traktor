@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+import { removeComment, updateComment } from '../users/comments/comments.slice';
+
 const fetchShow = createAsyncThunk('show/fetch', async function (
   slug,
   { rejectWithValue },
@@ -41,6 +43,21 @@ const { reducer } = createSlice({
   extraReducers: {
     [fetchShow.fulfilled](state, action) {
       return action.payload;
+    },
+    [removeComment.fulfilled](state, action) {
+      const { arg: id } = action.meta;
+      const index = state.comments.findIndex((comment) => comment.id === id);
+      if (index !== -1) {
+        state.comments.splice(index, 1);
+      }
+    },
+    [updateComment.fulfilled](state, action) {
+      const index = state.comments.findIndex(
+        (comment) => comment.id === action.payload.id,
+      );
+      if (index !== -1) {
+        state.comments[index] = action.payload;
+      }
     },
   },
   initialState: {

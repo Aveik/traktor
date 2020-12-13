@@ -1,5 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 
+import { transformEntityToSingular } from '../../../../utils';
+
 const selectEntities = createSelector(
   function (state) {
     return state.users.recommendations;
@@ -14,17 +16,18 @@ const selectIsRecommended = createSelector(
     function (state) {
       return state.users.recommendations;
     },
-    function (_, type) {
-      return type;
+    function (_, entity) {
+      return transformEntityToSingular(entity);
     },
     function (_, __, slug) {
       return slug;
     },
   ],
-  function (recommendations, type, slug) {
+  function (recommendations, entity, slug) {
     const result = recommendations.find(
       (recommendation) =>
-        recommendation.type === type && recommendation[type].ids.slug === slug,
+        recommendation.type === entity &&
+        recommendation[entity].ids.slug === slug,
     );
     return Boolean(result);
   },

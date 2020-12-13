@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
+import { renderComment } from '../../../components/Comments/Comments.utils';
 import Pagination from '../../../components/Pagination/Pagination.component';
 import usePagination from '../../../hooks/usePagination';
 import { selectLoadingFlag } from '../../../redux/loading/loading.selectors';
@@ -44,7 +45,7 @@ function Comments() {
         onNextPage={toNextPage}
         onPreviousPage={toPreviousPage}
       />
-      <pre>{JSON.stringify(comments, null, 2)}</pre>
+      {comments.map(({ comment, type }) => renderComment(comment))}
     </>
   );
 }

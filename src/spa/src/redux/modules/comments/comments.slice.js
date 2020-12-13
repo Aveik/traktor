@@ -3,6 +3,12 @@ import axios from 'axios';
 
 import { DEFAULTS } from '../../../utils';
 import { fetchMovie } from '../movie/movie.slice';
+import { fetchShow } from '../show/show.slice';
+import {
+  postComment,
+  removeComment,
+  updateComment,
+} from '../users/comments/comments.slice';
 
 const fetchComments = createAsyncThunk('comments/fetch', async function (
   { entity, page, slug, sort },
@@ -21,12 +27,11 @@ const fetchComments = createAsyncThunk('comments/fetch', async function (
   }
 });
 
-function fetchMovieAndComments(args) {
+function fetchEntityAndComments(params) {
+  const { entity, slug } = params;
+  const fn = entity === 'movies' ? fetchMovie : fetchShow;
   return async function (dispatch) {
-    await Promise.all([
-      dispatch(fetchMovie(args.slug)),
-      dispatch(fetchComments(args)),
-    ]);
+    await Promise.all([dispatch(fn(slug)), dispatch(fetchComments(params))]);
   };
 }
 
@@ -35,6 +40,24 @@ const { reducer } = createSlice({
     [fetchComments.fulfilled](state, action) {
       state.entities = action.payload.entities;
       state.pagination.total = action.payload.total;
+    },
+    [postComment.fulfilled](state, action) {
+      state.entities.unshift(action.payload);
+    },
+    [removeComment.fulfilled](state, action) {
+      const { arg: id } = action.meta;
+      const index = state.entities.findIndex((comment) => comment.id === id);
+      if (index !== -1) {
+        state.entities.splice(index, 1);
+      }
+    },
+    [updateComment.fulfilled](state, action) {
+      const index = state.entities.findIndex(
+        (comment) => comment.id === action.payload.id,
+      );
+      if (index !== -1) {
+        state.entities[index] = action.payload;
+      }
     },
   },
   initialState: {
@@ -47,5 +70,5 @@ const { reducer } = createSlice({
   reducers: {},
 });
 
-export { fetchComments, fetchMovieAndComments };
+export { fetchComments, fetchEntityAndComments };
 export default reducer;

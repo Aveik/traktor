@@ -69,23 +69,26 @@ const updateComment = createAsyncThunk('users/comments/update', async function (
 
 const { reducer } = createSlice({
   extraReducers: {
-    [removeComment.fulfilled](state, action) {
-      const { arg: id } = action.meta;
-      const index = state.entities.findIndex((comment) => comment.id === id);
-      state.entities.splice(index, 1);
-    },
     [fetchComments.fulfilled](state, action) {
       state.entities = action.payload.entities;
       state.pagination.total = action.payload.total;
     },
-    [postComment.fulfilled](state, action) {
-      state.entities.unshift(action.payload);
+    [removeComment.fulfilled](state, action) {
+      const { arg: id } = action.meta;
+      const index = state.entities.findIndex(
+        ({ comment }) => comment.id === id,
+      );
+      if (index !== -1) {
+        state.entities.splice(index, 1);
+      }
     },
     [updateComment.fulfilled](state, action) {
       const index = state.entities.findIndex(
-        (comment) => comment.id === action.payload.id,
+        ({ comment }) => comment.id === action.payload.id,
       );
-      state.entities[index] = action.payload;
+      if (index !== -1) {
+        state.entities[index].comment = action.payload;
+      }
     },
   },
   initialState: {

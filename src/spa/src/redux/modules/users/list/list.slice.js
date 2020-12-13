@@ -51,16 +51,16 @@ const addToList = createAsyncThunk('users/list/add', async function (
   }
 });
 
-function addToListAndRefetch(args) {
+function addToListAndRefetch(params) {
   return async function (dispatch) {
-    await dispatch(addToList(args));
+    await dispatch(addToList(params));
     await dispatch(fetchLists());
   };
 }
 
-function removeFromListAndRefetch(args) {
+function removeFromListAndRefetch(params) {
   return async function (dispatch) {
-    await dispatch(removeFromList(args));
+    await dispatch(removeFromList(params));
     await dispatch(fetchLists());
   };
 }

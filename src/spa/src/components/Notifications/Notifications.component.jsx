@@ -2,12 +2,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { selectNotifications } from '../../redux/notifications/notifications.selectors';
-import Single from './Single/Single.component';
+import Notification from './Notification/Notification.component';
 
 function Notifications() {
   const notifications = useSelector(selectNotifications);
   return Object.entries(notifications).map(([id, message]) => (
-    <Single id={id} key={id} message={message} />
+    <Notification id={id} key={id} message={message} />
   ));
 }
 
