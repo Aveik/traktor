@@ -5,6 +5,7 @@ const { redisClient, tmdb } = require('../clients');
 
 const setCache = promisify(redisClient.setex).bind(redisClient);
 const getCache = promisify(redisClient.get).bind(redisClient);
+const PLACEHOLDER = '/images/placeholder.png';
 
 /**
  * Related TMDB Endpoints
@@ -31,7 +32,7 @@ router.use('/images/:entity/:id/:type', async function (req, res) {
       !['movie', 'person', 'show'].includes(entity) ||
       !['backdrop', 'poster', 'profile'].includes(type)
     ) {
-      return res.redirect('https://via.placeholder.com/150');
+      return res.redirect(PLACEHOLDER);
     }
 
     if (
@@ -40,7 +41,7 @@ router.use('/images/:entity/:id/:type', async function (req, res) {
       (entity === 'show' && season && type !== 'poster') ||
       (entity === 'movie' && type === 'profile')
     ) {
-      return res.redirect('https://via.placeholder.com/150');
+      return res.redirect(PLACEHOLDER);
     }
 
     if (size !== 'original') {
@@ -50,7 +51,7 @@ router.use('/images/:entity/:id/:type', async function (req, res) {
         type === 'poster' && !['w92', 'w154', 'w185', 'w342', 'w500', 'w780'].includes(size) ||
         type === 'profile' && !['w45', 'w185', 'w632'].includes(size)
       ) {
-        return res.redirect('https://via.placeholder.com/150');
+        return res.redirect(PLACEHOLDER);
       }
     }
 
@@ -73,13 +74,13 @@ router.use('/images/:entity/:id/:type', async function (req, res) {
     const { [type + '_path']: path } = response.data;
 
     if (!path) {
-      return res.redirect('https://via.placeholder.com/150');
+      return res.redirect(PLACEHOLDER);
     }
 
     await setCache(cacheKey, 3600, path);
     return res.redirect(`http://image.tmdb.org/t/p/${size}${path}`);
   } catch (err) {
-    return res.redirect('https://via.placeholder.com/512');
+    return res.redirect(PLACEHOLDER);
   }
 });
 

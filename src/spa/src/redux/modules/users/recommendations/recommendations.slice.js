@@ -18,7 +18,7 @@ const fetchRecommendations = createAsyncThunk(
 );
 
 const postRecommendation = createAsyncThunk(
-  'users/recommendation/recommend',
+  'users/recommendations/recommend',
   async function ({ entity, slug }, { rejectWithValue }) {
     try {
       await axios.post('/trakt/sync/recommendations', {
@@ -31,7 +31,7 @@ const postRecommendation = createAsyncThunk(
 );
 
 const removeRecommendation = createAsyncThunk(
-  'users/recommendation/unrecommend',
+  'users/recommendations/unrecommend',
   async function ({ entity, slug }, { rejectWithValue }) {
     try {
       await axios.post('/trakt/sync/recommendations/remove', {

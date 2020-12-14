@@ -1,19 +1,38 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
-  footer: {
-    bottom: 0,
-    padding: 8,
+  body: {
+    bottom: 30,
+    display: 'flex',
+    flexDirection: 'column',
+    height: 'calc(100% - 30px)',
+    justifyContent: 'flex-end',
+    padding: `0 ${theme.spacing(1)}px ${theme.spacing(0.5)}px`,
     position: 'absolute',
-  },
-  image: {
-    height: '100%',
-    objectFit: 'cover',
     width: '100%',
   },
-  root: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    borderRight: `1px solid ${theme.palette.divider}`,
-    position: 'relative',
+  chips: {
+    '& > *': {
+      margin: `0 ${theme.spacing(0.5)}px ${theme.spacing(0.5)}px 0`,
+    },
   },
+  footer: {
+    '& > *:not(:last-child)': {
+      marginRight: theme.spacing(1),
+    },
+    backgroundColor: theme.palette.grey[900],
+    height: 30,
+    padding: 2,
+    width: '100%',
+  },
+  root: ({ backgroundImage }) => ({
+    background: `url(${backgroundImage}) no-repeat center`,
+    backgroundSize: 'cover',
+    borderBottom: `1px solid #2d2d2d`,
+    borderRight: `1px solid #2d2d2d`,
+    color: theme.palette.primary.contrastText,
+    paddingTop: `calc(1px + 125%)`,
+    position: 'relative',
+    width: '100%',
+  }),
 }));

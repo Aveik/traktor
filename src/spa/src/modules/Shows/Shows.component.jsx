@@ -1,15 +1,16 @@
+import { Grid as MuiGrid } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Pagination from '../../components/Pagination/Pagination.component';
 import usePagination from '../../hooks/usePagination';
-import { selectLoadingFlag } from '../../redux/loading/loading.selectors';
 import {
   selectEntities,
   selectPagesTotal,
 } from '../../redux/modules/shows/shows.selectors';
 import { fetchShows } from '../../redux/modules/shows/shows.slice';
+import { renderTiles } from './Shows.utils';
 
 function Shows({ category }) {
   const dispatch = useDispatch();
@@ -17,14 +18,12 @@ function Shows({ category }) {
     hasNextPage,
     hasPreviousPage,
     page,
+    pagesTotal,
     toFirstPage,
     toLastPage,
     toNextPage,
     toPreviousPage,
   } = usePagination(selectPagesTotal);
-  const fetching = useSelector((state) =>
-    selectLoadingFlag(state, 'shows/fetch'),
-  );
   const shows = useSelector(selectEntities);
 
   useEffect(() => {
@@ -33,17 +32,17 @@ function Shows({ category }) {
 
   return (
     <>
-      {fetching && <div>Loading...</div>}
+      <MuiGrid container>{renderTiles({ category, shows })}</MuiGrid>
       <Pagination
-        disabled={fetching}
         hasNextPage={hasNextPage}
         hasPreviousPage={hasPreviousPage}
         onFirstPage={toFirstPage}
         onLastPage={toLastPage}
         onNextPage={toNextPage}
         onPreviousPage={toPreviousPage}
+        page={page}
+        pagesTotal={pagesTotal}
       />
-      <pre>{JSON.stringify(shows, null, 2)}</pre>
     </>
   );
 }
@@ -54,7 +53,6 @@ Shows.propTypes = {
     'popular',
     'recommended',
     'watched',
-    'collected',
     'anticipated',
   ]).isRequired,
 };

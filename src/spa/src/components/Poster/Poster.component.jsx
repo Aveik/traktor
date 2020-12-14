@@ -1,20 +1,15 @@
 import PropTypes from 'prop-types';
 
-import { transformEntityToSingular } from '../../utils';
+import usePoster from '../../hooks/usePoster';
 
 function Poster({ children, entity, season, size, tmdbId, type }) {
-  entity = transformEntityToSingular(entity);
-  if (!tmdbId) {
-    return null;
-  }
-
-  let url = `/images/${entity}/${tmdbId}/${type}?`;
-  if (season) {
-    url += `season=${season}`;
-  }
-  if (size) {
-    url += `size=${size}`;
-  }
+  const url = usePoster({
+    entity,
+    season,
+    size,
+    tmdbId,
+    type,
+  });
   return children(url);
 }
 

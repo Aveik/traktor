@@ -34,6 +34,7 @@ function Comments({ entity }) {
     hasNextPage,
     hasPreviousPage,
     page,
+    pagesTotal,
     toFirstPage,
     toLastPage,
     toNextPage,
@@ -84,6 +85,8 @@ function Comments({ entity }) {
         onLastPage={toLastPage}
         onNextPage={toNextPage}
         onPreviousPage={toPreviousPage}
+        page={page}
+        pagesTotal={pagesTotal}
       />
       <Editor onSubmit={handleSubmit} />
       {comments.map((comment) => renderComment(comment))}

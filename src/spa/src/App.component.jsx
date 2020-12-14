@@ -1,6 +1,6 @@
 import { CssBaseline as MuiCssBaseline } from '@material-ui/core';
-import React from 'react';
-import { Provider as ReduxProvider } from 'react-redux';
+import React, { useMemo } from 'react';
+import { Provider as ReduxProvider, useSelector } from 'react-redux';
 import {
   BrowserRouter as Router,
   Navigate,
@@ -9,7 +9,9 @@ import {
 } from 'react-router-dom';
 
 import Layout from './components/Layout/Layout.component';
+import LoadingOverlay from './components/LoadingOverlay/LoadingOverlay.component';
 import NotFound from './components/NotFound/NotFound.component';
+import useScrollToTopOnLocationChange from './hooks/useScrollToTopOnLocationChange';
 import {
   default as MovieComments,
   default as ShowComments,
@@ -26,75 +28,91 @@ import Lists from './modules/Users/Lists/Lists.component';
 import Ratings from './modules/Users/Ratings/Ratings.component';
 import Recommendations from './modules/Users/Recommendations/Recommendations.component';
 import Watchlist from './modules/Users/Watchlist/Watchlist.component';
+import { selectLoadingFlagsReducedFactory } from './redux/loading/loading.selectors';
 import store from './redux/store';
 
 // In case of any routing change, make sure to reflect the exact change
 // in file ./src/components/Layouts/Layouts/Layouts.utils.js in variable NAV_PATHS
 function App() {
+  useScrollToTopOnLocationChange();
+  const selector = useMemo(selectLoadingFlagsReducedFactory, []);
+  const loading = useSelector((state) =>
+    selector(state, [
+      'movie/fetch',
+      'movies/fetch',
+      'show/fetch',
+      'shows/fetch',
+      'comments/fetch',
+    ]),
+  );
+
   return (
-    <Routes basename='/app'>
-      <Route element={<Navigate replace to='movies/trending' />} path='/' />
-      <Route element={<Layout />} path='/'>
-        <Route path='movies'>
-          <Route element={<Navigate replace to='trending' />} path='/' />
-          <Route element={<Movies category='trending' />} path='trending' />
-          <Route element={<Movies category='popular' />} path='popular' />
-          <Route
-            element={<Movies category='recommended' />}
-            path='recommended'
-          />
-          <Route element={<Movies category='watched' />} path='watched' />
-          <Route
-            element={<Movies category='anticipated' />}
-            path='anticipated'
-          />
-          <Route element={<Movie />} path=':slug' />
-          <Route
-            element={<MovieComments entity='movies' />}
-            path=':slug/comments'
-          />
-        </Route>
-        <Route path='shows'>
-          <Route element={<Navigate replace to='trending' />} path='/' />
-          <Route element={<Shows category='trending' />} path='trending' />
-          <Route element={<Shows category='popular' />} path='popular' />
-          <Route
-            element={<Shows category='recommended' />}
-            path='recommended'
-          />
-          <Route element={<Shows category='watched' />} path='watched' />
-          <Route
-            element={<Shows category='anticipated' />}
-            path='anticipated'
-          />
-          <Route element={<Show />} path=':slug' />
-          <Route
-            element={<ShowComments entity='shows' />}
-            path=':slug/comments'
-          />
-        </Route>
-        <Route element={<Person />} path='people/:slug' />
-        <Route path='search'>
-          <Route element={<Navigate replace to='all' />} path='/' />
-          <Route element={<Search entity='all' />} path='all' />
-          <Route element={<Search entity='movies' />} path='movies' />
-          <Route element={<Search entity='shows' />} path='shows' />
-          <Route element={<Search entity='people' />} path='people' />
-        </Route>
-        <Route path='users/:userSlug'>
-          <Route element={<Navigate replace to='ratings' />} path='/' />
-          <Route element={<Ratings />} path='ratings' />
-          <Route element={<Recommendations />} path='recommendations' />
-          <Route element={<Watchlist />} path='watchlist' />
-          <Route path='lists'>
-            <Route element={<Lists />} path='/' />
-            <Route element={<List />} path=':id' />
+    <>
+      {loading && <LoadingOverlay />}
+      <Routes basename='/app'>
+        <Route element={<Navigate replace to='movies/trending' />} path='/' />
+        <Route element={<Layout />} path='/'>
+          <Route path='movies'>
+            <Route element={<Navigate replace to='trending' />} path='/' />
+            <Route element={<Movies category='trending' />} path='trending' />
+            <Route element={<Movies category='popular' />} path='popular' />
+            <Route
+              element={<Movies category='recommended' />}
+              path='recommended'
+            />
+            <Route element={<Movies category='watched' />} path='watched' />
+            <Route
+              element={<Movies category='anticipated' />}
+              path='anticipated'
+            />
+            <Route element={<Movie />} path=':slug' />
+            <Route
+              element={<MovieComments entity='movies' />}
+              path=':slug/comments'
+            />
           </Route>
-          <Route element={<Comments />} path='comments' />
+          <Route path='shows'>
+            <Route element={<Navigate replace to='trending' />} path='/' />
+            <Route element={<Shows category='trending' />} path='trending' />
+            <Route element={<Shows category='popular' />} path='popular' />
+            <Route
+              element={<Shows category='recommended' />}
+              path='recommended'
+            />
+            <Route element={<Shows category='watched' />} path='watched' />
+            <Route
+              element={<Shows category='anticipated' />}
+              path='anticipated'
+            />
+            <Route element={<Show />} path=':slug' />
+            <Route
+              element={<ShowComments entity='shows' />}
+              path=':slug/comments'
+            />
+          </Route>
+          <Route element={<Person />} path='people/:slug' />
+          <Route path='search'>
+            <Route element={<Navigate replace to='all' />} path='/' />
+            <Route element={<Search entity='all' />} path='all' />
+            <Route element={<Search entity='movies' />} path='movies' />
+            <Route element={<Search entity='shows' />} path='shows' />
+            <Route element={<Search entity='people' />} path='people' />
+          </Route>
+          <Route path='users/:userSlug'>
+            <Route element={<Navigate replace to='ratings' />} path='/' />
+            <Route element={<Ratings />} path='ratings' />
+            <Route element={<Recommendations />} path='recommendations' />
+            <Route element={<Watchlist />} path='watchlist' />
+            <Route path='lists'>
+              <Route element={<Lists />} path='/' />
+              <Route element={<List />} path=':id' />
+            </Route>
+            <Route element={<Comments />} path='comments' />
+          </Route>
         </Route>
-      </Route>
-      <Route element={<NotFound />} path='*' />
-    </Routes>
+        <Route element={<NotFound />} path='*' />
+      </Routes>
+    </>
   );
 }
 

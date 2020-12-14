@@ -1,6 +1,6 @@
 const DEFAULTS = {
   COMMENT_PAGE_SIZE: 20,
-  PAGE_SIZE: 40,
+  PAGE_SIZE: 36,
 };
 
 function parseCookie() {

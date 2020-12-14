@@ -4,49 +4,59 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-import Poster from '../../components/Poster/Poster.component';
+import usePoster from '../../hooks/usePoster';
+import ListItemManagerButton from '../buttons/ListItemManager/ListItemManager.component';
+import RecommendButton from '../buttons/Recommend/Recommend.component';
+import WatchlistButton from '../buttons/Watchlist/Watchlist.component';
 import useStyles from './Tile.styles';
 
-function Tile({ releaseYear, title, tmdbId, watchers }) {
-  const classes = useStyles();
+function Tile({ chips = [], entity, item, size = 'default' }) {
+  const {
+    ids: { slug, tmdb: tmdbId },
+    title,
+    year: releaseYear,
+  } = item;
+  const posterUrl = usePoster({
+    entity,
+    size: size === 'small' ? 'w185' : 'w342',
+    tmdbId,
+    type: 'poster',
+  });
+  const classes = useStyles({ backgroundImage: posterUrl, size });
+
   return (
     <div className={classes.root}>
-      <Poster entity='movies' size='w500' tmdbId={tmdbId} type='poster'>
-        {(url) => <img alt='poster' className={classes.image} src={url} />}
-      </Poster>
-      <div className={classes.footer}>
-        <MuiChip
-          color='secondary'
-          label={
-            <MuiTypography variant='caption'>
-              {watchers} people watching
-            </MuiTypography>
-          }
-          size='small'
-        />
+      <Link className={classes.body} to={`/app/${entity}/${slug}`}>
+        <div className={classes.chips}>
+          {chips.map((chip) => (
+            <MuiChip color='secondary' key={chip} label={chip} size='small' />
+          ))}
+        </div>
         <div>
-          <MuiTypography color='textPrimary' display='inline' variant='body1'>
-            {title}{' '}
+          <MuiTypography display='inline' variant='subtitle2'>
+            {title + ' '}
           </MuiTypography>
-          <MuiTypography
-            color='textSecondary'
-            display='inline'
-            variant='caption'
-          >
+          <MuiTypography display='inline' variant='caption'>
             {releaseYear}
           </MuiTypography>
         </div>
+      </Link>
+      <div className={classes.footer}>
+        <WatchlistButton entity={entity} size='small' slug={slug} />
+        <RecommendButton entity={entity} size='small' slug={slug} />
+        <ListItemManagerButton entity={entity} size='small' slug={slug} />
       </div>
     </div>
   );
 }
 
 Tile.propTypes = {
-  releaseYear: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  tmdbId: PropTypes.number.isRequired,
-  watchers: PropTypes.number.isRequired,
+  chips: PropTypes.arrayOf(PropTypes.string),
+  entity: PropTypes.oneOf(['movies', 'people', 'shows']).isRequired,
+  item: PropTypes.object.isRequired,
+  size: PropTypes.oneOf(['default', 'small']),
 };
 
 export default Tile;

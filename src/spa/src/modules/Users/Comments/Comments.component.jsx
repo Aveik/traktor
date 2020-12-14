@@ -19,6 +19,7 @@ function Comments() {
     hasNextPage,
     hasPreviousPage,
     page,
+    pagesTotal,
     toFirstPage,
     toLastPage,
     toNextPage,
@@ -44,6 +45,8 @@ function Comments() {
         onLastPage={toLastPage}
         onNextPage={toNextPage}
         onPreviousPage={toPreviousPage}
+        page={page}
+        pagesTotal={pagesTotal}
       />
       {comments.map(({ comment, type }) => renderComment(comment))}
     </>

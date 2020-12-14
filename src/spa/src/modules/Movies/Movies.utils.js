@@ -1,29 +1,75 @@
 import { Grid as MuiGrid } from '@material-ui/core';
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import Tile from '../../components/Tile/Tile.component';
 
 function renderTrending(movies) {
-  return movies.map(({ movie, watchers }) => (
-    <MuiGrid
-      component={Link}
-      item
-      key={movie.ids.trakt}
-      md={4}
-      sm={6}
-      to={`/app/movies/${movie.ids.slug}`}
-      xl={3}
-      xs={12}
-    >
-      <Tile
-        releaseYear={movie.year}
-        title={movie.title}
-        tmdbId={movie.ids.tmdb}
-        watchers={watchers}
-      />
+  return movies.map(({ movie, watchers = 0 }) => {
+    const chips = [];
+    if (watchers) {
+      chips.push(`${watchers} people watching`);
+    }
+    return (
+      <MuiGrid item key={movie.ids.trakt} lg={2} md={3} sm={6} xs={12}>
+        <Tile chips={chips} entity='movies' item={movie} />
+      </MuiGrid>
+    );
+  });
+}
+
+function renderPopular(movies) {
+  return movies.map(({ movie }) => (
+    <MuiGrid item key={movie.ids.trakt} lg={2} md={3} sm={6} xs={12}>
+      <Tile entity='movies' item={movie} />
     </MuiGrid>
   ));
+}
+
+function renderRecommended(movies) {
+  return movies.map(({ movie, user_count: recommendedByCount = 0 }) => {
+    const chips = [];
+    if (recommendedByCount) {
+      chips.push(`${recommendedByCount} people`);
+    }
+    return (
+      <MuiGrid item key={movie.ids.trakt} lg={2} md={3} sm={6} xs={12}>
+        <Tile chips={chips} entity='movies' item={movie} />
+      </MuiGrid>
+    );
+  });
+}
+
+function renderWatched(movies) {
+  return movies.map(
+    ({ movie, play_count: plays = 0, watcher_count: watchers = 0 }) => {
+      const chips = [];
+      if (plays) {
+        chips.push(`${plays} plays`);
+      }
+      if (watchers) {
+        chips.push(`${watchers} watches`);
+      }
+      return (
+        <MuiGrid item key={movie.ids.trakt} lg={2} md={3} sm={6} xs={12}>
+          <Tile chips={chips} entity='movies' item={movie} />
+        </MuiGrid>
+      );
+    },
+  );
+}
+
+function renderAnticipated(movies) {
+  return movies.map(({ list_count: inListsCount = 0, movie }) => {
+    const chips = [];
+    if (inListsCount) {
+      chips.push(`In ${inListsCount} lists`);
+    }
+    return (
+      <MuiGrid item key={movie.ids.trakt} lg={2} md={3} sm={6} xs={12}>
+        <Tile chips={chips} entity='movies' item={movie} />
+      </MuiGrid>
+    );
+  });
 }
 
 function renderTiles({ category, movies }) {
@@ -31,15 +77,13 @@ function renderTiles({ category, movies }) {
     case 'trending':
       return renderTrending(movies);
     case 'popular':
-      return null;
+      return renderPopular(movies);
     case 'recommended':
-      return null;
+      return renderRecommended(movies);
     case 'watched':
-      return null;
-    case 'collected':
-      return null;
+      return renderWatched(movies);
     case 'anticipated':
-      return null;
+      return renderAnticipated(movies);
     default:
       return null;
   }

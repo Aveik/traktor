@@ -10,6 +10,13 @@ function usePagination(pagesTotalSelector) {
   );
   const pagesTotal = useSelector(pagesTotalSelector);
 
+  function toPage(page) {
+    setSearchParams({
+      page: parseInt(page),
+      ...otherSearchProps,
+    });
+  }
+
   function toFirstPage() {
     setSearchParams({
       page: 1,
@@ -41,10 +48,12 @@ function usePagination(pagesTotalSelector) {
   return {
     hasNextPage: parseInt(page) < pagesTotal,
     hasPreviousPage: parseInt(page) > 1,
-    page,
+    page: parseInt(page),
+    pagesTotal,
     toFirstPage,
     toLastPage,
     toNextPage,
+    toPage,
     toPreviousPage,
   };
 }

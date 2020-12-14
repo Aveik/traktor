@@ -1,5 +1,8 @@
 import {
+  Button,
+  Button as MuiButton,
   Checkbox as MuiCheckbox,
+  IconButton as MuiIconButton,
   LinearProgress as MuiLinearProgress,
   List as MuiList,
   ListItem as MuiListItem,
@@ -7,35 +10,40 @@ import {
   ListItemText as MuiListItemText,
   ListSubheader as MuiListSubheader,
   Popover as MuiPopover,
+  Tooltip as MuiTooltip,
 } from '@material-ui/core';
+import { List as ListIcon } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectLoadingFlagsReducedFactory } from '../../redux/loading/loading.selectors';
+import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
 import {
   addToListAndRefetch,
   removeFromListAndRefetch,
-} from '../../redux/modules/users/list/list.slice';
-import { selectListsForManagerFactory } from '../../redux/modules/users/lists/lists.selectors';
+} from '../../../redux/modules/users/list/list.slice';
+import { selectListsForManagerFactory } from '../../../redux/modules/users/lists/lists.selectors';
 import useStyles from './ListItemManager.styles';
 
-function ListItemManager({ children, entity, slug }) {
+function ListItemManager({ entity, size = 'default', slug }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const listsSelector = useMemo(selectListsForManagerFactory, []);
   const loadingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
   const loading = useSelector((state) =>
-    loadingSelector(state, ['users/list/add', 'users/list/remove']),
+    loadingSelector(state, [
+      'users/lists/fetch',
+      'users/list/add',
+      'users/list/remove',
+    ]),
   );
   const lists = useSelector((state) => listsSelector(state, entity, slug));
   const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
   const listedOnCount = useMemo(
-    () => lists.filter(({ listed }) => listed).length,
+    () => lists.filter(({ listed }) => Boolean(listed)).length,
     [lists],
   );
-  const open = Boolean(anchorEl);
-  const [mirror, setMirror] = useState({});
 
   function handleOpen(e) {
     setAnchorEl(e.currentTarget);
@@ -45,22 +53,51 @@ function ListItemManager({ children, entity, slug }) {
     setAnchorEl(null);
   }
 
+  //@TODO: catch in case recommendation failed
   function handleClick(entity, listed, listSlug) {
     return function () {
       let fn = addToListAndRefetch;
-      let value = true;
       if (listed) {
         fn = removeFromListAndRefetch;
-        value = false;
       }
       dispatch(fn({ entity, listSlug, slug }));
-      setMirror({ ...mirror, [listSlug]: value });
     };
+  }
+
+  let button = (
+    <MuiButton
+      color={listedOnCount ? 'secondary' : 'inherit'}
+      disabled={loading}
+      onClick={handleOpen}
+      startIcon={<ListIcon />}
+    >
+      {listedOnCount ? `Listed on ${listedOnCount} lists` : 'Add to your lists'}
+    </MuiButton>
+  );
+
+  if (size === 'small') {
+    button = (
+      <MuiTooltip
+        title={
+          listedOnCount
+            ? `Listed on ${listedOnCount} lists`
+            : 'Add to your lists'
+        }
+      >
+        <MuiIconButton
+          color={listedOnCount ? 'secondary' : 'inherit'}
+          onClick={handleOpen}
+          size='small'
+        >
+          <ListIcon fontSize='small' />
+        </MuiIconButton>
+      </MuiTooltip>
+    );
   }
 
   return (
     <>
-      {children(handleOpen, listedOnCount)}
+      {button}
       <MuiPopover
         anchorEl={anchorEl}
         anchorOrigin={{
@@ -74,7 +111,7 @@ function ListItemManager({ children, entity, slug }) {
           vertical: 'top',
         }}
       >
-        {loading && <MuiLinearProgress />}
+        {loading && <MuiLinearProgress color='secondary' />}
         <MuiList
           dense
           subheader={
@@ -96,7 +133,7 @@ function ListItemManager({ children, entity, slug }) {
                 }}
               >
                 <MuiCheckbox
-                  checked={slug in mirror ? mirror[slug] : listed}
+                  checked={listed}
                   disableRipple
                   edge='start'
                   size='small'
@@ -113,6 +150,7 @@ function ListItemManager({ children, entity, slug }) {
 
 ListItemManager.propTypes = {
   entity: PropTypes.oneOf(['movies', 'people', 'shows']).isRequired,
+  size: PropTypes.oneOf(['default', 'small']),
   slug: PropTypes.string.isRequired,
 };
 

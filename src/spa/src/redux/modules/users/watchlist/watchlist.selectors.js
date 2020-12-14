@@ -11,24 +11,26 @@ const selectEntities = createSelector(
   },
 );
 
-const selectIsWatchlisted = createSelector(
-  [
-    function (state) {
-      return state.users.watchlist;
+function selectIsWatchlistedFactory() {
+  return createSelector(
+    [
+      function (state) {
+        return state.users.watchlist;
+      },
+      function (_, entity) {
+        return transformEntityToSingular(entity);
+      },
+      function (_, __, slug) {
+        return slug;
+      },
+    ],
+    function (watchlist, entity, slug) {
+      const result = watchlist.find(
+        (item) => item.type === entity && item[entity].ids.slug === slug,
+      );
+      return Boolean(result);
     },
-    function (_, entity) {
-      return transformEntityToSingular(entity);
-    },
-    function (_, __, slug) {
-      return slug;
-    },
-  ],
-  function (watchlist, entity, slug) {
-    const result = watchlist.find(
-      (item) => item.type === entity && item[entity].ids.slug === slug,
-    );
-    return Boolean(result);
-  },
-);
+  );
+}
 
-export { selectEntities, selectIsWatchlisted };
+export { selectEntities, selectIsWatchlistedFactory };
