@@ -1,7 +1,7 @@
 import { Grid as MuiGrid } from '@material-ui/core';
 import React from 'react';
 
-import Tile from '../../components/Tile/Tile.component';
+import InteractiveTile from '../../components/InteractiveTile/InteractiveTile.component';
 
 function renderTrending(shows) {
   return shows.map(({ show, watchers = 0 }) => {
@@ -11,7 +11,14 @@ function renderTrending(shows) {
     }
     return (
       <MuiGrid item key={show.ids.trakt} lg={2} md={3} sm={6} xs={12}>
-        <Tile chips={chips} entity='shows' item={show} />
+        <InteractiveTile
+          chips={chips}
+          entity='shows'
+          primary={show.title}
+          secondary={show.year}
+          slug={show.ids.slug}
+          tmdbId={show.ids.tmdb}
+        />
       </MuiGrid>
     );
   });
@@ -20,7 +27,13 @@ function renderTrending(shows) {
 function renderPopular(shows) {
   return shows.map(({ show }) => (
     <MuiGrid item key={show.ids.trakt} lg={2} md={3} sm={6} xs={12}>
-      <Tile entity='shows' item={show} />
+      <InteractiveTile
+        entity='shows'
+        primary={show.title}
+        secondary={show.year}
+        slug={show.ids.slug}
+        tmdbId={show.ids.tmdb}
+      />
     </MuiGrid>
   ));
 }
@@ -33,7 +46,14 @@ function renderRecommended(shows) {
     }
     return (
       <MuiGrid item key={show.ids.trakt} lg={2} md={3} sm={6} xs={12}>
-        <Tile chips={chips} entity='shows' item={show} />
+        <InteractiveTile
+          chips={chips}
+          entity='shows'
+          primary={show.title}
+          secondary={show.year}
+          slug={show.ids.slug}
+          tmdbId={show.ids.tmdb}
+        />
       </MuiGrid>
     );
   });
@@ -51,7 +71,14 @@ function renderWatched(shows) {
       }
       return (
         <MuiGrid item key={show.ids.trakt} lg={2} md={3} sm={6} xs={12}>
-          <Tile chips={chips} entity='shows' item={show} />
+          <InteractiveTile
+            chips={chips}
+            entity='shows'
+            primary={show.title}
+            secondary={show.year}
+            slug={show.ids.slug}
+            tmdbId={show.ids.tmdb}
+          />
         </MuiGrid>
       );
     },
@@ -66,7 +93,14 @@ function renderAnticipated(shows) {
     }
     return (
       <MuiGrid item key={show.ids.trakt} lg={2} md={3} sm={6} xs={12}>
-        <Tile chips={chips} entity='shows' item={show} />
+        <InteractiveTile
+          chips={chips}
+          entity='shows'
+          primary={show.title}
+          secondary={show.year}
+          slug={show.ids.slug}
+          tmdbId={show.ids.tmdb}
+        />
       </MuiGrid>
     );
   });

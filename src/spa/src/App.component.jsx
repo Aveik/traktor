@@ -43,6 +43,7 @@ function App() {
       'show/fetch',
       'shows/fetch',
       'comments/fetch',
+      'person/fetch',
     ]),
   );
 

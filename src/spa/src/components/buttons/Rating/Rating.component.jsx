@@ -14,7 +14,7 @@ import {
 import useStyles from './Rating.styles';
 import { getRatingLabelFromValue } from './Rating.utils';
 
-function Rating({ entity, size = 'default', slug }) {
+function Rating({ entity, slug }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const selector = useMemo(selectRatingFactory, []);
@@ -66,11 +66,12 @@ function Rating({ entity, size = 'default', slug }) {
       <MuiButton
         classes={{
           root: classes.buttonRoot,
-          startIcon: classes.buttonStartIcon,
         }}
+        color='secondary'
+        fullWidth
         onClick={handleOpen}
-        size={size === 'small' ? 'small' : 'medium'}
         startIcon={<HeartIcon />}
+        variant={rating ? 'contained' : 'outlined'}
       >
         {getRatingLabelFromValue(hasHoveredRating ? hoveredRating : rating)}
       </MuiButton>
@@ -109,7 +110,6 @@ function Rating({ entity, size = 'default', slug }) {
 
 Rating.propTypes = {
   entity: PropTypes.oneOf(['movies', 'people', 'shows']).isRequired,
-  size: PropTypes.oneOf(['default', 'small']),
   slug: PropTypes.string.isRequired,
 };
 

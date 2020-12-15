@@ -17,7 +17,7 @@ const fetchShow = createAsyncThunk('show/fetch', async function (
       statsResponse,
       seasonsResponse,
     ] = await Promise.all([
-      axios.get(`/trakt/shows/${slug}`),
+      axios.get(`/trakt/shows/${slug}?extended=full`),
       axios.get(`/trakt/shows/${slug}/comments/highest`),
       axios.get(`/trakt/shows/${slug}/people`),
       axios.get(`/trakt/shows/${slug}/ratings`),

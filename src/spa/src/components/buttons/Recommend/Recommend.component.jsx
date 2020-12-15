@@ -62,10 +62,12 @@ function Recommend({ entity, size = 'default', slug }) {
   }
   return (
     <MuiButton
-      color={isRecommended ? 'secondary' : 'inherit'}
+      color='secondary'
       disabled={loading}
+      fullWidth
       onClick={handleRecommend}
       startIcon={<RecommendIcon />}
+      variant={isRecommended ? 'contained' : 'outlined'}
     >
       {isRecommended ? 'Remove from recommendations' : 'Recommend'}
     </MuiButton>

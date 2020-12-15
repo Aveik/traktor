@@ -21,7 +21,7 @@ const PLACEHOLDER = '/images/placeholder.png';
  * Available sizes for type:
  * Backdrop: ['w300', 'w780', 'w1280', 'original']
  * Poster: ['w92', 'w154', 'w185', 'w342', 'w500', 'w780', 'original']
- * Profile: ['w45', 'w185', 'w632', 'original']
+ * Profile: ['w45', 'w185', 'h632', 'original']
  */
 router.use('/images/:entity/:id/:type', async function (req, res) {
   try {
@@ -49,7 +49,7 @@ router.use('/images/:entity/:id/:type', async function (req, res) {
       if (
         type === 'backdrop' && !['w300', 'w780', 'w1280'].includes(size) ||
         type === 'poster' && !['w92', 'w154', 'w185', 'w342', 'w500', 'w780'].includes(size) ||
-        type === 'profile' && !['w45', 'w185', 'w632'].includes(size)
+        type === 'profile' && !['w45', 'w185', 'h632'].includes(size)
       ) {
         return res.redirect(PLACEHOLDER);
       }

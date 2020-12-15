@@ -65,10 +65,12 @@ function ListItemManager({ entity, size = 'default', slug }) {
 
   let button = (
     <MuiButton
-      color={listedOnCount ? 'secondary' : 'inherit'}
+      color='secondary'
       disabled={loading}
+      fullWidth
       onClick={handleOpen}
       startIcon={<ListIcon />}
+      variant={listedOnCount ? 'contained' : 'outlined'}
     >
       {listedOnCount ? `Listed on ${listedOnCount} lists` : 'Add to your lists'}
     </MuiButton>

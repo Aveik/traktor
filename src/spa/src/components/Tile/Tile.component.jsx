@@ -1,71 +1,59 @@
-import {
-  Chip as MuiChip,
-  Typography as MuiTypography,
-} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import usePoster from '../../hooks/usePoster';
-import ListItemManagerButton from '../buttons/ListItemManager/ListItemManager.component';
-import RecommendButton from '../buttons/Recommend/Recommend.component';
-import WatchlistButton from '../buttons/Watchlist/Watchlist.component';
+import useImage from '../../hooks/useImage';
 import useStyles from './Tile.styles';
 
 function Tile({
-  chips = [],
+  children,
+  content,
   entity,
-  item,
-  omitActions = false,
+  season,
   size = 'default',
+  slug,
+  tmdbId,
 }) {
-  const {
-    ids: { slug, tmdb: tmdbId },
-    title,
-    year: releaseYear,
-  } = item;
-  const posterUrl = usePoster({
+  const isPerson = entity === 'people';
+  const isSmallSize = size === 'small';
+
+  let imageSize;
+  if (isPerson) {
+    imageSize = isSmallSize ? 'w185' : 'h632';
+  } else {
+    imageSize = isSmallSize ? 'w185' : 'w342';
+  }
+  const imageType = isPerson ? 'profile' : 'poster';
+  const imageUrl = useImage({
     entity,
-    size: size === 'small' ? 'w185' : 'w342',
+    season,
+    size: imageSize,
     tmdbId,
-    type: 'poster',
+    type: imageType,
   });
-  const classes = useStyles({ backgroundImage: posterUrl, size });
+
+  const classes = useStyles({
+    backgroundImage: imageUrl,
+  });
 
   return (
     <div className={classes.root}>
-      <Link className={classes.body} to={`/app/${entity}/${slug}`}>
-        <div className={classes.chips}>
-          {chips.map((chip) => (
-            <MuiChip color='secondary' key={chip} label={chip} size='small' />
-          ))}
-        </div>
-        <div>
-          <MuiTypography display='inline' variant='subtitle2'>
-            {title + ' '}
-          </MuiTypography>
-          <MuiTypography display='inline' variant='caption'>
-            {releaseYear}
-          </MuiTypography>
-        </div>
+      <Link className={classes.link} to={`/app/${entity}/${slug}`}>
+        {content && <div className={classes.content}>{content}</div>}
       </Link>
-      {!omitActions && (
-        <div className={classes.footer}>
-          <WatchlistButton entity={entity} size='small' slug={slug} />
-          <RecommendButton entity={entity} size='small' slug={slug} />
-          <ListItemManagerButton entity={entity} size='small' slug={slug} />
-        </div>
-      )}
+      <div className={classes.children}>{children}</div>
     </div>
   );
 }
 
 Tile.propTypes = {
-  chips: PropTypes.arrayOf(PropTypes.string),
+  children: PropTypes.node,
+  content: PropTypes.node,
   entity: PropTypes.oneOf(['movies', 'people', 'shows']).isRequired,
-  item: PropTypes.object.isRequired,
-  omitActions: PropTypes.bool,
+  season: PropTypes.number,
   size: PropTypes.oneOf(['default', 'small']),
+  slug: PropTypes.string.isRequired,
+  tmdbId: PropTypes.number,
 };
 
 export default Tile;

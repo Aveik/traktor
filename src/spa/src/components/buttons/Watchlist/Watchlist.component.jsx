@@ -62,10 +62,12 @@ function Watchlist({ entity, size = 'default', slug }) {
   }
   return (
     <MuiButton
-      color={isWatchlisted ? 'secondary' : 'inherit'}
+      color='secondary'
       disabled={loading}
+      fullWidth
       onClick={handleWatchlist}
       startIcon={<WatchlistIcon />}
+      variant={isWatchlisted ? 'contained' : 'outlined'}
     >
       {isWatchlisted ? 'Remove from watchlist' : 'Add to watchlist'}
     </MuiButton>

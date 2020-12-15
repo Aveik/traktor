@@ -17,7 +17,7 @@ const fetchMovie = createAsyncThunk('movie/fetch', async function (
       relatedResponse,
     ] = await Promise.all([
       axios.get(`/trakt/movies/${slug}/stats`),
-      axios.get(`/trakt/movies/${slug}`),
+      axios.get(`/trakt/movies/${slug}?extended=full`),
       axios.get(`/trakt/movies/${slug}/comments/highest`),
       axios.get(`/trakt/movies/${slug}/people`),
       axios.get(`/trakt/movies/${slug}/ratings`),

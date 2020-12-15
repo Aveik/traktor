@@ -1,20 +1,13 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
-  body: {
-    bottom: 30,
-    display: 'flex',
-    flexDirection: 'column',
-    height: 'calc(100% - 30px)',
-    justifyContent: 'flex-end',
-    padding: `0 ${theme.spacing(1)}px ${theme.spacing(0.5)}px`,
-    position: 'absolute',
-    width: '100%',
+  children: {
+    textAlign: 'center',
   },
-  chips: {
-    '& > *': {
-      margin: `0 ${theme.spacing(0.5)}px ${theme.spacing(0.5)}px 0`,
-    },
+  content: {
+    bottom: theme.spacing(1),
+    left: theme.spacing(1),
+    position: 'absolute',
   },
   footer: {
     '& > *:not(:last-child)': {
@@ -23,16 +16,15 @@ export default makeStyles((theme) => ({
     backgroundColor: theme.palette.grey[900],
     height: 30,
     padding: 2,
-    width: '100%',
   },
-  root: ({ backgroundImage }) => ({
+  link: ({ backgroundImage }) => ({
     background: `url(${backgroundImage}) no-repeat center`,
-    backgroundSize: 'cover',
-    borderBottom: `1px solid #2d2d2d`,
-    borderRight: `1px solid #2d2d2d`,
+    'background-size': 'cover',
     color: theme.palette.primary.contrastText,
-    paddingTop: `calc(1px + 125%)`,
+    display: 'block',
+    paddingTop: '125%',
     position: 'relative',
     width: '100%',
   }),
+  root: {},
 }));
