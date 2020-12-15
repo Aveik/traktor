@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 
 import ListItemManager from '../../components/buttons/ListItemManager/ListItemManager.component';
+import RecommendButton from '../../components/buttons/Recommend/Recommend.component';
 import WatchlistButton from '../../components/buttons/Watchlist/Watchlist.component';
 import { renderComment } from '../../components/Comments/Comments.utils';
 import Poster from '../../components/Poster/Poster.component';
@@ -39,6 +40,7 @@ function Show() {
       {fetching && <div>Loading...</div>}
       <ListItemManager entity='shows' slug={slug} />
       <WatchlistButton entity='shows' slug={slug} />
+      <RecommendButton entity='shows' slug={slug} />
       <Rating onChange={handleRating} value={rating} />
       <Poster
         entity='shows'

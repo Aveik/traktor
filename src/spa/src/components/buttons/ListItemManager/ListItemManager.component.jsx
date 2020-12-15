@@ -1,5 +1,4 @@
 import {
-  Button,
   Button as MuiButton,
   Checkbox as MuiCheckbox,
   IconButton as MuiIconButton,
