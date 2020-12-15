@@ -152,7 +152,7 @@ function Show() {
                   {season.number === 0 ? 'Specials' : `Season ${season.number}`}{' '}
                 </MuiTypography>
                 <MuiTypography color='textSecondary' variant='caption'>
-                  {season.episodes.length} episodes
+                  {season.episodes?.length || 0} episodes
                 </MuiTypography>
               </Tile>
             </MuiGrid>

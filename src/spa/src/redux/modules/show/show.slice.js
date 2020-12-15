@@ -30,7 +30,7 @@ const fetchShow = createAsyncThunk('show/fetch', async function (
       people: peopleResponse.data,
       ratings: ratingsResponse.data,
       related: relatedResponse.data,
-      seasons: seasonsResponse.data,
+      seasons: seasonsResponse.data.reverse(),
       stats: statsResponse.data,
       summary: summaryResponse.data,
     };

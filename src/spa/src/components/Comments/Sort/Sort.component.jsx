@@ -6,15 +6,19 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { SORT_OPTIONS } from '../Comments.utils';
+import useStyles from './Sort.styles';
 
 function Sort({ onChange, value }) {
+  const classes = useStyles();
   function handleChange({ target: { value } }) {
     onChange(value);
   }
 
   return (
     <MuiTextField
-      fullWidth
+      classes={{
+        root: classes.textFieldRoot,
+      }}
       label='Sort comments by'
       onChange={handleChange}
       select

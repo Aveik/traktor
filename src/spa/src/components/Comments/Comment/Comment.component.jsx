@@ -22,7 +22,6 @@ import {
 } from '../../../redux/modules/users/comments/comments.slice';
 import { getUserSlug } from '../../../utils';
 import Editor from '../Editor/Editor.component';
-import useStyles from './Comment.styles';
 
 function Comment({
   comment,
@@ -35,7 +34,6 @@ function Comment({
   userSlug,
 }) {
   const selector = useMemo(selectLoadingFlagsReducedFactory, []);
-  const classes = useStyles();
   const dispatch = useDispatch();
   const fetching = useSelector((state) =>
     selector(state, ['users/comments/remove', 'users/comments/update']),
@@ -71,12 +69,7 @@ function Comment({
   return (
     <>
       {fetching && (isEditing || isRemoving) && <MuiLinearProgress />}
-      <MuiListItem
-        classes={{
-          root: classes.listItemRoot,
-        }}
-        component={MuiPaper}
-      >
+      <MuiListItem component={MuiPaper}>
         <MuiListItemText
           primary={
             <MuiGrid container justify='space-between'>

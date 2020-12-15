@@ -1,8 +1,20 @@
+import {
+  Divider as MuiDivider,
+  Grid as MuiGrid,
+  List as MuiList,
+  ListItem as MuiListItem,
+  ListItemText as MuiListItemText,
+  Typography as MuiTypography,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
+import ListItemManagerButton from '../../components/buttons/ListItemManager/ListItemManager.component';
+import RatingButton from '../../components/buttons/Rating/Rating.component';
+import RecommendButton from '../../components/buttons/Recommend/Recommend.component';
+import WatchlistButton from '../../components/buttons/Watchlist/Watchlist.component';
 import {
   DEFAULT_SORT_OPTION,
   renderComment,
@@ -10,6 +22,7 @@ import {
 import Editor from '../../components/Comments/Editor/Editor.component';
 import Sort from '../../components/Comments/Sort/Sort.component';
 import Pagination from '../../components/Pagination/Pagination.component';
+import Tile from '../../components/Tile/Tile.component';
 import usePagination from '../../hooks/usePagination';
 import { selectLoadingFlagsReducedFactory } from '../../redux/loading/loading.selectors';
 import {
@@ -23,9 +36,12 @@ import {
 import { selectEntity as selectMovie } from '../../redux/modules/movie/movie.selectors';
 import { selectEntity as selectShow } from '../../redux/modules/show/show.selectors';
 import { postComment } from '../../redux/modules/users/comments/comments.slice';
+import useStyles from './Comments.styles';
 
-//@TODO: Add redux module for this component
+const SIDE_MENU_LINKS = [['Comments', '#comments']];
+
 function Comments({ entity }) {
+  const classes = useStyles();
   const fetchingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
   const isFirstRender = useRef(true);
   const { slug } = useParams();
@@ -40,9 +56,7 @@ function Comments({ entity }) {
     toNextPage,
     toPreviousPage,
   } = usePagination(selectPagesTotal);
-  const { stats, summary } = useSelector(
-    entity === 'movies' ? selectMovie : selectShow,
-  );
+  const item = useSelector(entity === 'movies' ? selectMovie : selectShow);
   const comments = useSelector(selectEntities);
   const fetching = useSelector((state) =>
     fetchingSelector(state, ['comments/fetch', 'movie/fetch', 'show/fetch']),
@@ -69,28 +83,97 @@ function Comments({ entity }) {
   }
 
   return (
-    <>
-      <h1>Summary</h1>
-      <pre>{JSON.stringify(summary, null, 2)}</pre>
-      <h1>Stats</h1>
-      <pre>{JSON.stringify(stats, null, 2)}</pre>
-      <h1>Comments</h1>
-      {fetching && <div>Loading...</div>}
-      <Sort onChange={setSort} value={sort} />
-      <Pagination
-        disabled={fetching}
-        hasNextPage={hasNextPage}
-        hasPreviousPage={hasPreviousPage}
-        onFirstPage={toFirstPage}
-        onLastPage={toLastPage}
-        onNextPage={toNextPage}
-        onPreviousPage={toPreviousPage}
-        page={page}
-        pagesTotal={pagesTotal}
-      />
-      <Editor onSubmit={handleSubmit} />
-      {comments.map((comment) => renderComment(comment))}
-    </>
+    <div className={classes.root}>
+      {/* Fixed column */}
+      <div className={classes.fixedColumn}>
+        <Tile entity={entity} slug={slug} tmdbId={item.summary?.ids.tmdb} />
+        <MuiList>
+          {SIDE_MENU_LINKS.map(([label, anchor]) => (
+            <Fragment key={anchor}>
+              <MuiListItem button component='a' href={anchor}>
+                <MuiListItemText>{label}</MuiListItemText>
+              </MuiListItem>
+              <MuiDivider />
+            </Fragment>
+          ))}
+        </MuiList>
+        <div className={classes.buttons}>
+          <ListItemManagerButton entity='movies' slug={slug} />
+          <WatchlistButton entity='movies' slug={slug} />
+          <RecommendButton entity='movies' slug={slug} />
+          <RatingButton entity='movies' slug={slug} />
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className={classes.content}>
+        {/* Overview */}
+        <div className={classes.overview} id='overview'>
+          <MuiTypography display='block' variant='overline'>
+            All comments about:
+          </MuiTypography>
+          <MuiTypography display='inline' variant='h4'>
+            {item.summary?.title}{' '}
+          </MuiTypography>
+          <MuiTypography color='textSecondary' display='inline' variant='h5'>
+            {item.summary?.year}
+          </MuiTypography>
+        </div>
+
+        {/*<Editor onSubmit={handleSubmit} />*/}
+
+        {/* Add comment */}
+        <MuiTypography id='actors' variant='h5'>
+          Add comment
+        </MuiTypography>
+        <Editor onSubmit={handleSubmit} />
+
+        {/* Comments */}
+        <MuiGrid
+          alignItems='flex-end'
+          classes={{
+            root: classes.commentsRoot,
+          }}
+          container
+          justify='space-between'
+        >
+          <MuiGrid item>
+            <Sort onChange={setSort} value={sort} />
+          </MuiGrid>
+          <MuiGrid item>
+            <Pagination
+              disabled={fetching}
+              hasNextPage={hasNextPage}
+              hasPreviousPage={hasPreviousPage}
+              onFirstPage={toFirstPage}
+              onLastPage={toLastPage}
+              onNextPage={toNextPage}
+              onPreviousPage={toPreviousPage}
+              page={page}
+              pagesTotal={pagesTotal}
+              variant='inlined'
+            />
+          </MuiGrid>
+          {comments.map(renderComment)}
+          {/* Invsible character to prevent React from skipping render of content */}
+          <div>᲼</div>
+          <MuiGrid item>
+            <Pagination
+              disabled={fetching}
+              hasNextPage={hasNextPage}
+              hasPreviousPage={hasPreviousPage}
+              onFirstPage={toFirstPage}
+              onLastPage={toLastPage}
+              onNextPage={toNextPage}
+              onPreviousPage={toPreviousPage}
+              page={page}
+              pagesTotal={pagesTotal}
+              variant='inlined'
+            />
+          </MuiGrid>
+        </MuiGrid>
+      </div>
+    </div>
   );
 }
 

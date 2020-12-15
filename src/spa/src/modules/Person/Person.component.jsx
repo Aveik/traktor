@@ -48,12 +48,7 @@ function Person() {
     <div className={classes.root}>
       {/* Fixed column */}
       <div className={classes.fixedColumn}>
-        <Tile
-          entity='people'
-          size='small'
-          slug={slug}
-          tmdbId={person.summary?.ids.tmdb}
-        />
+        <Tile entity='people' slug={slug} tmdbId={person.summary?.ids.tmdb} />
         <MuiList>
           {SIDE_MENU_LINKS.map(([label, anchor]) => (
             <Fragment key={anchor}>

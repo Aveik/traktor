@@ -34,11 +34,19 @@ function Tile({
 
   const classes = useStyles({
     backgroundImage: imageUrl,
+    isPerson,
   });
 
   return (
     <div className={classes.root}>
-      <Link className={classes.link} to={`/app/${entity}/${slug}`}>
+      {/*TODO: Resolve. Inlining backgroundSize as JSS refuses to accept this prop */}
+      <Link
+        className={classes.link}
+        style={{
+          backgroundSize: 'cover',
+        }}
+        to={`/app/${entity}/${slug}`}
+      >
         {content && <div className={classes.content}>{content}</div>}
       </Link>
       <div className={classes.children}>{children}</div>

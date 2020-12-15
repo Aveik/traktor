@@ -24,8 +24,10 @@ function Pagination({
   onPreviousPage,
   page,
   pagesTotal,
+  variant = 'wrapped',
 }) {
-  const classes = useStyles();
+  const isWrapped = variant === 'wrapped';
+  const classes = useStyles({ isWrapped });
   const [
     firstPageDisabled,
     previousPageDisabled,
@@ -105,6 +107,7 @@ Pagination.propTypes = {
   onPreviousPage: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   pagesTotal: PropTypes.number.isRequired,
+  variant: PropTypes.oneOf(['inlined', 'wrapped']),
 };
 
 export default Pagination;

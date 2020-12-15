@@ -1,3 +1,8 @@
+import {
+  Button as MuiButton,
+  TextField as MuiTextField,
+} from '@material-ui/core';
+import { ToggleButton as MuiToggleButton } from '@material-ui/lab';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
@@ -14,10 +19,10 @@ function Editor({ comment = '', onSubmit, spoiler = false }) {
     });
   }
 
-  function handleSpoilerChange({ target: { checked } }) {
+  function handleSpoilerChange() {
     setState({
       ...state,
-      spoiler: checked,
+      spoiler: !state.spoiler,
     });
   }
 
@@ -33,27 +38,30 @@ function Editor({ comment = '', onSubmit, spoiler = false }) {
   }
 
   return (
-    <>
-      <label htmlFor='comment'>Type your comment</label>
-      <br />
-      <textarea
-        id='comment'
+    <div>
+      <MuiTextField
+        fullWidth
+        helperText='Enhance your comment with :emoji:, **bold**, _italics_, ~~strike~~, ==highlight==, >quote, `code`, [spoiler]text[/spoiler]'
+        label='Your comment'
+        multiline
         onChange={handleCommentChange}
         value={state.comment}
+        variant='outlined'
       />
-      <br />
-      <input
-        checked={state.spoiler}
-        id='spoiler'
-        onChange={handleSpoilerChange}
-        type='checkbox'
-      />
-      <label htmlFor='spoiler'>Is this spoiler?</label>
-      <br />
-      <button onClick={handleSubmit} type='button'>
-        Submit
-      </button>
-    </>
+      <div style={{ textAlign: 'right' }}>
+        <MuiToggleButton
+          color='primary'
+          onChange={handleSpoilerChange}
+          selected={state.spoiler}
+          size='small'
+        >
+          {state.spoiler ? 'Marked as spoiler' : 'Mark as spoiler'}
+        </MuiToggleButton>{' '}
+        <MuiButton color='secondary' onClick={handleSubmit} variant='outlined'>
+          Submit
+        </MuiButton>
+      </div>
+    </div>
   );
 }
 

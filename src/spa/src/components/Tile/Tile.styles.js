@@ -17,12 +17,13 @@ export default makeStyles((theme) => ({
     height: 30,
     padding: 2,
   },
-  link: ({ backgroundImage }) => ({
-    background: `url(${backgroundImage}) no-repeat center`,
-    'background-size': 'cover',
+  link: ({ backgroundImage, isPerson }) => ({
+    background: `url(${backgroundImage}) no-repeat ${
+      isPerson ? 'top center' : 'center'
+    }`,
     color: theme.palette.primary.contrastText,
     display: 'block',
-    paddingTop: '125%',
+    paddingTop: '148%', // 25 : 37 poster ratio,
     position: 'relative',
     width: '100%',
   }),
