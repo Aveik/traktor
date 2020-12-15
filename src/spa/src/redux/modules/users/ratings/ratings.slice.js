@@ -46,6 +46,20 @@ const removeRating = createAsyncThunk('users/ratings/remove', async function (
   }
 });
 
+function postRatingAndFetch(params) {
+  return async function (dispatch) {
+    await dispatch(postRating(params));
+    await dispatch(fetchRatings());
+  };
+}
+
+function removeRatingAndFetch(params) {
+  return async function (dispatch) {
+    await dispatch(removeRating(params));
+    await dispatch(fetchRatings());
+  };
+}
+
 const { reducer } = createSlice({
   extraReducers: {
     [fetchRatings.fulfilled](state, action) {
@@ -57,5 +71,5 @@ const { reducer } = createSlice({
   reducers: {},
 });
 
-export { fetchRatings, postRating, removeRating };
+export { fetchRatings, postRatingAndFetch, removeRatingAndFetch };
 export default reducer;

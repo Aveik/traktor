@@ -12,7 +12,13 @@ import RecommendButton from '../buttons/Recommend/Recommend.component';
 import WatchlistButton from '../buttons/Watchlist/Watchlist.component';
 import useStyles from './Tile.styles';
 
-function Tile({ chips = [], entity, item, size = 'default' }) {
+function Tile({
+  chips = [],
+  entity,
+  item,
+  omitActions = false,
+  size = 'default',
+}) {
   const {
     ids: { slug, tmdb: tmdbId },
     title,
@@ -43,11 +49,13 @@ function Tile({ chips = [], entity, item, size = 'default' }) {
           </MuiTypography>
         </div>
       </Link>
-      <div className={classes.footer}>
-        <WatchlistButton entity={entity} size='small' slug={slug} />
-        <RecommendButton entity={entity} size='small' slug={slug} />
-        <ListItemManagerButton entity={entity} size='small' slug={slug} />
-      </div>
+      {!omitActions && (
+        <div className={classes.footer}>
+          <WatchlistButton entity={entity} size='small' slug={slug} />
+          <RecommendButton entity={entity} size='small' slug={slug} />
+          <ListItemManagerButton entity={entity} size='small' slug={slug} />
+        </div>
+      )}
     </div>
   );
 }
@@ -56,6 +64,7 @@ Tile.propTypes = {
   chips: PropTypes.arrayOf(PropTypes.string),
   entity: PropTypes.oneOf(['movies', 'people', 'shows']).isRequired,
   item: PropTypes.object.isRequired,
+  omitActions: PropTypes.bool,
   size: PropTypes.oneOf(['default', 'small']),
 };
 
