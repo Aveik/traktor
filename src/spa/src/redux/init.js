@@ -5,10 +5,12 @@ import { fetchWatchlist } from './modules/users/watchlist/watchlist.slice';
 
 function init() {
   return async function (dispatch) {
-    await dispatch(fetchLists());
-    await dispatch(fetchRatings());
-    await dispatch(fetchRecommendations());
-    await dispatch(fetchWatchlist());
+    await Promise.all([
+      dispatch(fetchLists()),
+      dispatch(fetchRatings()),
+      dispatch(fetchRecommendations()),
+      dispatch(fetchWatchlist()),
+    ]);
   };
 }
 

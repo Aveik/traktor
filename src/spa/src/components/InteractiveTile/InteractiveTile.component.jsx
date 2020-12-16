@@ -14,6 +14,7 @@ import useStyles from './InteractiveTile.styles';
 function InteractiveTile({
   children,
   chips = [],
+  content: _content,
   entity,
   primary,
   secondary,
@@ -25,6 +26,7 @@ function InteractiveTile({
 
   const content = (
     <>
+      {_content}
       <div className={classes.chips}>
         {chips.map((chip) => (
           <MuiChip color='secondary' key={chip} label={chip} size='small' />

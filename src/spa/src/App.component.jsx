@@ -45,6 +45,11 @@ function App() {
       'comments/fetch',
       'person/fetch',
       'search/fetch',
+      'users/comments/fetch',
+      'users/ratings/fetch',
+      'users/ratings/remove',
+      'users/watchlist/fetch',
+      'users/recommendations/fetch',
     ]),
   );
 
