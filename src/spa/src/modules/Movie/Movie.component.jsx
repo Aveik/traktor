@@ -135,21 +135,33 @@ function Movie() {
         </MuiGrid>
 
         {/* Comments */}
-        <MuiGrid alignItems='center' container justify='space-between'>
-          <MuiTypography id='comments' variant='h5'>
-            Comments
-          </MuiTypography>
-          <MuiButton
-            color='secondary'
-            component={Link}
-            size='small'
-            to='comments'
-            variant='outlined'
+        <MuiGrid container direction='column' spacing={1}>
+          <MuiGrid
+            alignItems='center'
+            container
+            item
+            justify='space-between'
+            xs={12}
           >
-            All {movie.stats?.comments} comments
-          </MuiButton>
+            <MuiTypography id='comments' variant='h5'>
+              Comments
+            </MuiTypography>
+            <MuiButton
+              color='secondary'
+              component={Link}
+              size='small'
+              to='comments'
+              variant='outlined'
+            >
+              All {movie.stats?.comments} comments
+            </MuiButton>
+          </MuiGrid>
+          {movie.comments.map((comment) => (
+            <MuiGrid item key={comment.id} xs={12}>
+              {renderComment(comment)}
+            </MuiGrid>
+          ))}
         </MuiGrid>
-        {movie.comments.map(renderComment)}
 
         {/* Related */}
         <MuiTypography id='related' variant='h5'>

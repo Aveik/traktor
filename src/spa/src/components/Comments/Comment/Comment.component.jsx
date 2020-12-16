@@ -1,4 +1,5 @@
 import {
+  Box as MuiBox,
   Chip as MuiChip,
   Grid as MuiGrid,
   IconButton as MuiIconButton,
@@ -68,7 +69,9 @@ function Comment({
 
   return (
     <>
-      {fetching && (isEditing || isRemoving) && <MuiLinearProgress />}
+      {(isEditing || isRemoving) && fetching && (
+        <MuiLinearProgress color='secondary' />
+      )}
       <MuiListItem component={MuiPaper}>
         <MuiListItemText
           primary={
@@ -101,11 +104,14 @@ function Comment({
           }
           secondary={
             isEditing ? (
-              <Editor
-                comment={comment}
-                onSubmit={handleSubmit}
-                spoiler={spoiler}
-              />
+              <MuiBox mt={2}>
+                <Editor
+                  comment={comment}
+                  disabled={fetching}
+                  onSubmit={handleSubmit}
+                  spoiler={spoiler}
+                />
+              </MuiBox>
             ) : (
               <ReactMarkdown allowDangerousHtml>
                 {emoji.shortnameToImage(comment)}

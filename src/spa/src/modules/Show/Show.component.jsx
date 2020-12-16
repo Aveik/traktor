@@ -160,21 +160,33 @@ function Show() {
         </MuiGrid>
 
         {/* Comments */}
-        <MuiGrid alignItems='center' container justify='space-between'>
-          <MuiTypography id='comments' variant='h5'>
-            Comments
-          </MuiTypography>
-          <MuiButton
-            color='secondary'
-            component={Link}
-            size='small'
-            to='comments'
-            variant='outlined'
+        <MuiGrid container spacing={1}>
+          <MuiGrid
+            alignItems='center'
+            container
+            item
+            justify='space-between'
+            xs={12}
           >
-            All {show.stats?.comments} comments
-          </MuiButton>
+            <MuiTypography id='comments' variant='h5'>
+              Comments
+            </MuiTypography>
+            <MuiButton
+              color='secondary'
+              component={Link}
+              size='small'
+              to='comments'
+              variant='outlined'
+            >
+              All {show.stats?.comments} comments
+            </MuiButton>
+          </MuiGrid>
+          {show.comments.map((comment) => (
+            <MuiGrid item key={comment.id} xs={12}>
+              {renderComment(comment)}
+            </MuiGrid>
+          ))}
         </MuiGrid>
-        {show.comments.map(renderComment)}
 
         {/* Related */}
         <MuiTypography id='related' variant='h5'>

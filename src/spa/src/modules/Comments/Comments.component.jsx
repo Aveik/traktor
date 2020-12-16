@@ -24,7 +24,10 @@ import Sort from '../../components/Comments/Sort/Sort.component';
 import Pagination from '../../components/Pagination/Pagination.component';
 import Tile from '../../components/Tile/Tile.component';
 import usePagination from '../../hooks/usePagination';
-import { selectLoadingFlagsReducedFactory } from '../../redux/loading/loading.selectors';
+import {
+  selectLoadingFlag,
+  selectLoadingFlagsReducedFactory,
+} from '../../redux/loading/loading.selectors';
 import {
   selectEntities,
   selectPagesTotal,
@@ -60,6 +63,9 @@ function Comments({ entity }) {
   const comments = useSelector(selectEntities);
   const fetching = useSelector((state) =>
     fetchingSelector(state, ['comments/fetch', 'movie/fetch', 'show/fetch']),
+  );
+  const isAddingComment = useSelector((state) =>
+    selectLoadingFlag(state, 'users/comments/post'),
   );
   const [sort, setSort] = useState(DEFAULT_SORT_OPTION);
 
@@ -120,13 +126,11 @@ function Comments({ entity }) {
           </MuiTypography>
         </div>
 
-        {/*<Editor onSubmit={handleSubmit} />*/}
-
         {/* Add comment */}
         <MuiTypography id='actors' variant='h5'>
           Add comment
         </MuiTypography>
-        <Editor onSubmit={handleSubmit} />
+        <Editor disabled={isAddingComment} onSubmit={handleSubmit} />
 
         {/* Comments */}
         <MuiGrid
@@ -154,7 +158,11 @@ function Comments({ entity }) {
               variant='inlined'
             />
           </MuiGrid>
-          {comments.map(renderComment)}
+          {comments.map((comment) => (
+            <MuiGrid item key={comment.id} xs={12}>
+              {renderComment(comment)}
+            </MuiGrid>
+          ))}
           {/* Invsible character to prevent React from skipping render of content */}
           <div>᲼</div>
           <MuiGrid item>

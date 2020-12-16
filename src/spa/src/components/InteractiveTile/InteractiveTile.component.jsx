@@ -21,6 +21,7 @@ function InteractiveTile({
   ...props
 }) {
   const classes = useStyles();
+  const isPeople = entity === 'people';
 
   const content = (
     <>
@@ -44,8 +45,12 @@ function InteractiveTile({
   return (
     <Tile {...props} content={content} entity={entity} slug={slug}>
       <div className={classes.footer}>
-        <WatchlistButton entity={entity} size='small' slug={slug} />
-        <RecommendButton entity={entity} size='small' slug={slug} />
+        {!isPeople && (
+          <>
+            <WatchlistButton entity={entity} size='small' slug={slug} />
+            <RecommendButton entity={entity} size='small' slug={slug} />
+          </>
+        )}
         <ListItemManagerButton entity={entity} size='small' slug={slug} />
       </div>
       {children}

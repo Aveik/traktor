@@ -53,6 +53,19 @@ function transformEntityToSingular(entity) {
   }
 }
 
+function transformEntityToPlural(entity) {
+  switch (entity) {
+    case 'movie':
+      return 'movies';
+    case 'show':
+      return 'shows';
+    case 'person':
+      return 'people';
+    default:
+      return '';
+  }
+}
+
 function transformNumberToK(num) {
   if (!num) {
     return '';
@@ -74,6 +87,7 @@ export {
   extractFactsDefault,
   getUserSlug,
   transformEntityToSingular,
+  transformEntityToPlural,
   transformNumberToK,
   transformRatingToPercentage,
 };

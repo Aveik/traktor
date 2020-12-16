@@ -1,8 +1,16 @@
+import {
+  Box as MuiBox,
+  Button as MuiButton,
+  capitalize,
+  Grid as MuiGrid,
+  TextField as MuiTextField,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
+import InteractiveTile from '../../components/InteractiveTile/InteractiveTile.component';
 import Pagination from '../../components/Pagination/Pagination.component';
 import usePagination from '../../hooks/usePagination';
 import { selectLoadingFlag } from '../../redux/loading/loading.selectors';
@@ -11,13 +19,40 @@ import {
   selectPagesTotal,
 } from '../../redux/modules/search/search.selectors';
 import { fetchSearchResults } from '../../redux/modules/search/search.slice';
+import { transformEntityToPlural } from '../../utils';
 
+function render(searchResults) {
+  return searchResults.map((searchResult) => {
+    const type = searchResult.type;
+    const item = searchResult[type];
+    let primary, secondary;
+    if (type === 'person') {
+      primary = item.name;
+    } else {
+      primary = item.title;
+      secondary = item.year;
+    }
+    return (
+      <MuiGrid item key={item.ids.trakt} lg={2} md={3} sm={6} xs={12}>
+        <InteractiveTile
+          chips={[capitalize(type)]}
+          entity={transformEntityToPlural(type)}
+          primary={primary}
+          secondary={secondary}
+          slug={item.ids.slug}
+          tmdbId={item.ids.tmdb}
+        />
+      </MuiGrid>
+    );
+  });
+}
 function Search({ entity }) {
   const dispatch = useDispatch();
   const {
     hasNextPage,
     hasPreviousPage,
     page,
+    pagesTotal,
     toFirstPage,
     toLastPage,
     toNextPage,
@@ -36,13 +71,26 @@ function Search({ entity }) {
     dispatch(fetchSearchResults({ entity, page, query }));
   }, [dispatch, entity, page, query]);
 
-  function handleQueryChange({ target: { value } }) {
-    setSearchParams({ query: value });
+  function handleQueryChange(e) {
+    if (e.keyCode !== 13) {
+      return;
+    }
+    setSearchParams({ query: e.target.value });
   }
 
   return (
     <>
-      {fetching && <div>Loading...</div>}
+      <MuiBox m={2}>
+        <MuiTextField
+          color='secondary'
+          defaultValue={query}
+          label='What are you looking for?'
+          onKeyDown={handleQueryChange}
+          size='small'
+          variant='outlined'
+        />
+      </MuiBox>
+      <MuiGrid container>{render(searchResults)}</MuiGrid>
       <Pagination
         disabled={fetching}
         hasNextPage={hasNextPage}
@@ -51,17 +99,9 @@ function Search({ entity }) {
         onLastPage={toLastPage}
         onNextPage={toNextPage}
         onPreviousPage={toPreviousPage}
+        page={page}
+        pagesTotal={pagesTotal}
       />
-      <div>
-        <label htmlFor='query'>Input your query:</label>
-        <input
-          id='query'
-          onChange={handleQueryChange}
-          type='text'
-          value={query}
-        />
-      </div>
-      <pre>{JSON.stringify(searchResults, null, 2)}</pre>
     </>
   );
 }

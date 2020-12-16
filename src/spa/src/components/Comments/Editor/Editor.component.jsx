@@ -6,10 +6,10 @@ import { ToggleButton as MuiToggleButton } from '@material-ui/lab';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-function Editor({ comment = '', onSubmit, spoiler = false }) {
+function Editor({ comment = '', disabled = false, onSubmit, spoiler = false }) {
   const [state, setState] = useState({
-    comment,
-    spoiler,
+    comment: comment || '',
+    spoiler: spoiler || false,
   });
 
   function handleCommentChange({ target: { value } }) {
@@ -40,6 +40,7 @@ function Editor({ comment = '', onSubmit, spoiler = false }) {
   return (
     <div>
       <MuiTextField
+        disabled={disabled}
         fullWidth
         helperText='Enhance your comment with :emoji:, **bold**, _italics_, ~~strike~~, ==highlight==, >quote, `code`, [spoiler]text[/spoiler]'
         label='Your comment'
@@ -51,13 +52,20 @@ function Editor({ comment = '', onSubmit, spoiler = false }) {
       <div style={{ textAlign: 'right' }}>
         <MuiToggleButton
           color='primary'
+          disabled={disabled}
           onChange={handleSpoilerChange}
           selected={state.spoiler}
           size='small'
+          value={state.spoiler}
         >
           {state.spoiler ? 'Marked as spoiler' : 'Mark as spoiler'}
         </MuiToggleButton>{' '}
-        <MuiButton color='secondary' onClick={handleSubmit} variant='outlined'>
+        <MuiButton
+          color='secondary'
+          disabled={disabled}
+          onClick={handleSubmit}
+          variant='outlined'
+        >
           Submit
         </MuiButton>
       </div>
@@ -67,6 +75,7 @@ function Editor({ comment = '', onSubmit, spoiler = false }) {
 
 Editor.propTypes = {
   comment: PropTypes.string,
+  disabled: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
   spoiler: PropTypes.bool,
 };
