@@ -31,6 +31,21 @@ const removeList = createAsyncThunk('users/lists/remove', async function (
   }
 });
 
+const updateList = createAsyncThunk('users/lists/update', async function (
+  { list, slug },
+  { rejectWithValue },
+) {
+  try {
+    const response = await axios.put(
+      `/trakt/users/${getUserSlug()}/lists/${slug}`,
+      { list },
+    );
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.toString());
+  }
+});
+
 const { reducer } = createSlice({
   extraReducers: {
     [addList.fulfilled](state, action) {
@@ -47,11 +62,16 @@ const { reducer } = createSlice({
       const index = state.findIndex((list) => list.ids.slug === slug);
       state.splice(index, 1);
     },
+    [updateList.fulfilled](state, action) {
+      const { slug } = action.meta.arg;
+      const index = state.findIndex((list) => list.ids.slug === slug);
+      state[index] = action.payload;
+    },
   },
   initialState: [],
   name: 'users/lists',
   reducers: {},
 });
 
-export { addList, removeList };
+export { addList, removeList, updateList };
 export default reducer;

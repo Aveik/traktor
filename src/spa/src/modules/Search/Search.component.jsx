@@ -16,7 +16,7 @@ import {
   selectPagesTotal,
 } from '../../redux/modules/search/search.selectors';
 import { fetchSearchResults } from '../../redux/modules/search/search.slice';
-import { renderTileBasedOnType } from '../../utils';
+import { renderInteractiveTileBasedOnType } from '../../utils';
 
 function Search({ entity }) {
   const dispatch = useDispatch();
@@ -64,7 +64,7 @@ function Search({ entity }) {
       </MuiBox>
       <MuiGrid container>
         {searchResults.map((item) =>
-          renderTileBasedOnType(item, MuiGrid, {
+          renderInteractiveTileBasedOnType(item, MuiGrid, {
             item: true,
             lg: 2,
             md: 3,

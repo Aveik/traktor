@@ -1,29 +1,41 @@
+import {
+  Paper as MuiPaper,
+  Tab as MuiTab,
+  Tabs as MuiTabs,
+} from '@material-ui/core';
 import React from 'react';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { NavLink, Outlet, useParams } from 'react-router-dom';
+
+const LINKS = [
+  ['Ratings', 'ratings'],
+  ['Recommendations', 'recommendations'],
+  ['Watchlist', 'watchlist'],
+  ['Lists', 'lists'],
+  ['Comments', 'comments'],
+];
 
 function Users() {
   const { userSlug } = useParams();
   return (
     <>
-      <ul>
-        <li>
-          <Link to={`/app/users/${userSlug}/ratings`}>Ratings</Link>
-        </li>
-        <li>
-          <Link to={`/app/users/${userSlug}/recommendations`}>
-            Recommendations
-          </Link>
-        </li>
-        <li>
-          <Link to={`/app/users/${userSlug}/watchlist`}>Watchlist</Link>
-        </li>
-        <li>
-          <Link to={`/app/users/${userSlug}/lists`}>Lists</Link>
-        </li>
-        <li>
-          <Link to={`/app/users/${userSlug}/comments`}>Comments</Link>
-        </li>
-      </ul>
+      <MuiPaper square>
+        <MuiTabs
+          centered
+          indicatorColor='secondary'
+          textColor='secondary'
+          value={false}
+        >
+          {LINKS.map(([label, url]) => (
+            <MuiTab
+              activeClassName='Mui-selected'
+              component={NavLink}
+              key={url}
+              label={label}
+              to={`/app/users/${userSlug}/${url}`}
+            />
+          ))}
+        </MuiTabs>
+      </MuiPaper>
       <Outlet />
     </>
   );

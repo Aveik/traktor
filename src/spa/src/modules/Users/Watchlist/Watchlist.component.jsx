@@ -6,7 +6,7 @@ import { useParams } from 'react-router';
 import { selectEntities as selectProfileWatchlist } from '../../../redux/modules/users/profile/watchlist/watchlist.selectors';
 import { selectEntities as selectUserWatchlist } from '../../../redux/modules/users/user/watchlist/watchlist.selectors';
 import { fetchWatchlist } from '../../../redux/modules/users/user/watchlist/watchlist.slice';
-import { getUserSlug, renderTileBasedOnType } from '../../../utils';
+import { getUserSlug, renderInteractiveTileBasedOnType } from '../../../utils';
 
 function Watchlist() {
   const { userSlug } = useParams();
@@ -28,7 +28,10 @@ function Watchlist() {
     <MuiBox p={2}>
       <MuiGrid container spacing={1}>
         {watchlist.map((item) =>
-          renderTileBasedOnType(item, MuiGrid, { item: true, xs: 2 }),
+          renderInteractiveTileBasedOnType(item, MuiGrid, {
+            item: true,
+            xs: 2,
+          }),
         )}
       </MuiGrid>
     </MuiBox>

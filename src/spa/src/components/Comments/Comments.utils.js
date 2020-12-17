@@ -3,7 +3,6 @@ import React from 'react';
 import Comment from './Comment/Comment.component';
 
 function renderComment(item) {
-  console.log(item);
   const props = {
     comment: item.comment,
     createdAt: item.created_at,

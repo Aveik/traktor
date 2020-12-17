@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import ListItemManagerButton from '../../components/buttons/ListItemManager/ListItemManager.component';
-import InteractiveTile from '../../components/tiles/InteractiveTile/InteractiveTile.component';
 import InteractiveTileWithRating from '../../components/tiles/InteractiveTileWithRating/InteractiveTileWithRating.component';
 import Tile from '../../components/tiles/Tile/Tile.component';
 import { selectEntity } from '../../redux/modules/person/person.selectors';

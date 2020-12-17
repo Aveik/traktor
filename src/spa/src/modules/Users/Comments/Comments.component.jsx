@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import { Box as MuiBox, Grid as MuiGrid } from '@material-ui/core';
+import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
@@ -11,7 +12,7 @@ import {
   selectPagesTotal,
 } from '../../../redux/modules/users/user/comments/comments.selectors';
 import { fetchComments } from '../../../redux/modules/users/user/comments/comments.slice';
-import { getUserSlug } from '../../../utils';
+import { getUserSlug, renderInteractiveTileBasedOnType } from '../../../utils';
 
 function Comments() {
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ function Comments() {
   }
 
   return (
-    <>
+    <MuiBox p={2}>
       <Pagination
         hasNextPage={hasNextPage}
         hasPreviousPage={hasPreviousPage}
@@ -51,8 +52,24 @@ function Comments() {
         page={page}
         pagesTotal={pagesTotal}
       />
-      {comments.map(({ comment }) => renderComment(comment))}
-    </>
+      <MuiGrid container direction='column' spacing={2}>
+        {comments.map((item) => (
+          <MuiGrid container item key={item.comment.id} spacing={2}>
+            <MuiGrid
+              item
+              style={{
+                width: 220,
+              }}
+            >
+              {renderInteractiveTileBasedOnType(item)}
+            </MuiGrid>
+            <MuiGrid item xs>
+              {renderComment(item.comment)}
+            </MuiGrid>
+          </MuiGrid>
+        ))}
+      </MuiGrid>
+    </MuiBox>
   );
 }
 

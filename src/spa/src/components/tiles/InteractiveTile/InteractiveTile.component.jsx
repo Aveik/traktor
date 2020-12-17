@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import ListItemManagerButton from '../../buttons/ListItemManager/ListItemManager.component';
-import RatingButton from '../../buttons/Rating/Rating.component';
 import RecommendButton from '../../buttons/Recommend/Recommend.component';
 import WatchlistButton from '../../buttons/Watchlist/Watchlist.component';
 import Tile from '../Tile/Tile.component';

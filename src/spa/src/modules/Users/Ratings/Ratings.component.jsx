@@ -6,7 +6,7 @@ import { useParams } from 'react-router';
 import { selectEntities as selectProfileRatings } from '../../../redux/modules/users/profile/ratings/ratings.selectors';
 import { selectEntities as selectUserRatings } from '../../../redux/modules/users/user/ratings/ratings.selectors';
 import { fetchRatings } from '../../../redux/modules/users/user/ratings/ratings.slice';
-import { getUserSlug, renderTileBasedOnType } from '../../../utils';
+import { getUserSlug, renderInteractiveTileBasedOnType } from '../../../utils';
 
 function Ratings() {
   const dispatch = useDispatch();
@@ -28,7 +28,10 @@ function Ratings() {
     <MuiBox p={2}>
       <MuiGrid container spacing={1}>
         {ratings.map((rating) =>
-          renderTileBasedOnType(rating, MuiGrid, { item: true, xs: 2 }),
+          renderInteractiveTileBasedOnType(rating, MuiGrid, {
+            item: true,
+            xs: 2,
+          }),
         )}
       </MuiGrid>
     </MuiBox>

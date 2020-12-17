@@ -3,6 +3,7 @@ import React from 'react';
 
 import InteractiveTile from './components/tiles/InteractiveTile/InteractiveTile.component';
 import InteractiveTileWithRating from './components/tiles/InteractiveTileWithRating/InteractiveTileWithRating.component';
+import Tile from './components/tiles/Tile/Tile.component';
 
 const ALLOWED_ENTITY_TYPES = ['movie', 'person', 'show'];
 
@@ -49,7 +50,7 @@ function getUserSlug() {
 }
 
 // Used where entities are of mixed type and in format of { type: .., [type]: { ..obj.. } }
-function renderTileBasedOnType(item, Wrapper, wrapperProps) {
+function renderInteractiveTileBasedOnType(item, Wrapper, wrapperProps) {
   const type = item.type;
   item = item[type];
   let Tile;
@@ -68,6 +69,25 @@ function renderTileBasedOnType(item, Wrapper, wrapperProps) {
     props.secondary = item.year;
     props.overallRating = transformRatingToPercentage(item.rating, 0);
   }
+  if (Wrapper) {
+    return (
+      <Wrapper key={item.ids.slug} {...wrapperProps}>
+        <Tile {...props} />
+      </Wrapper>
+    );
+  }
+  return <Tile key={item.ids.slug} {...props} />;
+}
+
+// Used where entities are of mixed type and in format of { type: .., [type]: { ..obj.. } }
+function renderTileBasedOnType(item, Wrapper, wrapperProps) {
+  const type = item.type;
+  item = item[type];
+  let props = {
+    entity: transformEntityToPlural(type),
+    slug: item.ids.slug,
+    tmdbId: item.ids.tmdb,
+  };
   if (Wrapper) {
     return (
       <Wrapper key={item.ids.slug} {...wrapperProps}>
@@ -126,6 +146,7 @@ export {
   extractFactsDefault,
   filterOutUnsupportedEntityTypes,
   getUserSlug,
+  renderInteractiveTileBasedOnType,
   renderTileBasedOnType,
   transformEntityToSingular,
   transformEntityToPlural,

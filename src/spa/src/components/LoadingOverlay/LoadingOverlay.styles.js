@@ -10,6 +10,6 @@ export default makeStyles((theme) => ({
     position: 'fixed',
     top: 0,
     width: '100%',
-    zIndex: theme.zIndex.drawer,
+    zIndex: theme.zIndex.tooltip + 1,
   },
 }));

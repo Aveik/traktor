@@ -6,7 +6,7 @@ import { useParams } from 'react-router';
 import { selectEntities as selectProfileRecommendations } from '../../../redux/modules/users/profile/recommendations/recommendations.selectors';
 import { selectEntities as selectUserRecommendations } from '../../../redux/modules/users/user/recommendations/recommendations.selectors';
 import { fetchRecommendations } from '../../../redux/modules/users/user/recommendations/recommendations.slice';
-import { getUserSlug, renderTileBasedOnType } from '../../../utils';
+import { getUserSlug, renderInteractiveTileBasedOnType } from '../../../utils';
 
 function Ratings() {
   const { userSlug } = useParams();
@@ -30,7 +30,10 @@ function Ratings() {
     <MuiBox p={2}>
       <MuiGrid container spacing={1}>
         {recommendations.map((recommendation) =>
-          renderTileBasedOnType(recommendation, MuiGrid, { item: true, xs: 2 }),
+          renderInteractiveTileBasedOnType(recommendation, MuiGrid, {
+            item: true,
+            xs: 2,
+          }),
         )}
       </MuiGrid>
     </MuiBox>

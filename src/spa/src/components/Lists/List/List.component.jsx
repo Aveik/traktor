@@ -17,53 +17,58 @@ import { Link } from 'react-router-dom';
 
 import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
 import {
-  removeComment,
-  updateComment,
-} from '../../../redux/modules/users/profile/comments/comments.slice';
+  removeList,
+  updateList,
+} from '../../../redux/modules/users/profile/lists/lists.slice';
 import { getUserSlug } from '../../../utils';
 import Editor from '../Editor/Editor.component';
 
-function Comment({
-  comment,
-  createdAt,
-  id,
-  review,
-  spoiler,
+function List({
+  description,
+  itemCount,
+  listSlug,
+  name,
+  privacy,
   username,
-  userRating,
   userSlug,
 }) {
   const selector = useMemo(selectLoadingFlagsReducedFactory, []);
   const dispatch = useDispatch();
   const fetching = useSelector((state) =>
-    selector(state, ['users/comments/remove', 'users/comments/update']),
+    selector(state, [
+      'users/lists/remove',
+      'users/lists/update',
+      'users/lists',
+    ]),
   );
   const [state, setState] = useState(null);
   const canEdit = getUserSlug() === userSlug;
   const [isEditing, isRemoving] = [state === 'editing', state === 'removing'];
 
   const labels = [
-    <MuiTypography display='inline' variant='body2'>
-      {review ? 'Review' : 'Shout'} by{' '}
-      <Link to={`/app/users/${userSlug}`}>{username}</Link>
+    <MuiTypography
+      display='inline'
+      key={`${username}-${listSlug}-label-0`}
+      variant='subtitle1'
+    >
+      <Link to={`/app/users/${userSlug}/lists/${listSlug}`}>{name}</Link>
+    </MuiTypography>,
+    <MuiTypography
+      display='inline'
+      key={`${username}-${listSlug}-label-1`}
+      variant='body2'
+    >
+      {' '}
+      by <Link to={`/app/users/${userSlug}`}>{username}</Link>
     </MuiTypography>,
     ' | ',
-    <MuiTypography display='inline' variant='caption'>
-      {new Date(createdAt).toLocaleString('da-DK')}
+    <MuiTypography
+      display='inline'
+      key={`${username}-${listSlug}-label-2`}
+      variant='body2'
+    >
+      {itemCount} items
     </MuiTypography>,
-    userRating && (
-      <>
-        {' | '}
-        <MuiTypography display='inline' variant='caption'>
-          rated {userRating}
-        </MuiTypography>
-      </>
-    ),
-    spoiler && (
-      <>
-        {' | '} <MuiChip label='Spoiler' size='small' />
-      </>
-    ),
   ];
 
   function toggleEditMode() {
@@ -77,15 +82,15 @@ function Comment({
   //@TODO: unwrap promise and add .catch() as removing can fail
   function handleRemove() {
     setState('removing');
-    dispatch(removeComment(id));
+    dispatch(removeList(listSlug));
   }
 
   //@TODO: unwrap promise and add .catch() as editing can fail
-  function handleSubmit({ reset, ...comment }) {
+  function handleSubmit({ reset, ...list }) {
     dispatch(
-      updateComment({
-        ...comment,
-        id,
+      updateList({
+        ...list,
+        slug: listSlug,
       }),
     ).then(() => setState('default'));
   }
@@ -112,29 +117,30 @@ function Comment({
         {isEditing ? (
           <MuiBox mt={2}>
             <Editor
-              comment={comment}
+              description={description}
               disabled={fetching}
+              isPrivate={privacy === 'private'}
+              name={name}
               onSubmit={handleSubmit}
-              spoiler={spoiler}
             />
           </MuiBox>
         ) : (
           <ReactMarkdown allowDangerousHtml>
-            {emoji.shortnameToImage(comment)}
+            {emoji.shortnameToImage(description)}
           </ReactMarkdown>
         )}
       </MuiBox>
     </>
   );
 }
-Comment.propTypes = {
-  comment: PropTypes.string.isRequired,
-  createdAt: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
-  review: PropTypes.bool.isRequired,
-  spoiler: PropTypes.bool.isRequired,
+
+List.propTypes = {
+  description: PropTypes.string.isRequired,
+  itemCount: PropTypes.number.isRequired,
+  listSlug: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  privacy: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
-  userRating: PropTypes.number,
   userSlug: PropTypes.string.isRequired,
 };
-export default Comment;
+export default List;

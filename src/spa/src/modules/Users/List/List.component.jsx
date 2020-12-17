@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { selectEntity as selectProfileList } from '../../../redux/modules/users/profile/list/list.selectors';
 import { selectEntity as selectUserList } from '../../../redux/modules/users/user/list/list.selectors';
 import { fetchList } from '../../../redux/modules/users/user/list/list.slice';
-import { getUserSlug, renderTileBasedOnType } from '../../../utils';
+import { getUserSlug, renderInteractiveTileBasedOnType } from '../../../utils';
 
 function List() {
   const { id, userSlug } = useParams();
@@ -23,7 +23,10 @@ function List() {
     <MuiBox p={2}>
       <MuiGrid container spacing={1}>
         {list.items.map((item) =>
-          renderTileBasedOnType(item, MuiGrid, { item: true, xs: 2 }),
+          renderInteractiveTileBasedOnType(item, MuiGrid, {
+            item: true,
+            xs: 2,
+          }),
         )}
       </MuiGrid>
     </MuiBox>
