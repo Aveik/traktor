@@ -20,8 +20,8 @@ import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading
 import {
   addToListAndRefetch,
   removeFromListAndRefetch,
-} from '../../../redux/modules/users/list/list.slice';
-import { selectListsForManagerFactory } from '../../../redux/modules/users/lists/lists.selectors';
+} from '../../../redux/modules/users/profile/list/list.slice';
+import { selectListsForManagerFactory } from '../../../redux/modules/users/profile/lists/lists.selectors';
 import useStyles from './ListItemManager.styles';
 
 function ListItemManager({ entity, size = 'default', slug }) {

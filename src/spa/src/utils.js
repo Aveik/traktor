@@ -1,24 +1,15 @@
 import { capitalize } from '@material-ui/core';
 import React from 'react';
 
+import InteractiveTile from './components/tiles/InteractiveTile/InteractiveTile.component';
+import InteractiveTileWithRating from './components/tiles/InteractiveTileWithRating/InteractiveTileWithRating.component';
+
+const ALLOWED_ENTITY_TYPES = ['movie', 'person', 'show'];
+
 const DEFAULTS = {
   COMMENT_PAGE_SIZE: 20,
   PAGE_SIZE: 36,
 };
-
-function parseCookie() {
-  return document.cookie.split('; ').reduce((acc, cookie) => {
-    const [key, value] = cookie.split('=');
-    acc[key] = value;
-    return acc;
-  }, {});
-}
-
-function getUserSlug() {
-  return process.env.NODE_ENV === 'development'
-    ? process.env.REACT_APP_MOCKED_USER_SLUG
-    : parseCookie().userSlug;
-}
 
 function extractFactsDefault(item) {
   if (!item) {
@@ -37,6 +28,54 @@ function extractFactsDefault(item) {
     ['Comments', transformNumberToK(stats?.comments)],
     ['Trailer', <a href={summary?.trailer}>Watch trailer</a>],
   ];
+}
+
+function filterOutUnsupportedEntityTypes(items) {
+  return items.filter(({ type }) => ALLOWED_ENTITY_TYPES.includes(type));
+}
+
+function parseCookie() {
+  return document.cookie.split('; ').reduce((acc, cookie) => {
+    const [key, value] = cookie.split('=');
+    acc[key] = value;
+    return acc;
+  }, {});
+}
+
+function getUserSlug() {
+  return process.env.NODE_ENV === 'development'
+    ? process.env.REACT_APP_MOCKED_USER_SLUG
+    : parseCookie().userSlug;
+}
+
+// Used where entities are of mixed type and in format of { type: .., [type]: { ..obj.. } }
+function renderTileBasedOnType(item, Wrapper, wrapperProps) {
+  const type = item.type;
+  item = item[type];
+  let Tile;
+  let props = {
+    chips: [capitalize(type)],
+    entity: transformEntityToPlural(type),
+    slug: item.ids.slug,
+    tmdbId: item.ids.tmdb,
+  };
+  if (type === 'person') {
+    Tile = InteractiveTile;
+    props.primary = item.name;
+  } else {
+    Tile = InteractiveTileWithRating;
+    props.primary = item.title;
+    props.secondary = item.year;
+    props.overallRating = transformRatingToPercentage(item.rating, 0);
+  }
+  if (Wrapper) {
+    return (
+      <Wrapper key={item.ids.slug} {...wrapperProps}>
+        <Tile {...props} />
+      </Wrapper>
+    );
+  }
+  return <Tile key={item.ids.slug} {...props} />;
 }
 
 function transformEntityToSingular(entity) {
@@ -75,17 +114,19 @@ function transformNumberToK(num) {
     : Math.sign(num) * Math.abs(num);
 }
 
-function transformRatingToPercentage(rating) {
+function transformRatingToPercentage(rating, decimalPlaces = 2) {
   if (!rating) {
     return '';
   }
-  return `${(rating * 10).toFixed(2)}%`;
+  return `${(rating * 10).toFixed(decimalPlaces)}%`;
 }
 
 export {
   DEFAULTS,
   extractFactsDefault,
+  filterOutUnsupportedEntityTypes,
   getUserSlug,
+  renderTileBasedOnType,
   transformEntityToSingular,
   transformEntityToPlural,
   transformNumberToK,

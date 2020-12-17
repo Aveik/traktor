@@ -1,7 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { removeComment, updateComment } from '../users/comments/comments.slice';
+import {
+  removeComment,
+  updateComment,
+} from '../users/profile/comments/comments.slice';
 
 const fetchMovie = createAsyncThunk('movie/fetch', async function (
   slug,
@@ -21,7 +24,7 @@ const fetchMovie = createAsyncThunk('movie/fetch', async function (
       axios.get(`/trakt/movies/${slug}/comments/highest`),
       axios.get(`/trakt/movies/${slug}/people`),
       axios.get(`/trakt/movies/${slug}/ratings`),
-      axios.get(`/trakt/movies/${slug}/related`),
+      axios.get(`/trakt/movies/${slug}/related?extended=full`),
     ]);
     return {
       comments: commentsResponse.data,

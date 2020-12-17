@@ -16,11 +16,11 @@ import RatingButton from '../../components/buttons/Rating/Rating.component';
 import RecommendButton from '../../components/buttons/Recommend/Recommend.component';
 import WatchlistButton from '../../components/buttons/Watchlist/Watchlist.component';
 import { renderComment } from '../../components/Comments/Comments.utils';
-import InteractiveTile from '../../components/InteractiveTile/InteractiveTile.component';
-import Tile from '../../components/Tile/Tile.component';
+import InteractiveTileWithRating from '../../components/tiles/InteractiveTileWithRating/InteractiveTileWithRating.component';
+import Tile from '../../components/tiles/Tile/Tile.component';
 import { selectEntity } from '../../redux/modules/movie/movie.selectors';
 import { fetchMovie } from '../../redux/modules/movie/movie.slice';
-import { extractFactsDefault } from '../../utils';
+import { extractFactsDefault, transformRatingToPercentage } from '../../utils';
 import useStyles from './Movie.styles';
 
 const SIDE_MENU_LINKS = [
@@ -170,8 +170,9 @@ function Movie() {
         <MuiGrid container spacing={1}>
           {movie.related.map((movie) => (
             <MuiGrid item key={movie.ids.slug} xs={2}>
-              <InteractiveTile
+              <InteractiveTileWithRating
                 entity='movies'
+                overallRating={transformRatingToPercentage(movie.rating, 0)}
                 primary={movie.title}
                 secondary={movie.year}
                 slug={movie.ids.slug}

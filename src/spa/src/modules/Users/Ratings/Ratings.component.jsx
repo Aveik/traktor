@@ -1,38 +1,25 @@
-import {
-  Box as MuiBox,
-  Grid as MuiGrid,
-  IconButton as MuiIconButton,
-  Tooltip as MuiTooltip,
-  Typography as MuiTypography,
-} from '@material-ui/core';
-import { Delete as DeleteIcon } from '@material-ui/icons';
+import { Box as MuiBox, Grid as MuiGrid } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
-import InteractiveTile from '../../../components/InteractiveTile/InteractiveTile.component';
-import { selectEntities } from '../../../redux/modules/users/ratings/ratings.selectors';
-import {
-  fetchRatings,
-  removeRatingAndFetch,
-} from '../../../redux/modules/users/ratings/ratings.slice';
-import { transformEntityToPlural } from '../../../utils';
+import { selectEntities as selectProfileRatings } from '../../../redux/modules/users/profile/ratings/ratings.selectors';
+import { selectEntities as selectUserRatings } from '../../../redux/modules/users/user/ratings/ratings.selectors';
+import { fetchRatings } from '../../../redux/modules/users/user/ratings/ratings.slice';
+import { getUserSlug, renderTileBasedOnType } from '../../../utils';
 
 function Ratings() {
-  const { userSlug } = useParams();
   const dispatch = useDispatch();
-  const ratings = useSelector(selectEntities);
+  const { userSlug } = useParams();
+  const ratings = useSelector(
+    userSlug === getUserSlug() ? selectProfileRatings : selectUserRatings,
+  );
 
   useEffect(() => {
     dispatch(fetchRatings(userSlug));
   }, [dispatch, userSlug]);
 
-  function handleRemove(entity, slug) {
-    return function () {
-      dispatch(removeRatingAndFetch({ entity, slug }));
-    };
-  }
-
+  //@TODO: Add empty design component
   if (!ratings.length) {
     return 'No ratings found';
   }
@@ -40,36 +27,9 @@ function Ratings() {
   return (
     <MuiBox p={2}>
       <MuiGrid container spacing={1}>
-        {ratings.map((rating) => {
-          const type = rating.type;
-          const entity = transformEntityToPlural(rating.type);
-          const item = rating[type];
-          return (
-            <MuiGrid item key={item.ids.slug} xs={2}>
-              <InteractiveTile
-                entity={entity}
-                primary={item.title}
-                secondary={item.year}
-                slug={item.ids.slug}
-                tmdbId={item.ids.tmdb}
-              >
-                <MuiTypography color='secondary' variant='caption'>
-                  Rated {rating.rating}/10
-                  <MuiTooltip title='Remove rating'>
-                    <MuiIconButton
-                      color='inherit'
-                      disableRipple
-                      onClick={handleRemove(entity, item.ids.slug)}
-                      size='small'
-                    >
-                      <DeleteIcon fontSize='inherit' />
-                    </MuiIconButton>
-                  </MuiTooltip>
-                </MuiTypography>
-              </InteractiveTile>
-            </MuiGrid>
-          );
-        })}
+        {ratings.map((rating) =>
+          renderTileBasedOnType(rating, MuiGrid, { item: true, xs: 2 }),
+        )}
       </MuiGrid>
     </MuiBox>
   );

@@ -2,23 +2,21 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
-import { selectLoadingFlag } from '../../../redux/loading/loading.selectors';
-import { selectEntities } from '../../../redux/modules/users/lists/lists.selectors';
+import { selectEntities as selectProfileLists } from '../../../redux/modules/users/profile/lists/lists.selectors';
 import {
   addList,
-  fetchLists,
   removeList,
-} from '../../../redux/modules/users/lists/lists.slice';
+} from '../../../redux/modules/users/profile/lists/lists.slice';
+import { selectEntities as selectUserLists } from '../../../redux/modules/users/user/lists/lists.selectors';
+import { fetchLists } from '../../../redux/modules/users/user/lists/lists.slice';
 import { getUserSlug } from '../../../utils';
 
 function Lists() {
   const { userSlug } = useParams();
   const dispatch = useDispatch();
-  const fetching = useSelector((state) =>
-    selectLoadingFlag(state, 'users/lists/fetch'),
+  const lists = useSelector(
+    userSlug === getUserSlug() ? selectProfileLists : selectUserLists,
   );
-  const lists = useSelector(selectEntities);
-  const canManage = userSlug === getUserSlug();
 
   useEffect(() => {
     dispatch(fetchLists(userSlug));
@@ -38,19 +36,19 @@ function Lists() {
     dispatch(removeList('my-list'));
   }
 
+  //@TODO: Add empty design component
+  if (!lists.length) {
+    return 'No lists found';
+  }
+
   return (
     <>
-      {fetching && <div>Loading...</div>}
-      {canManage && (
-        <>
-          <button onClick={handleAdd} type='button'>
-            Add list
-          </button>
-          <button onClick={handleRemove} type='button'>
-            Remove list
-          </button>
-        </>
-      )}
+      <button onClick={handleAdd} type='button'>
+        Add list
+      </button>
+      <button onClick={handleRemove} type='button'>
+        Remove list
+      </button>
       <pre>{JSON.stringify(lists, null, 2)}</pre>
     </>
   );

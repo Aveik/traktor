@@ -8,8 +8,8 @@ const fetchPerson = createAsyncThunk('person/fetch', async function (
   try {
     const [summaryResponse, moviesResponse, showsResponse] = await Promise.all([
       axios.get(`/trakt/people/${slug}?extended=full`),
-      axios.get(`/trakt/people/${slug}/movies`),
-      axios.get(`/trakt/people/${slug}/shows`),
+      axios.get(`/trakt/people/${slug}/movies?extended=full`),
+      axios.get(`/trakt/people/${slug}/shows?extended=full`),
     ]);
     return {
       movies: moviesResponse.data,

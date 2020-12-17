@@ -1,7 +1,7 @@
-import { fetchLists } from './modules/users/lists/lists.slice';
-import { fetchRatings } from './modules/users/ratings/ratings.slice';
-import { fetchRecommendations } from './modules/users/recommendations/recommendations.slice';
-import { fetchWatchlist } from './modules/users/watchlist/watchlist.slice';
+import { fetchLists } from './modules/users/user/lists/lists.slice';
+import { fetchRatings } from './modules/users/user/ratings/ratings.slice';
+import { fetchRecommendations } from './modules/users/user/recommendations/recommendations.slice';
+import { fetchWatchlist } from './modules/users/user/watchlist/watchlist.slice';
 
 function init() {
   return async function (dispatch) {

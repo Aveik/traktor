@@ -27,6 +27,7 @@ import List from './modules/Users/List/List.component';
 import Lists from './modules/Users/Lists/Lists.component';
 import Ratings from './modules/Users/Ratings/Ratings.component';
 import Recommendations from './modules/Users/Recommendations/Recommendations.component';
+import Users from './modules/Users/Users.component';
 import Watchlist from './modules/Users/Watchlist/Watchlist.component';
 import { selectLoadingFlagsReducedFactory } from './redux/loading/loading.selectors';
 import store from './redux/store';
@@ -38,18 +39,19 @@ function App() {
   const selector = useMemo(selectLoadingFlagsReducedFactory, []);
   const loading = useSelector((state) =>
     selector(state, [
+      'comments/fetch',
       'movie/fetch',
       'movies/fetch',
-      'show/fetch',
-      'shows/fetch',
-      'comments/fetch',
       'person/fetch',
       'search/fetch',
+      'show/fetch',
+      'shows/fetch',
       'users/comments/fetch',
+      'users/list/fetch',
+      'users/lists/fetch',
       'users/ratings/fetch',
-      'users/ratings/remove',
-      'users/watchlist/fetch',
       'users/recommendations/fetch',
+      'users/watchlist/fetch',
     ]),
   );
 
@@ -105,7 +107,7 @@ function App() {
             <Route element={<Search entity='shows' />} path='shows' />
             <Route element={<Search entity='people' />} path='people' />
           </Route>
-          <Route path='users/:userSlug'>
+          <Route element={<Users />} path='users/:userSlug'>
             <Route element={<Navigate replace to='ratings' />} path='/' />
             <Route element={<Ratings />} path='ratings' />
             <Route element={<Recommendations />} path='recommendations' />

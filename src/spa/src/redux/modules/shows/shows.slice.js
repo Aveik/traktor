@@ -9,7 +9,7 @@ const fetchShows = createAsyncThunk('shows/fetch', async function (
 ) {
   try {
     const response = await axios.get(
-      `/trakt/shows/${category}?page=${page}&limit=${DEFAULTS.PAGE_SIZE}`,
+      `/trakt/shows/${category}?page=${page}&limit=${DEFAULTS.PAGE_SIZE}&extended=full`,
     );
     if (category === 'popular') {
       response.data = response.data.map((item) => ({ show: item }));

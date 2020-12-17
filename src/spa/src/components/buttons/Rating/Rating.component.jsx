@@ -1,4 +1,11 @@
-import { Button as MuiButton, Popover as MuiPopover } from '@material-ui/core';
+import {
+  Box as MuiBox,
+  Button as MuiButton,
+  IconButton as MuiIconButton,
+  Popover as MuiPopover,
+  Tooltip as MuiTooltip,
+  Typography as MuiTypography,
+} from '@material-ui/core';
 import { Favorite as HeartIcon } from '@material-ui/icons';
 import { Rating as MuiRating } from '@material-ui/lab';
 import PropTypes from 'prop-types';
@@ -6,15 +13,15 @@ import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
-import { selectRatingFactory } from '../../../redux/modules/users/ratings/ratings.selectors';
+import { selectRatingFactory } from '../../../redux/modules/users/profile/ratings/ratings.selectors';
 import {
   postRatingAndFetch,
   removeRatingAndFetch,
-} from '../../../redux/modules/users/ratings/ratings.slice';
+} from '../../../redux/modules/users/profile/ratings/ratings.slice';
 import useStyles from './Rating.styles';
-import { getRatingLabelFromValue } from './Rating.utils';
+import { getRatingFromValue, getRatingLabelFromValue } from './Rating.utils';
 
-function Rating({ entity, slug }) {
+function Rating({ entity, overallRating, size, slug }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const selector = useMemo(selectRatingFactory, []);
@@ -61,20 +68,47 @@ function Rating({ entity, slug }) {
     dispatch(postRatingAndFetch({ entity, rating, slug }));
   }
 
+  let button = (
+    <MuiButton
+      classes={{
+        root: classes.buttonRoot,
+      }}
+      color='secondary'
+      fullWidth
+      onClick={handleOpen}
+      startIcon={<HeartIcon />}
+      variant={rating ? 'contained' : 'outlined'}
+    >
+      {getRatingLabelFromValue(hasHoveredRating ? hoveredRating : rating)}
+    </MuiButton>
+  );
+
+  if (size === 'small') {
+    button = (
+      <MuiTooltip title='Rate'>
+        <span>
+          <MuiTypography
+            color={overallRating || !rating ? 'inherit' : 'secondary'}
+            variant='caption'
+          >
+            {overallRating ||
+              getRatingFromValue(hasHoveredRating ? hoveredRating : rating)}
+          </MuiTypography>
+          <MuiIconButton
+            color={rating ? 'secondary' : 'inherit'}
+            onClick={handleOpen}
+            size='small'
+          >
+            <HeartIcon fontSize='small' />
+          </MuiIconButton>
+        </span>
+      </MuiTooltip>
+    );
+  }
+
   return (
     <>
-      <MuiButton
-        classes={{
-          root: classes.buttonRoot,
-        }}
-        color='secondary'
-        fullWidth
-        onClick={handleOpen}
-        startIcon={<HeartIcon />}
-        variant={rating ? 'contained' : 'outlined'}
-      >
-        {getRatingLabelFromValue(hasHoveredRating ? hoveredRating : rating)}
-      </MuiButton>
+      {button}
       <MuiPopover
         anchorEl={anchorEl}
         anchorOrigin={{
@@ -91,6 +125,11 @@ function Rating({ entity, slug }) {
           vertical: 'top',
         }}
       >
+        {size === 'small' && (
+          <MuiBox textAlign='center'>
+            {getRatingLabelFromValue(hasHoveredRating ? hoveredRating : rating)}
+          </MuiBox>
+        )}
         <MuiRating
           classes={{
             root: classes.ratingRoot,
@@ -110,6 +149,8 @@ function Rating({ entity, slug }) {
 
 Rating.propTypes = {
   entity: PropTypes.oneOf(['movies', 'people', 'shows']).isRequired,
+  overallRating: PropTypes.node,
+  size: PropTypes.oneOf(['default', 'small']),
   slug: PropTypes.string.isRequired,
 };
 

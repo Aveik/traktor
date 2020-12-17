@@ -15,12 +15,13 @@ import PropTypes from 'prop-types';
 import React, { useMemo, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
 import {
   removeComment,
   updateComment,
-} from '../../../redux/modules/users/comments/comments.slice';
+} from '../../../redux/modules/users/profile/comments/comments.slice';
 import { getUserSlug } from '../../../utils';
 import Editor from '../Editor/Editor.component';
 
@@ -78,7 +79,8 @@ function Comment({
             <MuiGrid container justify='space-between'>
               <MuiGrid item>
                 <MuiTypography display='inline' variant='body2'>
-                  {review ? 'Review' : 'Shout'} by {username}
+                  {review ? 'Review' : 'Shout'} by{' '}
+                  <Link to={`/app/users/${userSlug}`}>{username}</Link>
                 </MuiTypography>
                 <MuiTypography display='inline' variant='caption'>
                   {` | ${new Date(createdAt).toLocaleString('da-Dk')} 

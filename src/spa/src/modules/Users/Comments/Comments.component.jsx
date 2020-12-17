@@ -5,16 +5,20 @@ import { useParams } from 'react-router';
 import { renderComment } from '../../../components/Comments/Comments.utils';
 import Pagination from '../../../components/Pagination/Pagination.component';
 import usePagination from '../../../hooks/usePagination';
-import { selectLoadingFlag } from '../../../redux/loading/loading.selectors';
+import { selectEntities as selectProfileComments } from '../../../redux/modules/users/profile/comments/comments.selectors';
 import {
-  selectEntities,
+  selectEntities as selectUserComments,
   selectPagesTotal,
-} from '../../../redux/modules/users/comments/comments.selectors';
-import { fetchComments } from '../../../redux/modules/users/comments/comments.slice';
+} from '../../../redux/modules/users/user/comments/comments.selectors';
+import { fetchComments } from '../../../redux/modules/users/user/comments/comments.slice';
+import { getUserSlug } from '../../../utils';
 
 function Comments() {
-  const { userSlug } = useParams();
   const dispatch = useDispatch();
+  const { userSlug } = useParams();
+  const selector =
+    userSlug === getUserSlug() ? selectProfileComments : selectUserComments;
+  const comments = useSelector(selector);
   const {
     hasNextPage,
     hasPreviousPage,
@@ -25,20 +29,19 @@ function Comments() {
     toNextPage,
     toPreviousPage,
   } = usePagination(selectPagesTotal);
-  const fetching = useSelector((state) =>
-    selectLoadingFlag(state, 'users/comments/fetch'),
-  );
-  const comments = useSelector(selectEntities);
 
   useEffect(() => {
     dispatch(fetchComments({ page, userSlug }));
   }, [dispatch, page, userSlug]);
 
+  //@TODO: Add empty design component
+  if (!comments.length) {
+    return 'No comments found';
+  }
+
   return (
     <>
-      {fetching && <div>Loading...</div>}
       <Pagination
-        disabled={fetching}
         hasNextPage={hasNextPage}
         hasPreviousPage={hasPreviousPage}
         onFirstPage={toFirstPage}
@@ -48,7 +51,7 @@ function Comments() {
         page={page}
         pagesTotal={pagesTotal}
       />
-      {comments.map(({ comment, type }) => renderComment(comment))}
+      {comments.map(({ comment }) => renderComment(comment))}
     </>
   );
 }

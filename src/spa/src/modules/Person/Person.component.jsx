@@ -11,10 +11,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import ListItemManagerButton from '../../components/buttons/ListItemManager/ListItemManager.component';
-import InteractiveTile from '../../components/InteractiveTile/InteractiveTile.component';
-import Tile from '../../components/Tile/Tile.component';
+import InteractiveTile from '../../components/tiles/InteractiveTile/InteractiveTile.component';
+import InteractiveTileWithRating from '../../components/tiles/InteractiveTileWithRating/InteractiveTileWithRating.component';
+import Tile from '../../components/tiles/Tile/Tile.component';
 import { selectEntity } from '../../redux/modules/person/person.selectors';
 import { fetchPerson } from '../../redux/modules/person/person.slice';
+import { transformRatingToPercentage } from '../../utils';
 import useStyles from './Person.styles';
 
 const SIDE_MENU_LINKS = [
@@ -103,15 +105,16 @@ function Person() {
         <MuiGrid container spacing={1}>
           {person.movies?.cast?.map(({ character, movie }) => (
             <MuiGrid item key={movie.ids.slug} xs={2}>
-              <InteractiveTile
+              <InteractiveTileWithRating
                 entity='movies'
+                overallRating={transformRatingToPercentage(movie.rating, 0)}
                 primary={movie.title}
                 secondary={movie.year}
                 slug={movie.ids.slug}
                 tmdbId={movie.ids.tmdb}
               >
                 <MuiTypography variant='caption'>{character}</MuiTypography>
-              </InteractiveTile>
+              </InteractiveTileWithRating>
             </MuiGrid>
           ))}
         </MuiGrid>
@@ -123,15 +126,16 @@ function Person() {
         <MuiGrid container spacing={1}>
           {person.shows?.cast?.map(({ character, show }) => (
             <MuiGrid item key={show.ids.slug} xs={2}>
-              <InteractiveTile
+              <InteractiveTileWithRating
                 entity='shows'
+                overallRating={transformRatingToPercentage(show.rating, 0)}
                 primary={show.title}
                 secondary={show.year}
                 slug={show.ids.slug}
                 tmdbId={show.ids.tmdb}
               >
                 <MuiTypography variant='caption'>{character}</MuiTypography>
-              </InteractiveTile>
+              </InteractiveTileWithRating>
             </MuiGrid>
           ))}
         </MuiGrid>

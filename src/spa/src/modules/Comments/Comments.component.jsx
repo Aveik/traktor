@@ -22,7 +22,7 @@ import {
 import Editor from '../../components/Comments/Editor/Editor.component';
 import Sort from '../../components/Comments/Sort/Sort.component';
 import Pagination from '../../components/Pagination/Pagination.component';
-import Tile from '../../components/Tile/Tile.component';
+import Tile from '../../components/tiles/Tile/Tile.component';
 import usePagination from '../../hooks/usePagination';
 import {
   selectLoadingFlag,
@@ -38,7 +38,7 @@ import {
 } from '../../redux/modules/comments/comments.slice';
 import { selectEntity as selectMovie } from '../../redux/modules/movie/movie.selectors';
 import { selectEntity as selectShow } from '../../redux/modules/show/show.selectors';
-import { postComment } from '../../redux/modules/users/comments/comments.slice';
+import { postComment } from '../../redux/modules/users/profile/comments/comments.slice';
 import useStyles from './Comments.styles';
 
 const SIDE_MENU_LINKS = [['Comments', '#comments']];

@@ -10,11 +10,11 @@ import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
-import { selectIsWatchlistedFactory } from '../../../redux/modules/users/watchlist/watchlist.selectors';
+import { selectIsWatchlistedFactory } from '../../../redux/modules/users/profile/watchlist/watchlist.selectors';
 import {
   addToWatchlistAndRefetch,
   removeFromWatchlistAndRefetch,
-} from '../../../redux/modules/users/watchlist/watchlist.slice';
+} from '../../../redux/modules/users/profile/watchlist/watchlist.slice';
 
 function Watchlist({ entity, size = 'default', slug }) {
   const dispatch = useDispatch();

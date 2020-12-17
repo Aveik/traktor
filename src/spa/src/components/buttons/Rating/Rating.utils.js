@@ -1,3 +1,10 @@
+function getRatingFromValue(value) {
+  if (value === -1) {
+    return 0;
+  }
+  return value;
+}
+
 function getRatingLabelFromValue(value) {
   switch (value) {
     case -1:
@@ -27,4 +34,4 @@ function getRatingLabelFromValue(value) {
   }
 }
 
-export { getRatingLabelFromValue };
+export { getRatingFromValue, getRatingLabelFromValue };

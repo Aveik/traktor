@@ -1,7 +1,8 @@
 import { Grid as MuiGrid } from '@material-ui/core';
 import React from 'react';
 
-import InteractiveTile from '../../components/InteractiveTile/InteractiveTile.component';
+import InteractiveTileWithRating from '../../components/tiles/InteractiveTileWithRating/InteractiveTileWithRating.component';
+import { transformRatingToPercentage } from '../../utils';
 
 function renderTrending(shows) {
   return shows.map(({ show, watchers = 0 }) => {
@@ -11,9 +12,10 @@ function renderTrending(shows) {
     }
     return (
       <MuiGrid item key={show.ids.trakt} lg={2} md={3} sm={6} xs={12}>
-        <InteractiveTile
+        <InteractiveTileWithRating
           chips={chips}
           entity='shows'
+          overallRating={transformRatingToPercentage(show.rating, 0)}
           primary={show.title}
           secondary={show.year}
           slug={show.ids.slug}
@@ -27,8 +29,9 @@ function renderTrending(shows) {
 function renderPopular(shows) {
   return shows.map(({ show }) => (
     <MuiGrid item key={show.ids.trakt} lg={2} md={3} sm={6} xs={12}>
-      <InteractiveTile
+      <InteractiveTileWithRating
         entity='shows'
+        overallRating={transformRatingToPercentage(show.rating, 0)}
         primary={show.title}
         secondary={show.year}
         slug={show.ids.slug}
@@ -46,9 +49,10 @@ function renderRecommended(shows) {
     }
     return (
       <MuiGrid item key={show.ids.trakt} lg={2} md={3} sm={6} xs={12}>
-        <InteractiveTile
+        <InteractiveTileWithRating
           chips={chips}
           entity='shows'
+          overallRating={transformRatingToPercentage(show.rating, 0)}
           primary={show.title}
           secondary={show.year}
           slug={show.ids.slug}
@@ -71,9 +75,10 @@ function renderWatched(shows) {
       }
       return (
         <MuiGrid item key={show.ids.trakt} lg={2} md={3} sm={6} xs={12}>
-          <InteractiveTile
+          <InteractiveTileWithRating
             chips={chips}
             entity='shows'
+            overallRating={transformRatingToPercentage(show.rating, 0)}
             primary={show.title}
             secondary={show.year}
             slug={show.ids.slug}
@@ -93,9 +98,10 @@ function renderAnticipated(shows) {
     }
     return (
       <MuiGrid item key={show.ids.trakt} lg={2} md={3} sm={6} xs={12}>
-        <InteractiveTile
+        <InteractiveTileWithRating
           chips={chips}
           entity='shows'
+          overallRating={transformRatingToPercentage(show.rating, 0)}
           primary={show.title}
           secondary={show.year}
           slug={show.ids.slug}

@@ -16,11 +16,11 @@ import RatingButton from '../../components/buttons/Rating/Rating.component';
 import RecommendButton from '../../components/buttons/Recommend/Recommend.component';
 import WatchlistButton from '../../components/buttons/Watchlist/Watchlist.component';
 import { renderComment } from '../../components/Comments/Comments.utils';
-import InteractiveTile from '../../components/InteractiveTile/InteractiveTile.component';
-import Tile from '../../components/Tile/Tile.component';
+import InteractiveTileWithRating from '../../components/tiles/InteractiveTileWithRating/InteractiveTileWithRating.component';
+import Tile from '../../components/tiles/Tile/Tile.component';
 import { selectEntity } from '../../redux/modules/show/show.selectors';
 import { fetchShow } from '../../redux/modules/show/show.slice';
-import { extractFactsDefault } from '../../utils';
+import { extractFactsDefault, transformRatingToPercentage } from '../../utils';
 import useStyles from './Show.styles';
 
 const SIDE_MENU_LINKS = [
@@ -195,8 +195,9 @@ function Show() {
         <MuiGrid container spacing={1}>
           {show.related.map((show) => (
             <MuiGrid item key={show.ids.slug} xs={2}>
-              <InteractiveTile
+              <InteractiveTileWithRating
                 entity='shows'
+                overallRating={transformRatingToPercentage(show.rating, 0)}
                 primary={show.title}
                 secondary={show.year}
                 slug={show.ids.slug}

@@ -4,17 +4,17 @@ import {
   IconButton as MuiIconButton,
   Tooltip as MuiTooltip,
 } from '@material-ui/core';
-import { Favorite as RecommendIcon } from '@material-ui/icons';
+import { ThumbUp as RecommendIcon } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
-import { selectIsRecommendFactory } from '../../../redux/modules/users/recommendations/recommendations.selectors';
+import { selectIsRecommendFactory } from '../../../redux/modules/users/profile/recommendations/recommendations.selectors';
 import {
   postRecommendationAndRefetch,
   removeRecommendationAndRefetch,
-} from '../../../redux/modules/users/recommendations/recommendations.slice';
+} from '../../../redux/modules/users/profile/recommendations/recommendations.slice';
 
 function Recommend({ entity, size = 'default', slug }) {
   const dispatch = useDispatch();

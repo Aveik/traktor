@@ -8,7 +8,7 @@ import {
   postComment,
   removeComment,
   updateComment,
-} from '../users/comments/comments.slice';
+} from '../users/profile/comments/comments.slice';
 
 const fetchComments = createAsyncThunk('comments/fetch', async function (
   { entity, page, slug, sort },

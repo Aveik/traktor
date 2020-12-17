@@ -1,7 +1,5 @@
 import {
   Box as MuiBox,
-  Button as MuiButton,
-  capitalize,
   Grid as MuiGrid,
   TextField as MuiTextField,
 } from '@material-ui/core';
@@ -10,7 +8,6 @@ import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
-import InteractiveTile from '../../components/InteractiveTile/InteractiveTile.component';
 import Pagination from '../../components/Pagination/Pagination.component';
 import usePagination from '../../hooks/usePagination';
 import { selectLoadingFlag } from '../../redux/loading/loading.selectors';
@@ -19,33 +16,8 @@ import {
   selectPagesTotal,
 } from '../../redux/modules/search/search.selectors';
 import { fetchSearchResults } from '../../redux/modules/search/search.slice';
-import { transformEntityToPlural } from '../../utils';
+import { renderTileBasedOnType } from '../../utils';
 
-function render(searchResults) {
-  return searchResults.map((searchResult) => {
-    const type = searchResult.type;
-    const item = searchResult[type];
-    let primary, secondary;
-    if (type === 'person') {
-      primary = item.name;
-    } else {
-      primary = item.title;
-      secondary = item.year;
-    }
-    return (
-      <MuiGrid item key={item.ids.trakt} lg={2} md={3} sm={6} xs={12}>
-        <InteractiveTile
-          chips={[capitalize(type)]}
-          entity={transformEntityToPlural(type)}
-          primary={primary}
-          secondary={secondary}
-          slug={item.ids.slug}
-          tmdbId={item.ids.tmdb}
-        />
-      </MuiGrid>
-    );
-  });
-}
 function Search({ entity }) {
   const dispatch = useDispatch();
   const {
@@ -90,7 +62,17 @@ function Search({ entity }) {
           variant='outlined'
         />
       </MuiBox>
-      <MuiGrid container>{render(searchResults)}</MuiGrid>
+      <MuiGrid container>
+        {searchResults.map((item) =>
+          renderTileBasedOnType(item, MuiGrid, {
+            item: true,
+            lg: 2,
+            md: 3,
+            sm: 6,
+            xs: 12,
+          }),
+        )}
+      </MuiGrid>
       <Pagination
         disabled={fetching}
         hasNextPage={hasNextPage}
