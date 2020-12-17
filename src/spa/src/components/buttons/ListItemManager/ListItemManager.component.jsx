@@ -15,6 +15,7 @@ import { List as ListIcon } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
 import {
@@ -143,6 +144,14 @@ function ListItemManager({ entity, size = 'default', slug }) {
               <MuiListItemText>{name}</MuiListItemText>
             </MuiListItem>
           ))}
+          <MuiListItem button component={Link} to='?addList'>
+            <MuiListItemAction
+              classes={{
+                root: classes.listItemActionRoot,
+              }}
+            />
+            <MuiListItemText>Add list</MuiListItemText>
+          </MuiListItem>
         </MuiList>
       </MuiPopover>
     </>

@@ -10,7 +10,7 @@ const fetchSearchResults = createAsyncThunk('search/fetch', async function (
   try {
     entity = transformEntityToSingular(entity);
     const response = await axios.get(
-      `/trakt/search/${entity}?query=${query}&page=${page}&limit=${DEFAULTS.PAGE_SIZE}`,
+      `/trakt/search/${entity}?query=${query}&page=${page}&limit=${DEFAULTS.PAGE_SIZE}?extended=full`,
     );
     return {
       entities: response.data,

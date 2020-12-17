@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 
 import Layout from './components/Layout/Layout.component';
+import AddListDialog from './components/Lists/AddListDialog/AddListDialog.component';
 import LoadingOverlay from './components/LoadingOverlay/LoadingOverlay.component';
 import NotFound from './components/NotFound/NotFound.component';
 import useScrollToTopOnLocationChange from './hooks/useScrollToTopOnLocationChange';
@@ -58,6 +59,7 @@ function App() {
   return (
     <>
       {loading && <LoadingOverlay />}
+      <AddListDialog />
       <Routes basename='/app'>
         <Route element={<Navigate replace to='movies/trending' />} path='/' />
         <Route element={<Layout />} path='/'>

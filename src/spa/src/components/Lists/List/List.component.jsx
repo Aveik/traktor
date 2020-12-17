@@ -1,6 +1,5 @@
 import {
   Box as MuiBox,
-  Chip as MuiChip,
   Grid as MuiGrid,
   IconButton as MuiIconButton,
   LinearProgress as MuiLinearProgress,

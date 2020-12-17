@@ -1,5 +1,5 @@
 import { Box as MuiBox, Grid as MuiGrid } from '@material-ui/core';
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 

@@ -1,6 +1,6 @@
 import {
+  Box as MuiBox,
   Button as MuiButton,
-  Grid as MuiGrid,
   TextField as MuiTextField,
 } from '@material-ui/core';
 import { ToggleButton as MuiToggleButton } from '@material-ui/lab';
@@ -59,8 +59,8 @@ function Editor({
   }
 
   return (
-    <MuiGrid container direction='column' spacing={2}>
-      <MuiGrid item>
+    <>
+      <MuiBox mb={2}>
         <MuiTextField
           disabled={disabled}
           fullWidth
@@ -70,8 +70,8 @@ function Editor({
           value={state.name}
           variant='outlined'
         />
-      </MuiGrid>
-      <MuiGrid item>
+      </MuiBox>
+      <MuiBox mb={0}>
         <MuiTextField
           disabled={disabled}
           fullWidth
@@ -83,8 +83,7 @@ function Editor({
           value={state.description}
           variant='outlined'
         />
-      </MuiGrid>
-
+      </MuiBox>
       <div style={{ textAlign: 'right' }}>
         <MuiToggleButton
           color='primary'
@@ -105,7 +104,7 @@ function Editor({
           Submit
         </MuiButton>
       </div>
-    </MuiGrid>
+    </>
   );
 }
 
