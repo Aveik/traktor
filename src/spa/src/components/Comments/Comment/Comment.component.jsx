@@ -10,7 +10,7 @@ import {
 import { Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
 import emoji from 'emoji-toolkit';
 import PropTypes from 'prop-types';
-import React, { useMemo, useState } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -43,21 +43,29 @@ function Comment({
   const [isEditing, isRemoving] = [state === 'editing', state === 'removing'];
 
   const labels = [
-    <MuiTypography display='inline' variant='body2'>
+    <MuiTypography
+      display='inline'
+      key={`${username}-comment-${id}-label-0`}
+      variant='body2'
+    >
       {review ? 'Review' : 'Shout'} by{' '}
       <Link to={`/app/users/${userSlug}`}>{username}</Link>
     </MuiTypography>,
-    ' | ',
-    <MuiTypography display='inline' variant='caption'>
+    <span key={`${username}-comment-${id}-label-1`}> | </span>,
+    <MuiTypography
+      display='inline'
+      key={`${username}-comment-${id}-label-2`}
+      variant='caption'
+    >
       {new Date(createdAt).toLocaleString('da-DK')}
     </MuiTypography>,
     userRating && (
-      <>
+      <Fragment key={`${username}-comment-${id}-label-3`}>
         {' | '}
         <MuiTypography display='inline' variant='caption'>
           rated {userRating}
         </MuiTypography>
-      </>
+      </Fragment>
     ),
     spoiler && (
       <>
