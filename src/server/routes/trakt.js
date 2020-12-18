@@ -15,10 +15,9 @@ proxy.on('proxyReq', (proxyReq, req) => {
 });
 
 //@TODO: implement refresh action in case access token expired.
-//@TODO: implement custom json payload factory
 router.use('/trakt', function (req, res, next) {
   if (!req.isAuthenticated()) {
-    return res.json(createError(401));
+    return next(createError(401));
   }
   proxy.web(
     req,

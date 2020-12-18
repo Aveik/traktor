@@ -1,3 +1,4 @@
+const createError = require('http-errors');
 const { db, trakt } = require('../clients');
 
 async function createOrUpdateUser({ refreshToken, slug, uuid }) {
@@ -20,12 +21,20 @@ async function createUser({ refreshToken, slug, uuid }) {
   });
 }
 
-async function getUserByUuid(uuid) {
-  return db('users').where({ uuid }).first();
+async function getUserByUuid(uuid, throwIfNotFound = false) {
+  const user = db('users').where({ uuid }).first();
+  if (throwIfNotFound && !user) {
+    throw createError(404, `User with uuid ${uuid} was not found.`);
+  }
+  return user;
 }
 
-async function getUserBySlug(slug) {
-  return db('users').where({ slug }).first();
+async function getUserBySlug(slug, throwIfNotFound = false) {
+  const user = await db('users').where({ slug }).first();
+  if (throwIfNotFound && !user) {
+    throw createError(404, `User with slug ${slug} was not found.`);
+  }
+  return user;
 }
 
 async function getUserDetails(accessToken) {

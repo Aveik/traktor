@@ -1,44 +1,53 @@
+const createError = require('http-errors');
+const { getUserBySlug } = require('./users');
 const { db } = require('../clients');
 
-async function getFollowers(uuid) {
+//@TODO: Can this be done in a single query?
+async function getFollowers(slug) {
+  const user = await getUserBySlug(slug, true);
   return db('userFollowers')
-    .where({ userUuid: uuid })
-    .innerJoin('users', 'userFollowers.followerId', 'users.uuid')
+    .where({ userUuid: user.uuid })
+    .innerJoin('users', 'users.uuid', 'userFollowers.followerUuid')
     .select('users.uuid', 'users.slug');
 }
 
-async function getFollowing(uuid) {
+//@TODO: Can this be done in a single query?
+async function getFollowing(slug) {
+  const user = await getUserBySlug(slug, true);
   return db('userFollowers')
-    .where({ followerUuid: uuid })
-    .innerJoin('users', 'userFollowers.userId', 'users.uuid')
+    .where({ followerUuid: user.uuid })
+    .innerJoin('users', 'users.uuid', 'userFollowers.userUuid')
     .select('users.uuid', 'users.slug');
 }
 
-async function getRecord({ followerUuid, userUuid }) {
-  return db('userFollowers')
+async function getRecord({ followerUuid, userUuid }, throwIfNotFound = false) {
+  const record = db('userFollowers')
     .where({
       followerUuid,
       userUuid,
     })
     .first();
-}
-
-async function unfollow({ followerUuid, userUuid }) {
-  const result = await getRecord({ followerUuid, userUuid });
-  if (result) {
-    await db('userFollowers').delete({
-      followerUuid,
-      userUuid,
-    });
+  if (throwIfNotFound && !record) {
+    throw createError(404, 'User followers record not found');
   }
+  return record;
 }
 
-async function follow({ followerUuid, userUuid }) {
-  const result = await getRecord({ followerUuid, userUuid });
+async function unfollow({ followerUuid, slug }) {
+  const user = await getUserBySlug(slug, true);
+  await db('userFollowers').delete({
+    followerUuid,
+    userUuid: user.uuid,
+  });
+}
+
+async function follow({ followerUuid, slug }) {
+  const user = await getUserBySlug(slug, true);
+  const result = await getRecord({ followerUuid, userUuid: user.uuid });
   if (!result) {
     await db('userFollowers').insert({
       followerUuid,
-      userUuid,
+      userUuid: user.uuid,
     });
   }
 }

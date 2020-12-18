@@ -13,20 +13,20 @@ const {
 router.get('/users/:slug', ensureLoggedIn, async function (req, res, next) {
   try {
     const { slug } = req.params;
-    const data = await getUserBySlug(slug);
+    const data = await getUserBySlug(slug, true);
     res.status(data ? 204 : 404).send();
   } catch (error) {
-    next(createError());
+    next(createError(error));
   }
 });
 
 router.get(
-  '/users/:uuid/followers',
+  '/users/:slug/followers',
   ensureLoggedIn,
   async function (req, res, next) {
     try {
-      const { uuid } = req.params;
-      const data = await getFollowers(uuid);
+      const { slug } = req.params;
+      const data = await getFollowers(slug);
       res.json(data);
     } catch (error) {
       next(createError(error));
@@ -35,12 +35,12 @@ router.get(
 );
 
 router.get(
-  '/users/:uuid/following',
+  '/users/:slug/following',
   ensureLoggedIn,
   async function (req, res, next) {
     try {
-      const { uuid } = req.params;
-      const data = await getFollowing(uuid);
+      const { slug } = req.params;
+      const data = await getFollowing(slug);
       res.json(data);
     } catch (error) {
       next(createError(error));
@@ -49,12 +49,12 @@ router.get(
 );
 
 router.delete(
-  '/users/:uuid/unfollow',
+  '/users/:slug/unfollow',
   ensureLoggedIn,
   async function (req, res, next) {
-    const { uuid } = req.params;
+    const { slug } = req.params;
     try {
-      await unfollow({ followerUuid: req.user.uuid, userUuid: uuid });
+      await unfollow({ followerUuid: req.user.uuid, slug });
       res.status(204).send();
     } catch (error) {
       next(createError(error));
@@ -63,12 +63,12 @@ router.delete(
 );
 
 router.post(
-  '/users/:uuid/follow',
+  '/users/:slug/follow',
   ensureLoggedIn,
   async function (req, res, next) {
-    const { uuid } = req.params;
+    const { slug } = req.params;
     try {
-      await follow({ followerUuid: req.user.uuid, userUuid: uuid });
+      await follow({ followerUuid: req.user.uuid, slug });
       res.status(204).send();
     } catch (error) {
       next(createError(error));
