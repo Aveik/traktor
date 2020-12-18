@@ -66,8 +66,8 @@ const { reducer } = createSlice({
       const { slug } = action.meta.arg;
       const index = state.findIndex((list) => list.ids.slug === slug);
       state[index] = {
+        ...state[index],
         ...action.payload,
-        items: [],
       };
     },
   },

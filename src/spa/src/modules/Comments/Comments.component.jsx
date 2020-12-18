@@ -104,10 +104,10 @@ function Comments({ entity }) {
           ))}
         </MuiList>
         <div className={classes.buttons}>
-          <ListItemManagerButton entity='movies' slug={slug} />
-          <WatchlistButton entity='movies' slug={slug} />
-          <RecommendButton entity='movies' slug={slug} />
-          <RatingButton entity='movies' slug={slug} />
+          <ListItemManagerButton entity={entity} slug={slug} />
+          <WatchlistButton entity={entity} slug={slug} />
+          <RecommendButton entity={entity} slug={slug} />
+          <RatingButton entity={entity} slug={slug} />
         </div>
       </div>
 
