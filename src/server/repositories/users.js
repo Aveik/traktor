@@ -1,7 +1,7 @@
 const { db, trakt } = require('../clients');
 
 async function createOrUpdateUser({ refreshToken, slug, uuid }) {
-  const user = await findUserByUuid({ uuid });
+  const user = await getUserByUuid(uuid);
   if (user) {
     return updateUser({ refreshToken, slug, uuid });
   }
@@ -20,11 +20,15 @@ async function createUser({ refreshToken, slug, uuid }) {
   });
 }
 
-async function findUserByUuid({ uuid }) {
+async function getUserByUuid(uuid) {
   return db('users').where({ uuid }).first();
 }
 
-async function getUserDetails({ accessToken }) {
+async function getUserBySlug(slug) {
+  return db('users').where({ slug }).first();
+}
+
+async function getUserDetails(accessToken) {
   const response = await trakt.get('/users/settings', {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -40,7 +44,8 @@ async function updateUser({ refreshToken, slug, uuid }) {
 module.exports = {
   createOrUpdateUser,
   createUser,
-  findUserByUuid,
+  getUserBySlug,
+  getUserByUuid,
   getUserDetails,
   updateUser,
 };

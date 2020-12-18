@@ -44,7 +44,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/test', (req, res) => res.json(req.user));
+// Api
+app.use('/api', require('./routes/api'));
 
 // Routes
 app.use(require('./routes'));
