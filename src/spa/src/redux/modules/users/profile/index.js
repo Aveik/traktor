@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import comments from './comments/comments.slice';
+import followers from './followers/followers.slice';
 import list from './list/list.slice';
 import lists from './lists/lists.slice';
 import ratings from './ratings/ratings.slice';
@@ -9,6 +10,7 @@ import watchlist from './watchlist/watchlist.slice';
 
 export default combineReducers({
   comments,
+  followers,
   list,
   lists,
   ratings,
