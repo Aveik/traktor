@@ -32,13 +32,13 @@ const removeList = createAsyncThunk('users/lists/remove', async function (
 });
 
 const updateList = createAsyncThunk('users/lists/update', async function (
-  { list, slug },
+  { description, name, privacy, slug },
   { rejectWithValue },
 ) {
   try {
     const response = await axios.put(
       `/trakt/users/${getUserSlug()}/lists/${slug}`,
-      { list },
+      { description, name, privacy, slug },
     );
     return response.data;
   } catch (error) {
@@ -49,7 +49,7 @@ const updateList = createAsyncThunk('users/lists/update', async function (
 const { reducer } = createSlice({
   extraReducers: {
     [addList.fulfilled](state, action) {
-      state.push(action.payload);
+      state.push({ ...action.payload, items: [] });
     },
     [fetchLists.fulfilled](state, action) {
       if (isForLoggedUser(action.meta.arg)) {
@@ -65,7 +65,10 @@ const { reducer } = createSlice({
     [updateList.fulfilled](state, action) {
       const { slug } = action.meta.arg;
       const index = state.findIndex((list) => list.ids.slug === slug);
-      state[index] = action.payload;
+      state[index] = {
+        ...action.payload,
+        items: [],
+      };
     },
   },
   initialState: [],
