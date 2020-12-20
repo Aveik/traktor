@@ -1,10 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import {
-  removeComment,
-  updateComment,
-} from '../users/profile/comments/comments.slice';
+import { removeComment, updateComment } from '../../actions/comments';
 
 const fetchShow = createAsyncThunk('show/fetch', async function (
   slug,

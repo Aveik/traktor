@@ -18,7 +18,7 @@ import WatchlistButton from '../../components/buttons/Watchlist/Watchlist.compon
 import { renderComment } from '../../components/Comments/Comments.utils';
 import InteractiveTileWithRating from '../../components/tiles/InteractiveTileWithRating/InteractiveTileWithRating.component';
 import Tile from '../../components/tiles/Tile/Tile.component';
-import { selectEntity } from '../../redux/modules/show/show.selectors';
+import { selectShow } from '../../redux/modules/show/show.selectors';
 import { fetchShow } from '../../redux/modules/show/show.slice';
 import { extractFactsDefault, transformRatingToPercentage } from '../../utils';
 import useStyles from './Show.styles';
@@ -35,7 +35,7 @@ function Show() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { slug } = useParams();
-  const show = useSelector(selectEntity);
+  const show = useSelector(selectShow);
 
   useEffect(() => {
     dispatch(fetchShow(slug));

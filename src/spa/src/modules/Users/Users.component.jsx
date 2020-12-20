@@ -11,11 +11,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Outlet, useParams } from 'react-router-dom';
 
-import { selectIsFollowedFactory } from '../../redux/modules/users/profile/followers/followers.profile';
 import {
-  followAndRefetch,
-  unfollowAndRefetch,
-} from '../../redux/modules/users/profile/followers/followers.slice';
+  followAndFetch,
+  unfollowAndFetch,
+} from '../../redux/actions/connections';
+import { selectIsFollowedFactory } from '../../redux/app/connections/connections.selectors';
 import { getUserSlug } from '../../utils';
 
 const LINKS = [
@@ -42,18 +42,16 @@ function Users() {
   const [isTraktorUser, setIsTraktorUser] = useState(false);
   const isFollowed = useSelector((state) => selector(state, userSlug));
 
-  console.log(isFollowed);
-
   useEffect(() => {
     checkIfTraktorUser(userSlug).then(setIsTraktorUser);
   }, [dispatch, userSlug]);
 
   function handleFollow() {
     if (isFollowed) {
-      dispatch(unfollowAndRefetch(userSlug));
+      dispatch(unfollowAndFetch(userSlug));
       return;
     }
-    dispatch(followAndRefetch(userSlug));
+    dispatch(followAndFetch(userSlug));
   }
 
   return (

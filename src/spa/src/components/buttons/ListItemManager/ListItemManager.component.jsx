@@ -17,12 +17,12 @@ import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
 import {
   addToListAndRefetch,
   removeFromListAndRefetch,
-} from '../../../redux/modules/users/profile/list/list.slice';
-import { selectListsForManagerFactory } from '../../../redux/modules/users/profile/lists/lists.selectors';
+} from '../../../redux/actions/list';
+import { selectListsForManagerFactory } from '../../../redux/app/lists/lists.selectors';
+import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
 import useStyles from './ListItemManager.styles';
 
 function ListItemManager({ entity, size = 'default', slug }) {
@@ -32,7 +32,7 @@ function ListItemManager({ entity, size = 'default', slug }) {
   const loadingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
   const loading = useSelector((state) =>
     loadingSelector(state, [
-      'users/lists/fetch',
+      'app/lists/fetch',
       'users/list/add',
       'users/list/remove',
     ]),

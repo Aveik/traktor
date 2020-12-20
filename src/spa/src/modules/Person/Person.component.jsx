@@ -13,7 +13,7 @@ import { useParams } from 'react-router-dom';
 import ListItemManagerButton from '../../components/buttons/ListItemManager/ListItemManager.component';
 import InteractiveTileWithRating from '../../components/tiles/InteractiveTileWithRating/InteractiveTileWithRating.component';
 import Tile from '../../components/tiles/Tile/Tile.component';
-import { selectEntity } from '../../redux/modules/person/person.selectors';
+import { selectPerson } from '../../redux/modules/person/person.selectors';
 import { fetchPerson } from '../../redux/modules/person/person.slice';
 import { transformRatingToPercentage } from '../../utils';
 import useStyles from './Person.styles';
@@ -39,7 +39,7 @@ function Person() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { slug } = useParams();
-  const person = useSelector(selectEntity);
+  const person = useSelector(selectPerson);
 
   useEffect(() => {
     dispatch(fetchPerson(slug));

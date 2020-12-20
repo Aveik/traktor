@@ -7,7 +7,7 @@ import {
   Typography as MuiTypography,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
@@ -24,28 +24,24 @@ import Sort from '../../components/Comments/Sort/Sort.component';
 import Pagination from '../../components/Pagination/Pagination.component';
 import Tile from '../../components/tiles/Tile/Tile.component';
 import usePagination from '../../hooks/usePagination';
+import { postComment } from '../../redux/actions/comments';
+import { selectLoadingFlag } from '../../redux/loading/loading.selectors';
 import {
-  selectLoadingFlag,
-  selectLoadingFlagsReducedFactory,
-} from '../../redux/loading/loading.selectors';
-import {
-  selectEntities,
-  selectPagesTotal,
+  selectComments,
+  selectCommentsPagesTotal,
 } from '../../redux/modules/comments/comments.selectors';
 import {
   fetchComments,
   fetchEntityAndComments,
 } from '../../redux/modules/comments/comments.slice';
-import { selectEntity as selectMovie } from '../../redux/modules/movie/movie.selectors';
-import { selectEntity as selectShow } from '../../redux/modules/show/show.selectors';
-import { postComment } from '../../redux/modules/users/profile/comments/comments.slice';
+import { selectMovie } from '../../redux/modules/movie/movie.selectors';
+import { selectShow } from '../../redux/modules/show/show.selectors';
 import useStyles from './Comments.styles';
 
 const SIDE_MENU_LINKS = [['Comments', '#comments']];
 
 function Comments({ entity }) {
   const classes = useStyles();
-  const fetchingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
   const isFirstRender = useRef(true);
   const { slug } = useParams();
   const dispatch = useDispatch();
@@ -58,12 +54,9 @@ function Comments({ entity }) {
     toLastPage,
     toNextPage,
     toPreviousPage,
-  } = usePagination(selectPagesTotal);
+  } = usePagination(selectCommentsPagesTotal);
   const item = useSelector(entity === 'movies' ? selectMovie : selectShow);
-  const comments = useSelector(selectEntities);
-  const fetching = useSelector((state) =>
-    fetchingSelector(state, ['comments/fetch', 'movie/fetch', 'show/fetch']),
-  );
+  const comments = useSelector(selectComments);
   const isAddingComment = useSelector((state) =>
     selectLoadingFlag(state, 'users/comments/post'),
   );
@@ -146,7 +139,6 @@ function Comments({ entity }) {
           </MuiGrid>
           <MuiGrid item>
             <Pagination
-              disabled={fetching}
               hasNextPage={hasNextPage}
               hasPreviousPage={hasPreviousPage}
               onFirstPage={toFirstPage}
@@ -163,11 +155,10 @@ function Comments({ entity }) {
               {renderComment(comment)}
             </MuiGrid>
           ))}
-          {/* Invsible character to prevent React from skipping render of content */}
+          {/* Invisible character to prevent React from skipping render of content */}
           <div>᲼</div>
           <MuiGrid item>
             <Pagination
-              disabled={fetching}
               hasNextPage={hasNextPage}
               hasPreviousPage={hasPreviousPage}
               onFirstPage={toFirstPage}

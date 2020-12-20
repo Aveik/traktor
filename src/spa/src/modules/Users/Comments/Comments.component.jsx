@@ -6,20 +6,17 @@ import { useParams } from 'react-router';
 import { renderComment } from '../../../components/Comments/Comments.utils';
 import Pagination from '../../../components/Pagination/Pagination.component';
 import usePagination from '../../../hooks/usePagination';
-import { selectEntities as selectProfileComments } from '../../../redux/modules/users/profile/comments/comments.selectors';
 import {
-  selectEntities as selectUserComments,
-  selectPagesTotal,
-} from '../../../redux/modules/users/user/comments/comments.selectors';
-import { fetchComments } from '../../../redux/modules/users/user/comments/comments.slice';
-import { getUserSlug, renderInteractiveTileBasedOnType } from '../../../utils';
+  selectComments,
+  selectCommentsPagesTotal,
+} from '../../../redux/modules/users/comments/comments.selectors';
+import { fetchComments } from '../../../redux/modules/users/comments/comments.slice';
+import { renderInteractiveTileBasedOnType } from '../../../utils';
 
 function Comments() {
   const dispatch = useDispatch();
   const { userSlug } = useParams();
-  const selector =
-    userSlug === getUserSlug() ? selectProfileComments : selectUserComments;
-  const comments = useSelector(selector);
+  const comments = useSelector(selectComments);
   const {
     hasNextPage,
     hasPreviousPage,
@@ -29,7 +26,7 @@ function Comments() {
     toLastPage,
     toNextPage,
     toPreviousPage,
-  } = usePagination(selectPagesTotal);
+  } = usePagination(selectCommentsPagesTotal);
 
   useEffect(() => {
     dispatch(fetchComments({ page, userSlug }));
@@ -42,16 +39,6 @@ function Comments() {
 
   return (
     <MuiBox p={2}>
-      <Pagination
-        hasNextPage={hasNextPage}
-        hasPreviousPage={hasPreviousPage}
-        onFirstPage={toFirstPage}
-        onLastPage={toLastPage}
-        onNextPage={toNextPage}
-        onPreviousPage={toPreviousPage}
-        page={page}
-        pagesTotal={pagesTotal}
-      />
       <MuiGrid container direction='column' spacing={2}>
         {comments.map((item) => (
           <MuiGrid container item key={item.comment.id} spacing={2}>
@@ -69,6 +56,17 @@ function Comments() {
           </MuiGrid>
         ))}
       </MuiGrid>
+      <Pagination
+        hasNextPage={hasNextPage}
+        hasPreviousPage={hasPreviousPage}
+        onFirstPage={toFirstPage}
+        onLastPage={toLastPage}
+        onNextPage={toNextPage}
+        onPreviousPage={toPreviousPage}
+        page={page}
+        pagesTotal={pagesTotal}
+        variant='wrapped'
+      />
     </MuiBox>
   );
 }

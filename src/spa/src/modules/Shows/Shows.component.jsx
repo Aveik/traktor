@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Pagination from '../../components/Pagination/Pagination.component';
 import usePagination from '../../hooks/usePagination';
 import {
-  selectEntities,
-  selectPagesTotal,
+  selectShows,
+  selectShowsPagesTotal,
 } from '../../redux/modules/shows/shows.selectors';
 import { fetchShows } from '../../redux/modules/shows/shows.slice';
 import { renderTiles } from './Shows.utils';
@@ -23,8 +23,8 @@ function Shows({ category }) {
     toLastPage,
     toNextPage,
     toPreviousPage,
-  } = usePagination(selectPagesTotal);
-  const shows = useSelector(selectEntities);
+  } = usePagination(selectShowsPagesTotal);
+  const shows = useSelector(selectShows);
 
   useEffect(() => {
     dispatch(fetchShows({ category, page }));

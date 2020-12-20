@@ -9,12 +9,12 @@ import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
-import { selectIsRecommendFactory } from '../../../redux/modules/users/profile/recommendations/recommendations.selectors';
 import {
   postRecommendationAndRefetch,
   removeRecommendationAndRefetch,
-} from '../../../redux/modules/users/profile/recommendations/recommendations.slice';
+} from '../../../redux/actions/recommendations';
+import { selectIsRecommendFactory } from '../../../redux/app/recommendations/recommendations.selectors';
+import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
 
 function Recommend({ entity, size = 'default', slug }) {
   const dispatch = useDispatch();

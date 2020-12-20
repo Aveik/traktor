@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-const selectEntities = createSelector(
+const selectShows = createSelector(
   function (state) {
     return state.shows.entities;
   },
@@ -9,7 +9,7 @@ const selectEntities = createSelector(
   },
 );
 
-const selectPagesTotal = createSelector(
+const selectShowsPagesTotal = createSelector(
   function (state) {
     return state.shows.pagination.total;
   },
@@ -18,4 +18,4 @@ const selectPagesTotal = createSelector(
   },
 );
 
-export { selectEntities, selectPagesTotal };
+export { selectShows, selectShowsPagesTotal };

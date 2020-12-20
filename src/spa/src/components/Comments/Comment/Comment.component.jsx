@@ -15,11 +15,8 @@ import ReactMarkdown from 'react-markdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { removeComment, updateComment } from '../../../redux/actions/comments';
 import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
-import {
-  removeComment,
-  updateComment,
-} from '../../../redux/modules/users/profile/comments/comments.slice';
 import { getUserSlug } from '../../../utils';
 import Editor from '../Editor/Editor.component';
 

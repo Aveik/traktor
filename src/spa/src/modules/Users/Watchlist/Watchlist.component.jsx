@@ -3,21 +3,33 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
-import { selectEntities as selectProfileWatchlist } from '../../../redux/modules/users/profile/watchlist/watchlist.selectors';
-import { selectEntities as selectUserWatchlist } from '../../../redux/modules/users/user/watchlist/watchlist.selectors';
-import { fetchWatchlist } from '../../../redux/modules/users/user/watchlist/watchlist.slice';
-import { getUserSlug, renderInteractiveTileBasedOnType } from '../../../utils';
+import Pagination from '../../../components/Pagination/Pagination.component';
+import usePagination from '../../../hooks/usePagination';
+import {
+  selectWatchlist,
+  selectWatchlistPagesTotal,
+} from '../../../redux/modules/users/watchlist/watchlist.selectors';
+import { fetchWatchlist } from '../../../redux/modules/users/watchlist/watchlist.slice';
+import { renderInteractiveTileBasedOnType } from '../../../utils';
 
 function Watchlist() {
   const { userSlug } = useParams();
   const dispatch = useDispatch();
-  const watchlist = useSelector(
-    userSlug === getUserSlug() ? selectProfileWatchlist : selectUserWatchlist,
-  );
+  const watchlist = useSelector(selectWatchlist);
+  const {
+    hasNextPage,
+    hasPreviousPage,
+    page,
+    pagesTotal,
+    toFirstPage,
+    toLastPage,
+    toNextPage,
+    toPreviousPage,
+  } = usePagination(selectWatchlistPagesTotal);
 
   useEffect(() => {
-    dispatch(fetchWatchlist(userSlug));
-  }, [dispatch, userSlug]);
+    dispatch(fetchWatchlist({ page, userSlug }));
+  }, [dispatch, page, userSlug]);
 
   //@TODO: Add empty design component
   if (!watchlist.length) {
@@ -34,6 +46,17 @@ function Watchlist() {
           }),
         )}
       </MuiGrid>
+      <Pagination
+        hasNextPage={hasNextPage}
+        hasPreviousPage={hasPreviousPage}
+        onFirstPage={toFirstPage}
+        onLastPage={toLastPage}
+        onNextPage={toNextPage}
+        onPreviousPage={toPreviousPage}
+        page={page}
+        pagesTotal={pagesTotal}
+        variant='wrapped'
+      />
     </MuiBox>
   );
 }

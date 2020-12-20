@@ -8,8 +8,8 @@ import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
+import { addList } from '../../../redux/actions/lists';
 import { selectLoadingFlag } from '../../../redux/loading/loading.selectors';
-import { addList } from '../../../redux/modules/users/profile/lists/lists.slice';
 import Editor from '../Editor/Editor.component';
 
 function AddListDialog() {

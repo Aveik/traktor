@@ -1,10 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import {
-  removeComment,
-  updateComment,
-} from '../users/profile/comments/comments.slice';
+import { removeComment, updateComment } from '../../actions/comments';
 
 const fetchMovie = createAsyncThunk('movie/fetch', async function (
   slug,
@@ -41,15 +38,15 @@ const fetchMovie = createAsyncThunk('movie/fetch', async function (
 
 const { reducer } = createSlice({
   extraReducers: {
+    [fetchMovie.fulfilled](state, action) {
+      return action.payload;
+    },
     [removeComment.fulfilled](state, action) {
       const { arg: id } = action.meta;
       const index = state.comments.findIndex((comment) => comment.id === id);
       if (index !== -1) {
         state.comments.splice(index, 1);
       }
-    },
-    [fetchMovie.fulfilled](state, action) {
-      return action.payload;
     },
     [updateComment.fulfilled](state, action) {
       const index = state.comments.findIndex(

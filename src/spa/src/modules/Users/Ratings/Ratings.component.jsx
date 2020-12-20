@@ -3,21 +3,33 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
-import { selectEntities as selectProfileRatings } from '../../../redux/modules/users/profile/ratings/ratings.selectors';
-import { selectEntities as selectUserRatings } from '../../../redux/modules/users/user/ratings/ratings.selectors';
-import { fetchRatings } from '../../../redux/modules/users/user/ratings/ratings.slice';
-import { getUserSlug, renderInteractiveTileBasedOnType } from '../../../utils';
+import Pagination from '../../../components/Pagination/Pagination.component';
+import usePagination from '../../../hooks/usePagination';
+import {
+  selectRatings,
+  selectRatingsPagesTotal,
+} from '../../../redux/modules/users/ratings/ratings.selectors';
+import { fetchRatings } from '../../../redux/modules/users/ratings/ratings.slice';
+import { renderInteractiveTileBasedOnType } from '../../../utils';
 
 function Ratings() {
   const dispatch = useDispatch();
   const { userSlug } = useParams();
-  const ratings = useSelector(
-    userSlug === getUserSlug() ? selectProfileRatings : selectUserRatings,
-  );
+  const ratings = useSelector(selectRatings);
+  const {
+    hasNextPage,
+    hasPreviousPage,
+    page,
+    pagesTotal,
+    toFirstPage,
+    toLastPage,
+    toNextPage,
+    toPreviousPage,
+  } = usePagination(selectRatingsPagesTotal);
 
   useEffect(() => {
-    dispatch(fetchRatings(userSlug));
-  }, [dispatch, userSlug]);
+    dispatch(fetchRatings({ page, userSlug }));
+  }, [dispatch, page, userSlug]);
 
   //@TODO: Add empty design component
   if (!ratings.length) {
@@ -34,6 +46,17 @@ function Ratings() {
           }),
         )}
       </MuiGrid>
+      <Pagination
+        hasNextPage={hasNextPage}
+        hasPreviousPage={hasPreviousPage}
+        onFirstPage={toFirstPage}
+        onLastPage={toLastPage}
+        onNextPage={toNextPage}
+        onPreviousPage={toPreviousPage}
+        page={page}
+        pagesTotal={pagesTotal}
+        variant='wrapped'
+      />
     </MuiBox>
   );
 }

@@ -14,11 +14,8 @@ import ReactMarkdown from 'react-markdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { removeList, updateList } from '../../../redux/actions/lists';
 import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
-import {
-  removeList,
-  updateList,
-} from '../../../redux/modules/users/profile/lists/lists.slice';
 import { getUserSlug } from '../../../utils';
 import Editor from '../Editor/Editor.component';
 

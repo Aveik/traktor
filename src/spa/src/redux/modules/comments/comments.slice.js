@@ -2,21 +2,21 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 import { DEFAULTS } from '../../../utils';
-import { fetchMovie } from '../movie/movie.slice';
-import { fetchShow } from '../show/show.slice';
 import {
   postComment,
   removeComment,
   updateComment,
-} from '../users/profile/comments/comments.slice';
+} from '../../actions/comments';
+import { fetchMovie } from '../movie/movie.slice';
+import { fetchShow } from '../show/show.slice';
 
 const fetchComments = createAsyncThunk('comments/fetch', async function (
-  { entity, page, slug, sort },
+  { entity, limit = DEFAULTS.ALTERNATE_PAGE_SIZE, page = 1, slug, sort },
   { rejectWithValue },
 ) {
   try {
     const response = await axios.get(
-      `/trakt/${entity}/${slug}/comments/${sort}?page=${page}&limit=${DEFAULTS.COMMENT_PAGE_SIZE}`,
+      `/trakt/${entity}/${slug}/comments/${sort}?page=${page}&limit=${limit}`,
     );
     return {
       entities: response.data,

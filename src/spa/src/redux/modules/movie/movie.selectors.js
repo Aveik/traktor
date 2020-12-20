@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-const selectEntity = createSelector(
+const selectMovie = createSelector(
   function (state) {
     return state.movie;
   },
@@ -9,4 +9,4 @@ const selectEntity = createSelector(
   },
 );
 
-export { selectEntity };
+export { selectMovie };

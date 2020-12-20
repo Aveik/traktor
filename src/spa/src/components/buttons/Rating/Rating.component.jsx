@@ -12,12 +12,12 @@ import PropTypes from 'prop-types';
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
-import { selectRatingFactory } from '../../../redux/modules/users/profile/ratings/ratings.selectors';
 import {
-  postRatingAndFetch,
-  removeRatingAndFetch,
-} from '../../../redux/modules/users/profile/ratings/ratings.slice';
+  postRatingAndRefetch,
+  removeRatingAndRefetch,
+} from '../../../redux/actions/ratings';
+import { selectRatingFactory } from '../../../redux/app/ratings/ratings.selectors';
+import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
 import useStyles from './Rating.styles';
 import { getRatingFromValue, getRatingLabelFromValue } from './Rating.utils';
 
@@ -62,10 +62,10 @@ function Rating({ entity, overallRating, size, slug }) {
 
   function handleChange(_, rating) {
     if (!rating) {
-      dispatch(removeRatingAndFetch({ entity, slug }));
+      dispatch(postRatingAndRefetch({ entity, slug }));
       return;
     }
-    dispatch(postRatingAndFetch({ entity, rating, slug }));
+    dispatch(removeRatingAndRefetch({ entity, rating, slug }));
   }
 
   let button = (

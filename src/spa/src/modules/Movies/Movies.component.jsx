@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Pagination from '../../components/Pagination/Pagination.component';
 import usePagination from '../../hooks/usePagination';
 import {
-  selectEntities,
-  selectPagesTotal,
+  selectMovies,
+  selectMoviesPagesTotal,
 } from '../../redux/modules/movies/movies.selectors';
 import { fetchMovies } from '../../redux/modules/movies/movies.slice';
 import { renderTiles } from './Movies.utils';
@@ -23,8 +23,8 @@ function Movies({ category }) {
     toLastPage,
     toNextPage,
     toPreviousPage,
-  } = usePagination(selectPagesTotal);
-  const movies = useSelector(selectEntities);
+  } = usePagination(selectMoviesPagesTotal);
+  const movies = useSelector(selectMovies);
 
   useEffect(() => {
     dispatch(fetchMovies({ category, page }));

@@ -4,13 +4,13 @@ import axios from 'axios';
 import { DEFAULTS, transformEntityToSingular } from '../../../utils';
 
 const fetchSearchResults = createAsyncThunk('search/fetch', async function (
-  { entity, page, query },
+  { entity, limit = DEFAULTS.PAGE_SIZE, page = 1, query },
   { rejectWithValue },
 ) {
   try {
     entity = transformEntityToSingular(entity);
     const response = await axios.get(
-      `/trakt/search/${entity}?query=${query}&page=${page}&limit=${DEFAULTS.PAGE_SIZE}?extended=full`,
+      `/trakt/search/${entity}?query=${query}&page=${page}&limit=${limit}?extended=full`,
     );
     return {
       entities: response.data,

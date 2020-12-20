@@ -4,12 +4,12 @@ import axios from 'axios';
 import { DEFAULTS } from '../../../utils';
 
 const fetchMovies = createAsyncThunk('movies/fetch', async function (
-  { category, page },
+  { category, limit = DEFAULTS.PAGE_SIZE, page = 1 },
   { rejectWithValue },
 ) {
   try {
     const response = await axios.get(
-      `/trakt/movies/${category}?page=${page}&limit=${DEFAULTS.PAGE_SIZE}&extended=full`,
+      `/trakt/movies/${category}?page=${page}&limit=${limit}&extended=full`,
     );
     if (category === 'popular') {
       response.data = response.data.map((item) => ({ movie: item }));

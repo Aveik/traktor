@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-const selectEntity = createSelector(
+const selectPerson = createSelector(
   function (state) {
     return state.person;
   },
@@ -9,4 +9,4 @@ const selectEntity = createSelector(
   },
 );
 
-export { selectEntity };
+export { selectPerson };

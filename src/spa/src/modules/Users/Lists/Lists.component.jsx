@@ -10,19 +10,16 @@ import { Link } from 'react-router-dom';
 
 import List from '../../../components/Lists/List/List.component';
 import TileGroup from '../../../components/tiles/TileGroup/TileGroup.component';
-import { selectEntities as selectProfileLists } from '../../../redux/modules/users/profile/lists/lists.selectors';
-import { selectEntities as selectUserLists } from '../../../redux/modules/users/user/lists/lists.selectors';
-import { fetchLists } from '../../../redux/modules/users/user/lists/lists.slice';
+import { selectLists } from '../../../redux/modules/users/lists/lists.selectors';
+import { fetchLists } from '../../../redux/modules/users/lists/lists.slice';
 import { getUserSlug } from '../../../utils';
 
 function Lists() {
   const { userSlug } = useParams();
   const dispatch = useDispatch();
-  const lists = useSelector(
-    userSlug === getUserSlug() ? selectProfileLists : selectUserLists,
-  );
+  const lists = useSelector(selectLists);
   useEffect(() => {
-    dispatch(fetchLists(userSlug));
+    dispatch(fetchLists({ userSlug }));
   }, [dispatch, userSlug]);
 
   //@TODO: Add empty design component

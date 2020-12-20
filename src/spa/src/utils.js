@@ -8,7 +8,7 @@ import Tile from './components/tiles/Tile/Tile.component';
 const ALLOWED_ENTITY_TYPES = ['movie', 'person', 'show'];
 
 const DEFAULTS = {
-  COMMENT_PAGE_SIZE: 20,
+  ALTERNATE_PAGE_SIZE: 20,
   PAGE_SIZE: 36,
 };
 

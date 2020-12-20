@@ -9,12 +9,12 @@ import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
-import { selectIsWatchlistedFactory } from '../../../redux/modules/users/profile/watchlist/watchlist.selectors';
 import {
   addToWatchlistAndRefetch,
   removeFromWatchlistAndRefetch,
-} from '../../../redux/modules/users/profile/watchlist/watchlist.slice';
+} from '../../../redux/actions/watchlist';
+import { selectIsWatchlistedFactory } from '../../../redux/app/watchlist/watchlist.selectors';
+import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading.selectors';
 
 function Watchlist({ entity, size = 'default', slug }) {
   const dispatch = useDispatch();

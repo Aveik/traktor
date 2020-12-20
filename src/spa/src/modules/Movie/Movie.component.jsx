@@ -18,7 +18,7 @@ import WatchlistButton from '../../components/buttons/Watchlist/Watchlist.compon
 import { renderComment } from '../../components/Comments/Comments.utils';
 import InteractiveTileWithRating from '../../components/tiles/InteractiveTileWithRating/InteractiveTileWithRating.component';
 import Tile from '../../components/tiles/Tile/Tile.component';
-import { selectEntity } from '../../redux/modules/movie/movie.selectors';
+import { selectMovie } from '../../redux/modules/movie/movie.selectors';
 import { fetchMovie } from '../../redux/modules/movie/movie.slice';
 import { extractFactsDefault, transformRatingToPercentage } from '../../utils';
 import useStyles from './Movie.styles';
@@ -34,7 +34,7 @@ function Movie() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { slug } = useParams();
-  const movie = useSelector(selectEntity);
+  const movie = useSelector(selectMovie);
 
   useEffect(() => {
     dispatch(fetchMovie(slug));

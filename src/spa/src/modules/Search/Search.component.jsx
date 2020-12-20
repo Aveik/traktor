@@ -10,10 +10,9 @@ import { useSearchParams } from 'react-router-dom';
 
 import Pagination from '../../components/Pagination/Pagination.component';
 import usePagination from '../../hooks/usePagination';
-import { selectLoadingFlag } from '../../redux/loading/loading.selectors';
 import {
-  selectEntities,
-  selectPagesTotal,
+  selectSearchResults,
+  selectSearchResultsPagesTotal,
 } from '../../redux/modules/search/search.selectors';
 import { fetchSearchResults } from '../../redux/modules/search/search.slice';
 import { renderInteractiveTileBasedOnType } from '../../utils';
@@ -29,15 +28,12 @@ function Search({ entity }) {
     toLastPage,
     toNextPage,
     toPreviousPage,
-  } = usePagination(selectPagesTotal);
+  } = usePagination(selectSearchResultsPagesTotal);
   const [searchParams, setSearchParams] = useSearchParams();
   const { query = '' } = useMemo(() => Object.fromEntries(searchParams), [
     searchParams,
   ]);
-  const fetching = useSelector((state) =>
-    selectLoadingFlag(state, 'search/fetch'),
-  );
-  const searchResults = useSelector(selectEntities);
+  const searchResults = useSelector(selectSearchResults);
 
   useEffect(() => {
     dispatch(fetchSearchResults({ entity, page, query }));
@@ -74,7 +70,6 @@ function Search({ entity }) {
         )}
       </MuiGrid>
       <Pagination
-        disabled={fetching}
         hasNextPage={hasNextPage}
         hasPreviousPage={hasPreviousPage}
         onFirstPage={toFirstPage}
