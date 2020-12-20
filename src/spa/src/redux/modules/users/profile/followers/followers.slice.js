@@ -21,7 +21,7 @@ const unfollow = createAsyncThunk('users/followers/unfollow', async function (
   { rejectWithValue },
 ) {
   try {
-    await axios.delete(`/api/users/${userSlug}/follow`);
+    await axios.delete(`/api/users/${userSlug}/unfollow`);
   } catch (err) {
     return rejectWithValue(err.toString());
   }

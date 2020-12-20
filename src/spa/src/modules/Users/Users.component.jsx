@@ -7,9 +7,16 @@ import {
   Tooltip as MuiTooltip,
 } from '@material-ui/core';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Outlet, useParams } from 'react-router-dom';
+
+import { selectIsFollowedFactory } from '../../redux/modules/users/profile/followers/followers.profile';
+import {
+  followAndRefetch,
+  unfollowAndRefetch,
+} from '../../redux/modules/users/profile/followers/followers.slice';
+import { getUserSlug } from '../../utils';
 
 const LINKS = [
   ['Ratings', 'ratings'],
@@ -29,13 +36,25 @@ async function checkIfTraktorUser(slug) {
 }
 
 function Users() {
+  const selector = useMemo(selectIsFollowedFactory, []);
   const { userSlug } = useParams();
   const dispatch = useDispatch();
   const [isTraktorUser, setIsTraktorUser] = useState(false);
+  const isFollowed = useSelector((state) => selector(state, userSlug));
+
+  console.log(isFollowed);
 
   useEffect(() => {
     checkIfTraktorUser(userSlug).then(setIsTraktorUser);
   }, [dispatch, userSlug]);
+
+  function handleFollow() {
+    if (isFollowed) {
+      dispatch(unfollowAndRefetch(userSlug));
+      return;
+    }
+    dispatch(followAndRefetch(userSlug));
+  }
 
   return (
     <>
@@ -57,25 +76,28 @@ function Users() {
           ))}
         </MuiTabs>
       </MuiPaper>
-      <MuiBox p={2} textAlign='right'>
-        <MuiTooltip
-          title={
-            isTraktorUser
-              ? 'Follow or unfollow'
-              : 'This user is not traktor user'
-          }
-        >
-          <span>
-            <MuiButton
-              color='secondary'
-              disabled={!isTraktorUser}
-              variant='outlined'
-            >
-              Follow
-            </MuiButton>
-          </span>
-        </MuiTooltip>
-      </MuiBox>
+      {userSlug !== getUserSlug() && (
+        <MuiBox p={2} textAlign='right'>
+          <MuiTooltip
+            title={
+              isTraktorUser
+                ? 'Follow or unfollow'
+                : 'This user is not traktor user'
+            }
+          >
+            <span>
+              <MuiButton
+                color='secondary'
+                disabled={!isTraktorUser}
+                onClick={handleFollow}
+                variant='outlined'
+              >
+                {isFollowed ? 'Unfollow' : 'Follow'}
+              </MuiButton>
+            </span>
+          </MuiTooltip>
+        </MuiBox>
+      )}
       <Outlet />
     </>
   );
