@@ -1,3 +1,4 @@
+import { Box as MuiBox } from '@material-ui/core';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -10,7 +11,23 @@ function Notification({ id, message }) {
     dispatch(removeNotification(id));
   }
 
-  return <div onClick={handleClick}>{message}</div>;
+  return (
+    <MuiBox
+      bgcolor='secondary.main'
+      borderBottom={1}
+      borderColor='divider'
+      color='secondary.contrastText'
+      onClick={handleClick}
+      px={2}
+      py={1}
+      style={{
+        cursor: 'pointer',
+      }}
+      textAlign='center'
+    >
+      {message}
+    </MuiBox>
+  );
 }
 
 export default Notification;
