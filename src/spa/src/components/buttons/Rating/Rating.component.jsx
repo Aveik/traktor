@@ -2,6 +2,7 @@ import {
   Box as MuiBox,
   Button as MuiButton,
   IconButton as MuiIconButton,
+  LinearProgress as MuiLinearProgress,
   Popover as MuiPopover,
   Tooltip as MuiTooltip,
   Typography as MuiTypography,
@@ -25,13 +26,13 @@ function Rating({ entity, overallRating, size, slug }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const selector = useMemo(selectRatingFactory, []);
-  const loadingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
+  const fetchingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
   const rating = useSelector((state) => selector(state, entity, slug));
-  const loading = useSelector((state) =>
-    loadingSelector(state, [
-      'users/ratings/fetch',
-      'users/ratings/rate',
-      'users/ratings/remove',
+  const fetching = useSelector((state) =>
+    fetchingSelector(state, [
+      'app/ratings/fetch',
+      'actions/ratings/rate',
+      'actions/ratings/remove',
     ]),
   );
   const [anchorEl, setAnchorEl] = useState(null);
@@ -62,10 +63,10 @@ function Rating({ entity, overallRating, size, slug }) {
 
   function handleChange(_, rating) {
     if (!rating) {
-      dispatch(postRatingAndRefetch({ entity, slug }));
+      dispatch(removeRatingAndRefetch({ entity, slug }));
       return;
     }
-    dispatch(removeRatingAndRefetch({ entity, rating, slug }));
+    dispatch(postRatingAndRefetch({ entity, rating, slug }));
   }
 
   let button = (
@@ -115,9 +116,6 @@ function Rating({ entity, overallRating, size, slug }) {
           horizontal: 'center',
           vertical: 'bottom',
         }}
-        classes={{
-          paper: classes.popoverPaper,
-        }}
         onClose={handleClose}
         open={open}
         transformOrigin={{
@@ -125,23 +123,28 @@ function Rating({ entity, overallRating, size, slug }) {
           vertical: 'top',
         }}
       >
-        {size === 'small' && (
-          <MuiBox textAlign='center'>
-            {getRatingLabelFromValue(hasHoveredRating ? hoveredRating : rating)}
-          </MuiBox>
-        )}
-        <MuiRating
-          classes={{
-            root: classes.ratingRoot,
-          }}
-          disabled={loading}
-          icon={<HeartIcon fontSize='inherit' />}
-          max={10}
-          name='_'
-          onChange={handleChange}
-          onChangeActive={handleActiveChange}
-          value={rating}
-        />
+        {fetching && <MuiLinearProgress color='secondary' />}
+        <MuiBox p={1} pb={0.5}>
+          {size === 'small' && (
+            <MuiBox textAlign='center'>
+              {getRatingLabelFromValue(
+                hasHoveredRating ? hoveredRating : rating,
+              )}
+            </MuiBox>
+          )}
+          <MuiRating
+            classes={{
+              root: classes.ratingRoot,
+            }}
+            disabled={fetching}
+            icon={<HeartIcon fontSize='inherit' />}
+            max={10}
+            name='_'
+            onChange={handleChange}
+            onChangeActive={handleActiveChange}
+            value={rating}
+          />
+        </MuiBox>
       </MuiPopover>
     </>
   );

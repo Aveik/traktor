@@ -4,7 +4,7 @@ import axios from 'axios';
 import { getUserSlug } from '../../utils';
 import { fetchLists } from '../app/lists/lists.slice';
 
-const addToList = createAsyncThunk('users/list/add', async function (
+const addToList = createAsyncThunk('actions/list/add', async function (
   { entity, listSlug, slug },
   { rejectWithValue },
 ) {
@@ -17,7 +17,7 @@ const addToList = createAsyncThunk('users/list/add', async function (
   }
 });
 
-const removeFromList = createAsyncThunk('users/list/remove', async function (
+const removeFromList = createAsyncThunk('actions/list/remove', async function (
   { entity, listSlug, slug },
   { rejectWithValue },
 ) {

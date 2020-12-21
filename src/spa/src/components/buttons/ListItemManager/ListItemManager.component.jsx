@@ -29,12 +29,12 @@ function ListItemManager({ entity, size = 'default', slug }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const listsSelector = useMemo(selectListsForManagerFactory, []);
-  const loadingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
-  const loading = useSelector((state) =>
-    loadingSelector(state, [
+  const fetchingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
+  const fetching = useSelector((state) =>
+    fetchingSelector(state, [
       'app/lists/fetch',
-      'users/list/add',
-      'users/list/remove',
+      'actions/list/add',
+      'actions/list/remove',
     ]),
   );
   const lists = useSelector((state) => listsSelector(state, entity, slug));
@@ -67,7 +67,7 @@ function ListItemManager({ entity, size = 'default', slug }) {
   let button = (
     <MuiButton
       color='secondary'
-      disabled={loading}
+      disabled={fetching}
       fullWidth
       onClick={handleOpen}
       startIcon={<ListIcon />}
@@ -113,7 +113,7 @@ function ListItemManager({ entity, size = 'default', slug }) {
           vertical: 'top',
         }}
       >
-        {loading && <MuiLinearProgress color='secondary' />}
+        {fetching && <MuiLinearProgress color='secondary' />}
         <MuiList
           dense
           subheader={
@@ -125,7 +125,7 @@ function ListItemManager({ entity, size = 'default', slug }) {
           {lists.map(({ listed, name, slug }) => (
             <MuiListItem
               button
-              disabled={loading}
+              disabled={fetching}
               key={slug}
               onClick={handleClick(entity, listed, slug)}
             >

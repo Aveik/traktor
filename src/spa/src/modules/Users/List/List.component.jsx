@@ -3,32 +3,55 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { selectEntity as selectProfileList } from '../../../redux/modules/users/profile/list/list.selectors';
-import { selectEntity as selectUserList } from '../../../redux/modules/users/user/list/list.selectors';
-import { fetchList } from '../../../redux/modules/users/user/list/list.slice';
-import { getUserSlug, renderInteractiveTileBasedOnType } from '../../../utils';
+import Pagination from '../../../components/Pagination/Pagination.component';
+import usePagination from '../../../hooks/usePagination';
+import {
+  selectListItems,
+  selectListItemsPagesTotal,
+} from '../../../redux/modules/users/list/list.selectors';
+import { fetchListItems } from '../../../redux/modules/users/list/list.slice';
+import { renderInteractiveTileBasedOnType } from '../../../utils';
 
 function List() {
   const { id, userSlug } = useParams();
   const dispatch = useDispatch();
-  const list = useSelector(
-    userSlug === getUserSlug() ? selectProfileList : selectUserList,
-  );
+  const items = useSelector(selectListItems);
+  const {
+    hasNextPage,
+    hasPreviousPage,
+    page,
+    pagesTotal,
+    toFirstPage,
+    toLastPage,
+    toNextPage,
+    toPreviousPage,
+  } = usePagination(selectListItemsPagesTotal);
 
   useEffect(() => {
-    dispatch(fetchList({ id, userSlug }));
-  }, [dispatch, id, userSlug]);
+    dispatch(fetchListItems({ id, page, userSlug }));
+  }, [dispatch, id, page, userSlug]);
 
   return (
     <MuiBox p={2}>
       <MuiGrid container spacing={1}>
-        {list.items.map((item) =>
+        {items.map((item) =>
           renderInteractiveTileBasedOnType(item, MuiGrid, {
             item: true,
             xs: 2,
           }),
         )}
       </MuiGrid>
+      <Pagination
+        hasNextPage={hasNextPage}
+        hasPreviousPage={hasPreviousPage}
+        onFirstPage={toFirstPage}
+        onLastPage={toLastPage}
+        onNextPage={toNextPage}
+        onPreviousPage={toPreviousPage}
+        page={page}
+        pagesTotal={pagesTotal}
+        variant='wrapped'
+      />
     </MuiBox>
   );
 }

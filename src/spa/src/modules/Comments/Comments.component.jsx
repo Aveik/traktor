@@ -57,8 +57,8 @@ function Comments({ entity }) {
   } = usePagination(selectCommentsPagesTotal);
   const item = useSelector(entity === 'movies' ? selectMovie : selectShow);
   const comments = useSelector(selectComments);
-  const isAddingComment = useSelector((state) =>
-    selectLoadingFlag(state, 'users/comments/post'),
+  const fetching = useSelector((state) =>
+    selectLoadingFlag(state, 'actions/comments/post'),
   );
   const [sort, setSort] = useState(DEFAULT_SORT_OPTION);
 
@@ -123,7 +123,7 @@ function Comments({ entity }) {
         <MuiTypography id='actors' variant='h5'>
           Add comment
         </MuiTypography>
-        <Editor disabled={isAddingComment} onSubmit={handleSubmit} />
+        <Editor disabled={fetching} onSubmit={handleSubmit} />
 
         {/* Comments */}
         <MuiGrid

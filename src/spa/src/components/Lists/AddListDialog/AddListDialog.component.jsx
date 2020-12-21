@@ -15,8 +15,8 @@ import Editor from '../Editor/Editor.component';
 function AddListDialog() {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
-  const loading = useSelector((state) =>
-    selectLoadingFlag(state, 'users/lists/add'),
+  const fetching = useSelector((state) =>
+    selectLoadingFlag(state, 'actions/lists/add'),
   );
   const { addList: param, ...otherSearchParams } = useMemo(
     () => Object.fromEntries(searchParams),
@@ -42,7 +42,7 @@ function AddListDialog() {
       <MuiDialogTitle>Add list</MuiDialogTitle>
       <MuiDialogContent>
         <MuiBox mb={1}>
-          <Editor disabled={loading} onSubmit={handleSubmit} />
+          <Editor disabled={fetching} onSubmit={handleSubmit} />
         </MuiBox>
       </MuiDialogContent>
     </MuiDialog>

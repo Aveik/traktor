@@ -31,11 +31,7 @@ function List({
   const selector = useMemo(selectLoadingFlagsReducedFactory, []);
   const dispatch = useDispatch();
   const fetching = useSelector((state) =>
-    selector(state, [
-      'users/lists/remove',
-      'users/lists/update',
-      'users/lists',
-    ]),
+    selector(state, ['actions/lists/update', 'actions/lists/remove']),
   );
   const [state, setState] = useState(null);
   const canEdit = getUserSlug() === userSlug;
@@ -56,14 +52,6 @@ function List({
     >
       {' '}
       by <Link to={`/app/users/${userSlug}`}>{username}</Link>
-    </MuiTypography>,
-    ' | ',
-    <MuiTypography
-      display='inline'
-      key={`${username}-${listSlug}-label-2`}
-      variant='body2'
-    >
-      {itemCount} items
     </MuiTypography>,
   ];
 

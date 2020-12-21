@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { getUserSlug } from '../../utils';
 
-const addList = createAsyncThunk('users/lists/add', async function (
+const addList = createAsyncThunk('actions/lists/add', async function (
   list,
   { rejectWithValue },
 ) {
@@ -18,7 +18,7 @@ const addList = createAsyncThunk('users/lists/add', async function (
   }
 });
 
-const removeList = createAsyncThunk('users/lists/remove', async function (
+const removeList = createAsyncThunk('actions/lists/remove', async function (
   slug,
   { rejectWithValue },
 ) {
@@ -29,7 +29,7 @@ const removeList = createAsyncThunk('users/lists/remove', async function (
   }
 });
 
-const updateList = createAsyncThunk('users/lists/update', async function (
+const updateList = createAsyncThunk('actions/lists/update', async function (
   { description, name, privacy, slug },
   { rejectWithValue },
 ) {

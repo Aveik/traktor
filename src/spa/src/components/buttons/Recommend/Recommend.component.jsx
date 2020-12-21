@@ -19,13 +19,13 @@ import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading
 function Recommend({ entity, size = 'default', slug }) {
   const dispatch = useDispatch();
   const selector = useMemo(selectIsRecommendFactory, []);
-  const loadingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
+  const fetchingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
   const isRecommended = useSelector((state) => selector(state, entity, slug));
-  const loading = useSelector((state) =>
-    loadingSelector(state, [
-      'users/recommendations/fetch',
-      'users/recommendations/recommend',
-      'users/recommendations/unrecommend',
+  const fetching = useSelector((state) =>
+    fetchingSelector(state, [
+      'app/recommendations/fetch',
+      'actions/recommendations/recommend',
+      'actions/recommendations/unrecommend',
     ]),
   );
 
@@ -46,11 +46,11 @@ function Recommend({ entity, size = 'default', slug }) {
         <span>
           <MuiIconButton
             color={isRecommended ? 'secondary' : 'inherit'}
-            disabled={loading}
+            disabled={fetching}
             onClick={handleRecommend}
             size='small'
           >
-            {loading ? (
+            {fetching ? (
               <MuiCircularProgress color='secondary' size={20} />
             ) : (
               <RecommendIcon fontSize='small' />
@@ -63,7 +63,7 @@ function Recommend({ entity, size = 'default', slug }) {
   return (
     <MuiButton
       color='secondary'
-      disabled={loading}
+      disabled={fetching}
       fullWidth
       onClick={handleRecommend}
       startIcon={<RecommendIcon />}

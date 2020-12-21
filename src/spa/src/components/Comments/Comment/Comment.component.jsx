@@ -33,7 +33,7 @@ function Comment({
   const selector = useMemo(selectLoadingFlagsReducedFactory, []);
   const dispatch = useDispatch();
   const fetching = useSelector((state) =>
-    selector(state, ['users/comments/remove', 'users/comments/update']),
+    selector(state, ['actions/comments/update', 'actions/comments/remove']),
   );
   const [state, setState] = useState(null);
   const canEdit = getUserSlug() === userSlug;

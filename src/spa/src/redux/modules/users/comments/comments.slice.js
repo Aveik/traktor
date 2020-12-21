@@ -10,7 +10,7 @@ const fetchComments = createAsyncThunk('users/comments/fetch', async function (
 ) {
   try {
     const response = await axios.get(
-      `/trakt/users/${userSlug}/comments?page=${page}&limit=${limit}`,
+      `/trakt/users/${userSlug}/comments/all/movies,shows?page=${page}&limit=${limit}`,
     );
     return {
       entities: filterOutUnsupportedEntityTypes(response.data),

@@ -19,13 +19,13 @@ import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading
 function Watchlist({ entity, size = 'default', slug }) {
   const dispatch = useDispatch();
   const selector = useMemo(selectIsWatchlistedFactory, []);
-  const loadingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
+  const fetchingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
   const isWatchlisted = useSelector((state) => selector(state, entity, slug));
-  const loading = useSelector((state) =>
-    loadingSelector(state, [
-      'users/watchlist/fetch',
-      'users/watchlist/add',
-      'users/watchlist/remove',
+  const fetching = useSelector((state) =>
+    fetchingSelector(state, [
+      'app/watchlist/fetch',
+      'actions/watchlist/add',
+      'actions/watchlist/remove',
     ]),
   );
 
@@ -46,11 +46,11 @@ function Watchlist({ entity, size = 'default', slug }) {
         <span>
           <MuiIconButton
             color={isWatchlisted ? 'secondary' : 'inherit'}
-            disabled={loading}
+            disabled={fetching}
             onClick={handleWatchlist}
             size='small'
           >
-            {loading ? (
+            {fetching ? (
               <MuiCircularProgress color='secondary' size={20} />
             ) : (
               <WatchlistIcon fontSize='small' />
@@ -63,7 +63,7 @@ function Watchlist({ entity, size = 'default', slug }) {
   return (
     <MuiButton
       color='secondary'
-      disabled={loading}
+      disabled={fetching}
       fullWidth
       onClick={handleWatchlist}
       startIcon={<WatchlistIcon />}

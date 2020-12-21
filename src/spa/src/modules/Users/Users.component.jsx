@@ -88,7 +88,7 @@ function Users() {
                 color='secondary'
                 disabled={!isTraktorUser}
                 onClick={handleFollow}
-                variant='outlined'
+                variant={isFollowed ? 'contained' : 'outlined'}
               >
                 {isFollowed ? 'Unfollow' : 'Follow'}
               </MuiButton>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { fetchRecommendations } from '../app/recommendations/recommendations.slice';
 
 const postRecommendation = createAsyncThunk(
-  'app/recommendations/recommend',
+  'actions/recommendations/recommend',
   async function ({ entity, slug }, { rejectWithValue }) {
     try {
       await axios.post('/trakt/sync/recommendations', {
@@ -17,7 +17,7 @@ const postRecommendation = createAsyncThunk(
 );
 
 const removeRecommendation = createAsyncThunk(
-  'app/recommendations/unrecommend',
+  'actions/recommendations/unrecommend',
   async function ({ entity, slug }, { rejectWithValue }) {
     try {
       await axios.post('/trakt/sync/recommendations/remove', {

@@ -3,21 +3,21 @@ import axios from 'axios';
 
 import { fetchWatchlist } from '../app/watchlist/watchlist.slice';
 
-const addToWatchlist = createAsyncThunk('users/watchlist/add', async function (
-  { entity, slug },
-  { rejectWithValue },
-) {
-  try {
-    await axios.post('/trakt/sync/watchlist', {
-      [entity]: [{ ids: { slug } }],
-    });
-  } catch (error) {
-    return rejectWithValue(error.toString());
-  }
-});
+const addToWatchlist = createAsyncThunk(
+  'actions/watchlist/add',
+  async function ({ entity, slug }, { rejectWithValue }) {
+    try {
+      await axios.post('/trakt/sync/watchlist', {
+        [entity]: [{ ids: { slug } }],
+      });
+    } catch (error) {
+      return rejectWithValue(error.toString());
+    }
+  },
+);
 
 const removeFromWatchlist = createAsyncThunk(
-  'users/watchlist/remove',
+  'actions/watchlist/remove',
   async function ({ entity, slug }, { rejectWithValue }) {
     try {
       await axios.post('/trakt/sync/watchlist/remove', {

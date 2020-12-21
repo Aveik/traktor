@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { fetchRatings } from '../app/ratings/ratings.slice';
 
-const postRating = createAsyncThunk('users/ratings/rate', async function (
+const postRating = createAsyncThunk('actions/ratings/rate', async function (
   { entity, rating, slug },
   { rejectWithValue },
 ) {
@@ -21,7 +21,7 @@ const postRating = createAsyncThunk('users/ratings/rate', async function (
   }
 });
 
-const removeRating = createAsyncThunk('users/ratings/remove', async function (
+const removeRating = createAsyncThunk('actions/ratings/remove', async function (
   { entity, slug },
   { rejectWithValue },
 ) {
