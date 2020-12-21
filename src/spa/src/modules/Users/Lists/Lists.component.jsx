@@ -51,7 +51,6 @@ function Lists() {
           <MuiGrid item xs>
             <List
               description={list.description}
-              itemCount={list.items.length}
               listSlug={list.ids.slug}
               name={list.name}
               privacy={list.privacy}

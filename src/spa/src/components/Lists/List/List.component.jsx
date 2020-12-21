@@ -19,15 +19,7 @@ import { selectLoadingFlagsReducedFactory } from '../../../redux/loading/loading
 import { getUserSlug } from '../../../utils';
 import Editor from '../Editor/Editor.component';
 
-function List({
-  description,
-  itemCount,
-  listSlug,
-  name,
-  privacy,
-  username,
-  userSlug,
-}) {
+function List({ description, listSlug, name, privacy, username, userSlug }) {
   const selector = useMemo(selectLoadingFlagsReducedFactory, []);
   const dispatch = useDispatch();
   const fetching = useSelector((state) =>
@@ -120,7 +112,6 @@ function List({
 
 List.propTypes = {
   description: PropTypes.string.isRequired,
-  itemCount: PropTypes.number.isRequired,
   listSlug: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   privacy: PropTypes.string.isRequired,

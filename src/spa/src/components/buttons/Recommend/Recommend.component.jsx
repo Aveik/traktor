@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { ThumbUp as RecommendIcon } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -21,21 +21,24 @@ function Recommend({ entity, size = 'default', slug }) {
   const selector = useMemo(selectIsRecommendFactory, []);
   const fetchingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
   const isRecommended = useSelector((state) => selector(state, entity, slug));
-  const fetching = useSelector((state) =>
-    fetchingSelector(state, [
-      'app/recommendations/fetch',
-      'actions/recommendations/recommend',
-      'actions/recommendations/unrecommend',
-    ]),
-  );
+  const [isManipulated, setIsManipulated] = useState(false);
+  const fetching =
+    useSelector((state) =>
+      fetchingSelector(state, [
+        'app/recommendations/fetch',
+        'actions/recommendations/recommend',
+        'actions/recommendations/unrecommend',
+      ]),
+    ) && isManipulated;
 
   //@TODO: catch in case recommendation failed
   function handleRecommend() {
+    setIsManipulated(true);
+    let fn = postRecommendationAndRefetch;
     if (isRecommended) {
-      dispatch(removeRecommendationAndRefetch({ entity, slug }));
-      return;
+      fn = removeRecommendationAndRefetch;
     }
-    dispatch(postRecommendationAndRefetch({ entity, slug }));
+    dispatch(fn({ entity, slug })).then(() => setIsManipulated(false));
   }
 
   if (size === 'small') {

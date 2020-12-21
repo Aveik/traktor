@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { WatchLater as WatchlistIcon } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -21,21 +21,24 @@ function Watchlist({ entity, size = 'default', slug }) {
   const selector = useMemo(selectIsWatchlistedFactory, []);
   const fetchingSelector = useMemo(selectLoadingFlagsReducedFactory, []);
   const isWatchlisted = useSelector((state) => selector(state, entity, slug));
-  const fetching = useSelector((state) =>
-    fetchingSelector(state, [
-      'app/watchlist/fetch',
-      'actions/watchlist/add',
-      'actions/watchlist/remove',
-    ]),
-  );
+  const [isManipulated, setIsManipulated] = useState(false);
+  const fetching =
+    useSelector((state) =>
+      fetchingSelector(state, [
+        'app/watchlist/fetch',
+        'actions/watchlist/add',
+        'actions/watchlist/remove',
+      ]),
+    ) && isManipulated;
 
   //@TODO: catch in case watchlist request fails
   function handleWatchlist() {
+    setIsManipulated(true);
+    let fn = addToWatchlistAndRefetch;
     if (isWatchlisted) {
-      dispatch(removeFromWatchlistAndRefetch({ entity, slug }));
-      return;
+      fn = removeFromWatchlistAndRefetch;
     }
-    dispatch(addToWatchlistAndRefetch({ entity, slug }));
+    dispatch(fn({ entity, slug })).then(() => setIsManipulated(false));
   }
 
   if (size === 'small') {
