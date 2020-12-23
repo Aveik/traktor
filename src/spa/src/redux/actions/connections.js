@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 import { fetchConnections } from '../app/connections/connections.slice';
+import { fetchFeed } from '../app/feed/feed.slice';
 
 const follow = createAsyncThunk('actions/connections/follow', async function (
   userSlug,
@@ -29,6 +30,7 @@ function followAndFetch(params) {
   return async function (dispatch) {
     await dispatch(follow(params));
     await dispatch(fetchConnections());
+    await dispatch(fetchFeed());
   };
 }
 
@@ -36,6 +38,7 @@ function unfollowAndFetch(params) {
   return async function (dispatch) {
     await dispatch(unfollow(params));
     await dispatch(fetchConnections());
+    await dispatch(fetchFeed());
   };
 }
 

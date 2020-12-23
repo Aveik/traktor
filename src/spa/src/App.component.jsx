@@ -24,6 +24,7 @@ import Search from './modules/Search/Search.component';
 import Show from './modules/Show/Show.component';
 import Shows from './modules/Shows/Shows.component';
 import Comments from './modules/Users/Comments/Comments.component';
+import Feed from './modules/Users/Feed/Feed.component';
 import List from './modules/Users/List/List.component';
 import Lists from './modules/Users/Lists/Lists.component';
 import Ratings from './modules/Users/Ratings/Ratings.component';
@@ -112,6 +113,7 @@ function App() {
           </Route>
           <Route element={<Users />} path='users/:userSlug'>
             <Route element={<Navigate replace to='ratings' />} path='/' />
+            <Route element={<Feed />} path='feed' />
             <Route element={<Ratings />} path='ratings' />
             <Route element={<Recommendations />} path='recommendations' />
             <Route element={<Watchlist />} path='watchlist' />

@@ -41,6 +41,7 @@ function Users() {
   const dispatch = useDispatch();
   const [isTraktorUser, setIsTraktorUser] = useState(false);
   const isFollowed = useSelector((state) => selector(state, userSlug));
+  const myself = userSlug === getUserSlug();
 
   useEffect(() => {
     checkIfTraktorUser(userSlug).then(setIsTraktorUser);
@@ -63,6 +64,14 @@ function Users() {
           textColor='secondary'
           value={false}
         >
+          {myself && (
+            <MuiTab
+              activeClassName='Mui-selected'
+              component={NavLink}
+              label='Feed'
+              to={`/app/users/${userSlug}/feed`}
+            />
+          )}
           {LINKS.map(([label, url]) => (
             <MuiTab
               activeClassName='Mui-selected'
@@ -74,7 +83,7 @@ function Users() {
           ))}
         </MuiTabs>
       </MuiPaper>
-      {userSlug !== getUserSlug() && (
+      {!myself && (
         <MuiBox p={2} textAlign='right'>
           <MuiTooltip
             title={

@@ -31,13 +31,10 @@ function Ratings() {
     dispatch(fetchRatings({ page, userSlug }));
   }, [dispatch, page, userSlug]);
 
-  //@TODO: Add empty design component
-  if (!ratings.length) {
-    return 'No ratings found';
-  }
-
   return (
     <MuiBox p={2}>
+      {/* TODO: Add empty design component */}
+      {!ratings.length && 'No ratings found.'}
       <MuiGrid container spacing={1}>
         {ratings.map((rating) =>
           renderInteractiveTileBasedOnType(rating, MuiGrid, {
@@ -46,17 +43,19 @@ function Ratings() {
           }),
         )}
       </MuiGrid>
-      <Pagination
-        hasNextPage={hasNextPage}
-        hasPreviousPage={hasPreviousPage}
-        onFirstPage={toFirstPage}
-        onLastPage={toLastPage}
-        onNextPage={toNextPage}
-        onPreviousPage={toPreviousPage}
-        page={page}
-        pagesTotal={pagesTotal}
-        variant='wrapped'
-      />
+      {pagesTotal > 1 && (
+        <Pagination
+          hasNextPage={hasNextPage}
+          hasPreviousPage={hasPreviousPage}
+          onFirstPage={toFirstPage}
+          onLastPage={toLastPage}
+          onNextPage={toNextPage}
+          onPreviousPage={toPreviousPage}
+          page={page}
+          pagesTotal={pagesTotal}
+          variant='wrapped'
+        />
+      )}
     </MuiBox>
   );
 }

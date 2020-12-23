@@ -32,13 +32,14 @@ function Comments() {
     dispatch(fetchComments({ page, userSlug }));
   }, [dispatch, page, userSlug]);
 
-  //@TODO: Add empty design component
   if (!comments.length) {
     return 'No comments found';
   }
 
   return (
     <MuiBox p={2}>
+      {/* TODO: Add empty design component */}
+      {!comments.length && 'No comments found'}
       <MuiGrid container direction='column' spacing={2}>
         {comments.map((item) => (
           <MuiGrid container item key={item.comment.id} spacing={2}>
@@ -56,17 +57,19 @@ function Comments() {
           </MuiGrid>
         ))}
       </MuiGrid>
-      <Pagination
-        hasNextPage={hasNextPage}
-        hasPreviousPage={hasPreviousPage}
-        onFirstPage={toFirstPage}
-        onLastPage={toLastPage}
-        onNextPage={toNextPage}
-        onPreviousPage={toPreviousPage}
-        page={page}
-        pagesTotal={pagesTotal}
-        variant='wrapped'
-      />
+      {pagesTotal > 1 && (
+        <Pagination
+          hasNextPage={hasNextPage}
+          hasPreviousPage={hasPreviousPage}
+          onFirstPage={toFirstPage}
+          onLastPage={toLastPage}
+          onNextPage={toNextPage}
+          onPreviousPage={toPreviousPage}
+          page={page}
+          pagesTotal={pagesTotal}
+          variant='wrapped'
+        />
+      )}
     </MuiBox>
   );
 }

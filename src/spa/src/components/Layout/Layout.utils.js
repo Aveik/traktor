@@ -64,6 +64,10 @@ const NAV_PATHS = [
   {
     nested: [
       {
+        path: `users/${getUserSlug()}/feed`,
+        title: 'Feed',
+      },
+      {
         path: `users/${getUserSlug()}/ratings`,
         title: 'Ratings',
       },

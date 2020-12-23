@@ -22,13 +22,10 @@ function Lists() {
     dispatch(fetchLists({ userSlug }));
   }, [dispatch, userSlug]);
 
-  //@TODO: Add empty design component
-  if (!lists.length) {
-    return 'No lists found';
-  }
-
   return (
     <MuiBox p={2}>
+      {/* TODO: Add empty design component */}
+      {!lists.length && 'No lists found.'}
       {userSlug === getUserSlug() && (
         <MuiBox mb={2} textAlign='right'>
           <MuiButton

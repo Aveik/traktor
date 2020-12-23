@@ -27,7 +27,12 @@ function extractFactsDefault(item) {
     ['Plays', transformNumberToK(stats?.plays)],
     ['Lists', transformNumberToK(stats?.lists)],
     ['Comments', transformNumberToK(stats?.comments)],
-    ['Trailer', <a href={summary?.trailer}>Watch trailer</a>],
+    [
+      'Trailer',
+      <a href={summary?.trailer} rel='noreferrer' target='_blank'>
+        Watch trailer
+      </a>,
+    ],
   ];
 }
 

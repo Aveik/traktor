@@ -31,13 +31,10 @@ function Watchlist() {
     dispatch(fetchWatchlist({ page, userSlug }));
   }, [dispatch, page, userSlug]);
 
-  //@TODO: Add empty design component
-  if (!watchlist.length) {
-    return 'No items';
-  }
-
   return (
     <MuiBox p={2}>
+      {/* TODO: Add empty design component */}
+      {!watchlist.length && 'No items in watchlist found.'}
       <MuiGrid container spacing={1}>
         {watchlist.map((item) =>
           renderInteractiveTileBasedOnType(item, MuiGrid, {
@@ -46,17 +43,19 @@ function Watchlist() {
           }),
         )}
       </MuiGrid>
-      <Pagination
-        hasNextPage={hasNextPage}
-        hasPreviousPage={hasPreviousPage}
-        onFirstPage={toFirstPage}
-        onLastPage={toLastPage}
-        onNextPage={toNextPage}
-        onPreviousPage={toPreviousPage}
-        page={page}
-        pagesTotal={pagesTotal}
-        variant='wrapped'
-      />
+      {pagesTotal > 1 && (
+        <Pagination
+          hasNextPage={hasNextPage}
+          hasPreviousPage={hasPreviousPage}
+          onFirstPage={toFirstPage}
+          onLastPage={toLastPage}
+          onNextPage={toNextPage}
+          onPreviousPage={toPreviousPage}
+          page={page}
+          pagesTotal={pagesTotal}
+          variant='wrapped'
+        />
+      )}
     </MuiBox>
   );
 }

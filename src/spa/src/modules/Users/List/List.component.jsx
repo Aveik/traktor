@@ -33,6 +33,8 @@ function List() {
 
   return (
     <MuiBox p={2}>
+      {/* TODO: Add empty design component */}
+      {!items.length && 'No items to display'}
       <MuiGrid container spacing={1}>
         {items.map((item) =>
           renderInteractiveTileBasedOnType(item, MuiGrid, {
@@ -41,17 +43,19 @@ function List() {
           }),
         )}
       </MuiGrid>
-      <Pagination
-        hasNextPage={hasNextPage}
-        hasPreviousPage={hasPreviousPage}
-        onFirstPage={toFirstPage}
-        onLastPage={toLastPage}
-        onNextPage={toNextPage}
-        onPreviousPage={toPreviousPage}
-        page={page}
-        pagesTotal={pagesTotal}
-        variant='wrapped'
-      />
+      {pagesTotal > 1 && (
+        <Pagination
+          hasNextPage={hasNextPage}
+          hasPreviousPage={hasPreviousPage}
+          onFirstPage={toFirstPage}
+          onLastPage={toLastPage}
+          onNextPage={toNextPage}
+          onPreviousPage={toPreviousPage}
+          page={page}
+          pagesTotal={pagesTotal}
+          variant='wrapped'
+        />
+      )}
     </MuiBox>
   );
 }
