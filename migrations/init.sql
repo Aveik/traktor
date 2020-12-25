@@ -1,4 +1,4 @@
-create table traktor.users (
+create table users (
     uuid varchar(255) not null,
     refreshToken varchar(255) not null,
     constraint users_uuid_uindex unique (uuid),

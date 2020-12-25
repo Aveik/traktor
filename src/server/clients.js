@@ -3,15 +3,10 @@ const redis = require('redis');
 
 const db = require('knex')({
   client: 'mysql',
-  connection: {
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
-    password: process.env.DB_PASSWORD,
-    user: process.env.DB_USER,
-  },
+  connection: process.env.DATABASE_URL,
 });
 
-const redisClient = redis.createClient();
+const redisClient = redis.createClient(process.env.REDIS_URL);
 
 const tmdb = axios.create({
   baseURL: 'https://api.themoviedb.org/3/',
