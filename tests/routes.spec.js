@@ -1,6 +1,6 @@
 const request = require('supertest');
 
-const app = require('../src/server/app');
+const app = require('../src/app');
 
 describe('Testing routes that render Pug templates', () => {
   it('Landing page should return 404 as it is not implemented yet', async (done) => {
