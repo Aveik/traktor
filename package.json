@@ -6,7 +6,8 @@
     "node": "15.2.1"
   },
   "scripts": {
-    "start": "npx nodemon bin/www --ignore public/"
+    "start": "npx nodemon bin/www --ignore public/",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^0.21.0",
