@@ -1,1 +1,1 @@
-traktor: node bin/www
+traktor: node packages/server/bin/www

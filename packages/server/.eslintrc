@@ -1,0 +1,28 @@
+{
+  "env": {
+    "jest": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2019,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "sort-destructure-keys"
+  ],
+  "rules": {
+    "prettier/prettier": "error",
+    "sort-destructure-keys/sort-destructure-keys": "error",
+    "sort-keys": [
+      "error",
+      "asc",
+      {
+        "caseSensitive": false
+      }
+    ]
+  }
+}
