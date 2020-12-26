@@ -27,3 +27,12 @@ jobs:
         node-version: '15'
     - run: npm ci
     - run: npm test
+  deploy:
+    steps:
+    - uses: actions/checkout@v2
+    - uses: s0/git-publish-subdir-action@v2
+      env:
+        REPO: self
+        BRANCH: heroku
+        FOLDER: packages/server
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
