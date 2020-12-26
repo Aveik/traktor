@@ -7,8 +7,16 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      REDIS_URL: ${{ secrets.REDIS_RUL }}
+      SECRET: ${{ secrets.SECRET }}
+      TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+      TRAKT_TV_CALLBACK_URL: ${{ secrets.TRAKT_TV_CALLBACK_URL }}
+      TRAKT_TV_CLIENT_ID: ${{ secrets.TRAKT_TV_CLIENT_ID }}
+      TRAKT_TV_CLIENT_SECRET: ${{ secrets.TRAKT_TV_CLIENT_SECRET }}
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
