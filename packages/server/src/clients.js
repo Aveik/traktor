@@ -1,5 +1,9 @@
+require('dotenv').config();
+
 const axios = require('axios').default;
+const sessionFactory = require('express-session');
 const redis = require('redis');
+const RedisStore = require('connect-redis')(sessionFactory);
 
 const db = require('knex')({
   client: 'mysql',
@@ -7,6 +11,14 @@ const db = require('knex')({
 });
 
 const redisClient = redis.createClient(process.env.REDIS_URL);
+
+const session = sessionFactory({
+  cookie: { maxAge: 1209600000 },
+  resave: false,
+  saveUninitialized: false,
+  secret: process.env.SECRET,
+  store: new RedisStore({ client: redisClient }),
+});
 
 const tmdb = axios.create({
   baseURL: 'https://api.themoviedb.org/3/',
@@ -25,6 +37,7 @@ const trakt = axios.create({
 module.exports = {
   db,
   redisClient,
+  session,
   tmdb,
   trakt,
 };
