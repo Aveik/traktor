@@ -1,4 +1,13 @@
 {
+  "name": "traktor",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": "15.2.1"
+  },
+  "scripts": {
+    "start": "npx nodemon bin/www --ignore public/"
+  },
   "dependencies": {
     "axios": "^0.21.0",
     "connect-ensure-login": "^0.1.1",
@@ -38,14 +47,5 @@
     "prettier": "^2.2.0",
     "redis-mock": "^0.56.3",
     "supertest": "^6.0.1"
-  },
-  "engines": {
-    "node": "15.2.1"
-  },
-  "name": "traktor-frontend",
-  "private": true,
-  "scripts": {
-    "start": "npx nodemon bin/www --ignore public/"
-  },
-  "version": "0.0.0"
+  }
 }
