@@ -111,6 +111,15 @@ const NAV_PATHS = [
     ],
     title: 'Search',
   },
+  {
+    nested: [
+      {
+        path: 'games/lets-pick',
+        title: "Let's pick",
+      },
+    ],
+    title: 'Games',
+  },
 ];
 
 function renderListItems() {

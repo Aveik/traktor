@@ -17,6 +17,7 @@ import {
   default as MovieComments,
   default as ShowComments,
 } from './modules/Comments/Comments.component';
+import LetsPick from './modules/Games/LetsPick/LetsPick.component';
 import Movie from './modules/Movie/Movie.component';
 import Movies from './modules/Movies/Movies.component';
 import Person from './modules/Person/Person.component';
@@ -122,6 +123,9 @@ function App() {
               <Route element={<List />} path=':id' />
             </Route>
             <Route element={<Comments />} path='comments' />
+          </Route>
+          <Route path='games'>
+            <Route element={<LetsPick />} path='lets-pick' />
           </Route>
         </Route>
         <Route element={<NotFound />} path='*' />
