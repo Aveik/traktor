@@ -2,7 +2,7 @@ const { nanoid } = require('nanoid');
 
 const { getUserByUuid } = require('../../repositories/users');
 const Room = require('./room');
-const { ERRORS, MESSAGES } = require('./utils');
+const { ERRORS, MESSAGES, validateItems } = require('./utils');
 
 async function handleConnect(socket) {
   try {
@@ -29,6 +29,14 @@ function handleCreateRoom({ items, socket, user }) {
   // room already exists
   if (room) {
     socket.emit('error', ERRORS.ROOM_ALREADY_EXISTS);
+    return;
+  }
+
+  // validate items with Joi schema validation lib
+  try {
+    validateItems(items);
+  } catch (error) {
+    socket.emit('error', ERRORS.ITEMS_VALIDATION_ERROR);
     return;
   }
 
