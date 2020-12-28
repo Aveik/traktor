@@ -112,6 +112,7 @@ function handleLeaveRoom({ io, roomKey, socket, user }) {
 
   room.removeUser(user);
   socket.leave(roomKey);
+  socket.emit('roomLeft');
   io.to(roomKey).emit('userLeft', room);
 }
 
@@ -169,7 +170,7 @@ function handleVote({ io, itemSlug, roomKey, socket, type, user }) {
     return;
   }
 
-  const item = room.items.find((item) => item.ids.slug === itemSlug);
+  const item = room.items.find((item) => item[item.type].ids.slug === itemSlug);
   // item user wants to vote for does not exist
   if (!item) {
     socket.emit('error', ERRORS.INVALID_VOTE_ACTION);
@@ -197,7 +198,7 @@ function handleVote({ io, itemSlug, roomKey, socket, type, user }) {
   });
 
   if (match) {
-    io.to(roomKey).emit('roomDisbanded', MESSAGES.ROOM_DISBANDED_MATCH_FOUND);
+    io.to(roomKey).emit('matchFound', match);
     Object.values(room.users).forEach((socketId) =>
       io.of('/').sockets.get(socketId)?.leave(roomKey),
     );
@@ -207,10 +208,7 @@ function handleVote({ io, itemSlug, roomKey, socket, type, user }) {
 
   // everyone voted, no match
   if (room.votes === room.items.length * usersCount) {
-    io.to(roomKey).emit(
-      'roomDisbanded',
-      MESSAGES.ROOM_DISBANDED_NO_MATCH_FOUND,
-    );
+    io.to(roomKey).emit('matchNotFound');
     Object.values(room.users).forEach((socketId) =>
       io.of('/').sockets.get(socketId)?.leave(roomKey),
     );
