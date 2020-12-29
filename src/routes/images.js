@@ -1,10 +1,10 @@
-const { promisify } = require('util');
 const router = require('express').Router();
 
-const { redisClient, tmdb } = require('../clients');
+const { tmdb } = require('../clients');
+const { redis } = require('../utils');
 
-const setCache = promisify(redisClient.setex).bind(redisClient);
-const getCache = promisify(redisClient.get).bind(redisClient);
+const getCache = redis.get;
+const setCache = redis.set;
 const PLACEHOLDER = '/images/placeholder.png';
 
 /**

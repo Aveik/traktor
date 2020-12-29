@@ -1,14 +1,12 @@
+require('dotenv').config();
+
 const cookieParser = require('cookie-parser');
 const createError = require('http-errors');
-const dotenv = require('dotenv');
 const express = require('express');
 const logger = require('morgan');
 const passport = require('passport');
-const session = require('express-session');
 
-dotenv.config();
-
-const { redisClient } = require('./clients');
+const { session } = require('./clients');
 
 const {
   Strategy,
@@ -20,8 +18,6 @@ passport.use('trakt', Strategy);
 passport.deserializeUser(deserializeUser);
 passport.serializeUser(serializeUser);
 
-const RedisStore = require('connect-redis')(session);
-
 const app = express();
 
 app.set('trust proxy', true);
@@ -32,15 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger('dev'));
 app.use(cookieParser());
-app.use(
-  session({
-    cookie: { maxAge: 1209600000 },
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.SECRET,
-    store: new RedisStore({ client: redisClient }),
-  }),
-);
+app.use(session);
 app.use(passport.initialize());
 app.use(passport.session());
 
