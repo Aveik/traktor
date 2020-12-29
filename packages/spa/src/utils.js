@@ -146,10 +146,27 @@ function transformRatingToPercentage(rating, decimalPlaces = 2) {
   return `${(rating * 10).toFixed(decimalPlaces)}%`;
 }
 
+function getImage({ entity, season, size, tmdbId, type }) {
+  entity = transformEntityToSingular(entity);
+  if (!tmdbId) {
+    return '/images/placeholder.png';
+  }
+
+  let url = `/images/${entity}/${tmdbId}/${type}?`;
+  if (season !== undefined) {
+    url += `season=${season}`;
+  }
+  if (size) {
+    url += `size=${size}`;
+  }
+  return url;
+}
+
 export {
   DEFAULTS,
   extractFactsDefault,
   filterOutUnsupportedEntityTypes,
+  getImage,
   getUserSlug,
   renderInteractiveTileBasedOnType,
   renderTileBasedOnType,

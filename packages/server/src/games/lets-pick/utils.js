@@ -22,6 +22,7 @@ const entitySchema = Joi.object({
   ids: Joi.object({
     slug: Joi.string().required(),
   }).unknown(true),
+  title: Joi.string().required(),
 }).unknown(true);
 
 const schema = Joi.array()
@@ -34,6 +35,7 @@ const schema = Joi.array()
         otherwise: Joi.forbidden(),
         then: Joi.required(),
       }),
+      score: Joi.number(),
       show: entitySchema.when('type', {
         is: 'show',
         otherwise: Joi.forbidden(),

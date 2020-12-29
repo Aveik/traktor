@@ -4,12 +4,11 @@ import {
   InputAdornment as MuiInputAdornment,
   TextField as MuiTextField,
 } from '@material-ui/core';
-import {
-  Keyboard as KeyboardIcon,
-  MeetingRoom as RoomIcon,
-} from '@material-ui/icons';
+import { Keyboard as KeyboardIcon } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+
+import Wizard from './Wizard/Wizard.component';
 
 function Intro({ onCreate, onJoin }) {
   const [state, setState] = useState('');
@@ -31,14 +30,7 @@ function Intro({ onCreate, onJoin }) {
       justifyContent='center'
     >
       <MuiBox mr={1}>
-        <MuiButton
-          color='secondary'
-          onClick={onCreate}
-          startIcon={<RoomIcon />}
-          variant='contained'
-        >
-          New room
-        </MuiButton>
+        <Wizard onCreate={onCreate} />
       </MuiBox>
 
       <MuiBox mr={1}>
