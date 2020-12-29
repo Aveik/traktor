@@ -7,7 +7,12 @@ const RedisStore = require('connect-redis')(sessionFactory);
 
 const db = require('knex')({
   client: 'pg',
-  connection: process.env.DATABASE_URL,
+  connection: {
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
 });
 
 const redisClient = redis.createClient(process.env.REDIS_URL);
