@@ -6,7 +6,7 @@ const redis = require('redis');
 const RedisStore = require('connect-redis')(sessionFactory);
 
 const db = require('knex')({
-  client: 'mysql',
+  client: 'pg',
   connection: process.env.DATABASE_URL,
 });
 
