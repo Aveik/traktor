@@ -37,9 +37,13 @@ function Watchlist() {
       {!watchlist.length && 'No items in watchlist found.'}
       <MuiGrid container spacing={1}>
         {watchlist.map((item) =>
-          renderInteractiveTileBasedOnType(item, MuiGrid, {
-            item: true,
-            xs: 2,
+          renderInteractiveTileBasedOnType({
+            item,
+            WrapperComponent: MuiGrid,
+            WrapperProps: {
+              item: true,
+              xs: 2,
+            },
           }),
         )}
       </MuiGrid>

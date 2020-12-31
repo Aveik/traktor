@@ -49,7 +49,7 @@ function Comments() {
                 width: 220,
               }}
             >
-              {renderInteractiveTileBasedOnType(item)}
+              {renderInteractiveTileBasedOnType({ item })}
             </MuiGrid>
             <MuiGrid item xs>
               {renderComment(item.comment)}

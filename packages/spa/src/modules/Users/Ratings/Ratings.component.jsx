@@ -1,4 +1,8 @@
-import { Box as MuiBox, Grid as MuiGrid } from '@material-ui/core';
+import {
+  Box as MuiBox,
+  Grid as MuiGrid,
+  Typography as MuiTypography,
+} from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
@@ -37,9 +41,20 @@ function Ratings() {
       {!ratings.length && 'No ratings found.'}
       <MuiGrid container spacing={1}>
         {ratings.map((rating) =>
-          renderInteractiveTileBasedOnType(rating, MuiGrid, {
-            item: true,
-            xs: 2,
+          renderInteractiveTileBasedOnType({
+            item: rating,
+            TileProps: {
+              children: (
+                <MuiTypography variant='caption'>
+                  Rated {rating.rating} ❤️
+                </MuiTypography>
+              ),
+            },
+            WrapperComponent: MuiGrid,
+            WrapperProps: {
+              item: true,
+              xs: 2,
+            },
           }),
         )}
       </MuiGrid>

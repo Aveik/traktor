@@ -37,9 +37,13 @@ function List() {
       {!items.length && 'No items to display'}
       <MuiGrid container spacing={1}>
         {items.map((item) =>
-          renderInteractiveTileBasedOnType(item, MuiGrid, {
-            item: true,
-            xs: 2,
+          renderInteractiveTileBasedOnType({
+            item,
+            WrapperComponent: MuiGrid,
+            WrapperProps: {
+              item: true,
+              xs: 2,
+            },
           }),
         )}
       </MuiGrid>

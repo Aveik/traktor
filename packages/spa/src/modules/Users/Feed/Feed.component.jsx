@@ -110,7 +110,7 @@ function Feed() {
                 width: 220,
               }}
             >
-              {renderInteractiveTileBasedOnType(item)}
+              {renderInteractiveTileBasedOnType({ item })}
             </MuiGrid>
             <MuiGrid item xs>
               <MuiPaper component={MuiBox} p={2}>

@@ -60,12 +60,16 @@ function Search({ entity }) {
       </MuiBox>
       <MuiGrid container>
         {searchResults.map((item) =>
-          renderInteractiveTileBasedOnType(item, MuiGrid, {
-            item: true,
-            lg: 2,
-            md: 3,
-            sm: 6,
-            xs: 12,
+          renderInteractiveTileBasedOnType({
+            item,
+            WrapperComponent: MuiGrid,
+            WrapperProps: {
+              item: true,
+              lg: 2,
+              md: 3,
+              sm: 6,
+              xs: 12,
+            },
           }),
         )}
       </MuiGrid>

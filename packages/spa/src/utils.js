@@ -55,7 +55,12 @@ function getUserSlug() {
 }
 
 // Used where entities are of mixed type and in format of { type: .., [type]: { ..obj.. } }
-function renderInteractiveTileBasedOnType(item, Wrapper, wrapperProps) {
+function renderInteractiveTileBasedOnType({
+  item,
+  TileProps,
+  WrapperComponent,
+  WrapperProps,
+}) {
   const type = item.type;
   item = item[type];
   let Tile;
@@ -74,11 +79,15 @@ function renderInteractiveTileBasedOnType(item, Wrapper, wrapperProps) {
     props.secondary = item.year;
     props.overallRating = transformRatingToPercentage(item.rating, 0);
   }
-  if (Wrapper) {
+  props = {
+    ...props,
+    ...TileProps,
+  };
+  if (WrapperComponent) {
     return (
-      <Wrapper key={item.ids.slug} {...wrapperProps}>
+      <WrapperComponent key={item.ids.slug} {...WrapperProps}>
         <Tile {...props} />
-      </Wrapper>
+      </WrapperComponent>
     );
   }
   return <Tile key={item.ids.slug} {...props} />;

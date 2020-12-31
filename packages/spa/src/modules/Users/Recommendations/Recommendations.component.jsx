@@ -37,9 +37,13 @@ function Ratings() {
       {!recommendations.length && 'No ratings found.'}
       <MuiGrid container spacing={1}>
         {recommendations.map((recommendation) =>
-          renderInteractiveTileBasedOnType(recommendation, MuiGrid, {
-            item: true,
-            xs: 2,
+          renderInteractiveTileBasedOnType({
+            item: recommendation,
+            WrapperComponent: MuiGrid,
+            WrapperProps: {
+              item: true,
+              xs: 2,
+            },
           }),
         )}
       </MuiGrid>
