@@ -7,7 +7,6 @@ const { getFeed } = require('../../repositories/userActivityLogs');
 router.get('/feed', ensureLoggedIn, async function (req, res, next) {
   try {
     const data = await getFeed(req.user.uuid);
-    data.forEach((item) => (item.payload = JSON.parse(item.payload)));
     res.json(data);
   } catch (error) {
     next(createError(error));
