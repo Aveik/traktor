@@ -35,10 +35,12 @@ async function getRecord({ followerUuid, userUuid }, throwIfNotFound = false) {
 
 async function unfollow({ followerUuid, slug }) {
   const user = await getUserBySlug(slug, true);
-  await db('userFollowers').delete({
-    followerUuid,
-    userUuid: user.uuid,
-  });
+  await db('userFollowers')
+    .where({
+      followerUuid,
+      userUuid: user.uuid,
+    })
+    .delete();
 }
 
 async function follow({ followerUuid, slug }) {
