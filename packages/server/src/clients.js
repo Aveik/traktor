@@ -5,15 +5,20 @@ const sessionFactory = require('express-session');
 const redis = require('redis');
 const RedisStore = require('connect-redis')(sessionFactory);
 
-const db = require('knex')({
+const dbConfig = {
   client: 'pg',
   connection: {
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
   },
-});
+};
+
+if (process.env.NODE_ENV !== 'development') {
+  dbConfig.connection.ssl = {
+    rejectUnauthorized: false,
+  };
+}
+
+const db = require('knex')(dbConfig);
 
 const redisClient = redis.createClient(process.env.REDIS_URL);
 
